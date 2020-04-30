@@ -8,4 +8,5 @@
     <string name="authentication_failed">Authentication Failed.</string>
     <string name="sign_in_with_facebook">Sign in with Facebook</string>
     <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="go4lunch_logo_content_description">Go4Lunch logo</string>
 </resources>
