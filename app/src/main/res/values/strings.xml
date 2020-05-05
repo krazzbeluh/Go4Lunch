@@ -9,4 +9,8 @@
     <string name="sign_in_with_facebook">Sign in with Facebook</string>
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="go4lunch_logo_content_description">Go4Lunch logo</string>
+    <string name="logo_subtitle">Find a nice restaurant and invite your co-workers for lunch!</string>
+    <string name="permission_location_message">Go4Lunch needs your position to purpose you nice restaurants next to
+        you!
+    </string>
 </resources>

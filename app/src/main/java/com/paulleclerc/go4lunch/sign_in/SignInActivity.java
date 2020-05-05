@@ -77,7 +77,6 @@ public class SignInActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser currentUser) {
         Log.d(TAG, "updateUI: updateUI(" + currentUser + ")");
         if (currentUser != null) {
-            auth.signOut(); // TODO: remove this line
             Intent intent = new Intent(SignInActivity.this, MainActivity.class);
             startActivity(intent);
         }
