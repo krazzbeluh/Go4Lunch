@@ -1,5 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Go4Lunch</string>
     <string name="facebook_application_id" translatable="false">2642016929378782</string>
-    <string name="facebook_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">fb2642016929378782</string>
+    <string name="facebook_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">
+        fb2642016929378782
+    </string>
+    <string name="login_background_content_description">Login background</string>
+    <string name="authentication_failed">Authentication Failed.</string>
+    <string name="sign_in_with_facebook">Sign in with Facebook</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="go4lunch_logo_content_description">Go4Lunch logo</string>
 </resources>
