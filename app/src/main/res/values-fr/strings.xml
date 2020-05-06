@@ -6,4 +6,9 @@
     <string name="sign_in_with_facebook">Se connecter avec Facebook</string>
     <string name="sign_in_with_google">Se connecter avec Google</string>
     <string name="go4lunch_logo_content_description">Logo de Go4Lunch</string>
+    <string name="logo_subtitle">Trouvez un super restaurant pour inviter vos collègues à déjeûner !</string>
+    <string name="permission_location_message">Go4Lunch a besoin de votre position pour vous proposer de bons restaurants à proximité !</string>
+    <string name="bottom_navigation_menu_map_view">Plan</string>
+    <string name="bottom_navigation_menu_list_view">Liste</string>
+    <string name="bottom_navigation_menu_workmates">Collègues</string>
 </resources>
