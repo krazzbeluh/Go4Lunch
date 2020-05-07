@@ -9,7 +9,10 @@ public class AuthRepository {
 
     public MutableLiveData<Boolean> firebaseSignInWithCredential(AuthCredential googleAuthCredential) {
         MutableLiveData<Boolean> isUserAuthenticated = new MutableLiveData<>();
-        auth.signInWithCredential(googleAuthCredential).addOnCompleteListener(authTask -> isUserAuthenticated.setValue(auth.getCurrentUser() != null));
+        auth.signInWithCredential(googleAuthCredential).addOnCompleteListener(authTask -> {
+            if (authTask.isSuccessful()) isUserAuthenticated.setValue(checkUserSignedIn().getValue());
+            else isUserAuthenticated.setValue(false);
+        });
         return isUserAuthenticated;
     }
 

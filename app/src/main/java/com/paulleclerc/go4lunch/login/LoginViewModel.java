@@ -1,9 +1,7 @@
 package com.paulleclerc.go4lunch.login;
 
 import android.app.Application;
-import android.util.Log;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -14,8 +12,8 @@ import com.paulleclerc.go4lunch.repository.AuthRepository;
 public class LoginViewModel extends AndroidViewModel {
     private static final String TAG = LoginViewModel.class.getSimpleName();
 
-    private AuthRepository authRepository;
-    LiveData<Boolean> isUserAuthenticated;
+    private final AuthRepository authRepository;
+    MutableLiveData<Boolean> isUserAuthenticated;
 
     public LoginViewModel(Application application) {
         super(application);
@@ -23,7 +21,7 @@ public class LoginViewModel extends AndroidViewModel {
     }
 
     public void checkUserSignedIn() {
-        this.isUserAuthenticated = authRepository.checkUserSignedIn();
+        isUserAuthenticated = authRepository.checkUserSignedIn();
     }
 
     void signInWithCredential(AuthCredential credential) {
@@ -34,8 +32,8 @@ public class LoginViewModel extends AndroidViewModel {
         return new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 AuthCredential credential = FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
+                signInWithCredential(credential);
             }
 
             @Override
@@ -43,8 +41,7 @@ public class LoginViewModel extends AndroidViewModel {
 
             @Override
             public void onError(FacebookException error) {
-                Log.d(TAG, "facebook:onError", error);
-                //activity.showSnackBar(R.string.authentication_failed);
+                isUserAuthenticated.setValue(false);
             }
         };
     }
