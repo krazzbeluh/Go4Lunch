@@ -1,24 +1,18 @@
 package com.paulleclerc.go4lunch.repository;
 
-import androidx.lifecycle.MutableLiveData;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
+import com.paulleclerc.go4lunch.closures.FirebaseSignInWithCredentialClosure;
+import com.paulleclerc.go4lunch.enums.LoginState;
 
 public class AuthRepository {
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
 
-    public MutableLiveData<Boolean> firebaseSignInWithCredential(AuthCredential googleAuthCredential) {
-        MutableLiveData<Boolean> isUserAuthenticated = new MutableLiveData<>();
-        auth.signInWithCredential(googleAuthCredential).addOnCompleteListener(authTask -> {
-            if (authTask.isSuccessful()) isUserAuthenticated.setValue(checkUserSignedIn().getValue());
-            else isUserAuthenticated.setValue(false);
-        });
-        return isUserAuthenticated;
+    public void firebaseSignInWithCredential(AuthCredential googleAuthCredential, FirebaseSignInWithCredentialClosure completion) {
+        auth.signInWithCredential(googleAuthCredential).addOnCompleteListener(authTask -> completion.onComplete(authTask.isSuccessful() && checkUserSignedIn() ? LoginState.SIGNED_IN : LoginState.FAILED ));
     }
 
-    public MutableLiveData<Boolean> checkUserSignedIn() {
-        MutableLiveData<Boolean> isUserAuthenticated = new MutableLiveData<>();
-        isUserAuthenticated.setValue(auth.getCurrentUser() != null);
-        return isUserAuthenticated;
+    public boolean checkUserSignedIn() {
+        return auth.getCurrentUser() != null;
     }
 }
