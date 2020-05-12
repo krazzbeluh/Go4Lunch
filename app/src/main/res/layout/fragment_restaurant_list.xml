@@ -5,10 +5,11 @@
              android:layout_height="match_parent"
              tools:context=".main.fragments.RestaurantListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/restaurant_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Hello World!"/>
-
+            android:scrollbars="vertical"
+            tools:listitem="@layout/restaurant_recyclerview_row"/>
 </FrameLayout>

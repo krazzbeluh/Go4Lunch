@@ -1,5 +1,6 @@
 package com.paulleclerc.go4lunch.main.fragments;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import androidx.fragment.app.Fragment;
@@ -33,12 +34,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     MapView mapView;
 
     private final MapStyleOptions mapStyleOptions;
+    private MutableLiveData<PlacesSearchResult[]> places;
     private GoogleMap map;
 
     public MapFragment(MapStyleOptions mapStyleOptions, MutableLiveData<PlacesSearchResult[]> places) {
         this.mapStyleOptions = mapStyleOptions;
         // Required empty public constructor
-        places.observe(this, this::displayRestaurants);
+        this.places = places;
     }
 
     /**
@@ -109,12 +111,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        map.setMinZoomPreference(12);
-
-        map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(48.8568, 2.3511)));
 
         map.setMapStyle(mapStyleOptions);
         mapView.onResume();
+
+        places.observe(this, this::displayRestaurants);
     }
 
     void displayRestaurants(PlacesSearchResult[] restaurants) {
@@ -125,5 +126,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     .title(restaurant.name);
             map.addMarker(marker);
         }
+    }
+
+    void setLocation(LatLng location) {
+        map.moveCamera(CameraUpdateFactory.newLatLng(location));
     }
 }

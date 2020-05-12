@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         ButterKnife.bind(this);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
+        requiresAccessLocationPermission();
     }
 
     /*

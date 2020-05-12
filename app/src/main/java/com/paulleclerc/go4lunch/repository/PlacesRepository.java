@@ -9,7 +9,7 @@ import com.google.maps.PlacesApi;
 import com.google.maps.model.PlaceType;
 import com.google.maps.model.PlacesSearchResponse;
 import com.google.maps.model.RankBy;
-import com.paulleclerc.go4lunch.R;
+import com.paulleclerc.go4lunch.BuildConfig;
 import com.paulleclerc.go4lunch.closures.FetchPlacesCompletion;
 
 public class PlacesRepository {
@@ -17,7 +17,7 @@ public class PlacesRepository {
 
     public void fetchPlaces(LatLng position, FetchPlacesCompletion completion) {
         GeoApiContext context = new GeoApiContext.Builder()
-                .apiKey(Resources.getSystem().getString(R.string.google_maps_and_places_key))
+                .apiKey(BuildConfig.GOOGLE_MAPS_AND_PLACES_KEY)
                 .build();
 
         PlacesSearchResponse request = new PlacesSearchResponse();

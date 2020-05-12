@@ -12,4 +12,5 @@
     <string name="bottom_navigation_menu_map_view">Map View</string>
     <string name="bottom_navigation_menu_list_view">List View</string>
     <string name="bottom_navigation_menu_workmates">Workmates</string>
+    <string name="restaurant_picture">Restaurant picture</string>
 </resources>
