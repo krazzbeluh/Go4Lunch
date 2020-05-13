@@ -1,4 +1,4 @@
-package com.paulleclerc.go4lunch.main.fragments;
+package com.paulleclerc.go4lunch.main.fragments.map;
 
 import android.Manifest;
 import android.content.Context;
@@ -148,11 +148,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
+        map.setMyLocationEnabled(true);
 
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(Objects.requireNonNull(getContext()), R.raw.google_map_style));
         mapView.onResume();
 
         viewModel.getPlaces().observe(this, this::displayRestaurants);
+        moveCamera();
     }
 
     void displayRestaurants(PlacesSearchResult[] restaurants) {
@@ -169,10 +171,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         }
     }
 
+    private LatLng position;
+    private void moveCamera() {
+        if (map != null) {
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 17));
+        }
+    }
+
     @Override
     public void onLocationChanged(Location location) {
         LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
         viewModel.fetchPlaces(position);
+        this.position = new LatLng(location.getLatitude(), location.getLongitude());
+        moveCamera();
     }
 
     @Override

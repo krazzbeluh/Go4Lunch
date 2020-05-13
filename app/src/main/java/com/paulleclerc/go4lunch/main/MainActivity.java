@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.paulleclerc.go4lunch.main.fragments.MapFragment;
+import com.paulleclerc.go4lunch.main.fragments.map.MapFragment;
 import com.paulleclerc.go4lunch.R;
-import com.paulleclerc.go4lunch.main.fragments.RestaurantListFragment;
+import com.paulleclerc.go4lunch.main.fragments.list.RestaurantListFragment;
 import com.paulleclerc.go4lunch.main.fragments.WorkmatesFragment;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 openFragment(MapFragment.getInstance());
                 return true;
             case R.id.main_bottom_navigation_list:
-                openFragment(RestaurantListFragment.newInstance());
+                openFragment(RestaurantListFragment.getInstance());
                 return true;
             case R.id.main_bottom_navigation_workmates:
                 openFragment(WorkmatesFragment.newInstance());

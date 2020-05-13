@@ -1,4 +1,4 @@
-package com.paulleclerc.go4lunch.main.fragments;
+package com.paulleclerc.go4lunch.main.fragments.list;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -9,12 +9,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.model.PlacesSearchResult;
 import com.paulleclerc.go4lunch.repository.PlacesRepository;
 
-public class MapViewModel extends AndroidViewModel {
+public class RestaurantListViewModel extends AndroidViewModel {
     private final PlacesRepository placesRepository = new PlacesRepository();
 
     private final MutableLiveData<PlacesSearchResult[]> places = new MutableLiveData<>();
 
-    public MapViewModel(@NonNull Application application) {
+    public RestaurantListViewModel(@NonNull Application application) {
         super(application);
     }
 
@@ -22,7 +22,7 @@ public class MapViewModel extends AndroidViewModel {
         placesRepository.fetchPlaces(location, this.places::setValue);
     }
 
-    LiveData<PlacesSearchResult[]> getPlaces() {
+    public LiveData<PlacesSearchResult[]> getPlaces() {
         return places;
     }
 }
