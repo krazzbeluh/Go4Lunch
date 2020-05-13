@@ -11,4 +11,5 @@
     <string name="bottom_navigation_menu_map_view">Plan</string>
     <string name="bottom_navigation_menu_list_view">Liste</string>
     <string name="bottom_navigation_menu_workmates">Collègues</string>
+    <string name="restaurant_picture">Photo du restaurant</string>
 </resources>
