@@ -14,5 +14,7 @@
     <string name="bottom_navigation_menu_workmates">Workmates</string>
     <string name="restaurant_picture">Restaurant picture</string>
     <string name="user_avatar">User avatar</string>
-    <string name="user_has_not_decided">$Username hasn\'t decided yet</string>
+    <string name="user_has_not_decided">%1$s hasn\'t decided yet</string>
+    <string name="workmates_array" translatable="false">WorkmatesArray</string>
+    <string name="workmates_field" translatable="false">workmates</string>
 </resources>
