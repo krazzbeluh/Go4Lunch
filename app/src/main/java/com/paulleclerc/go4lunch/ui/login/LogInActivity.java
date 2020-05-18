@@ -1,4 +1,4 @@
-package com.paulleclerc.go4lunch.login;
+package com.paulleclerc.go4lunch.ui.login;
 
 import android.content.Intent;
 import android.util.Log;
@@ -22,7 +22,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.paulleclerc.go4lunch.R;
 import com.paulleclerc.go4lunch.enums.LoginState;
-import com.paulleclerc.go4lunch.main.MainActivity;
+import com.paulleclerc.go4lunch.ui.main.MainActivity;
 
 public class LogInActivity extends AppCompatActivity implements LoginListener {
     private final int RC_SIGN_IN = 1;

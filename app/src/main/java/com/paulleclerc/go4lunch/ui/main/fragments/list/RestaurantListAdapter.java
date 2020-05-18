@@ -1,4 +1,4 @@
-package com.paulleclerc.go4lunch.main.fragments.list;
+package com.paulleclerc.go4lunch.ui.main.fragments.list;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,13 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.google.maps.model.PlacesSearchResult;
 import com.paulleclerc.go4lunch.R;
+import com.paulleclerc.go4lunch.model.Restaurant;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAdapter.RestaurantListViewHolder> {
-    private PlacesSearchResult[] places = {};
+    private List<Restaurant> places = new ArrayList<>();
 
-    public void setPlaces(PlacesSearchResult[] places) {
+    public void setPlaces(List<Restaurant> places) {
         this.places = places;
         this.notifyDataSetChanged();
     }
@@ -30,17 +33,17 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 
     @Override
     public void onBindViewHolder(@NonNull RestaurantListViewHolder holder, int position) {
-        holder.bindRestaurant(places[position]);
+        holder.bindRestaurant(places.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return places.length;
+        return places.size();
     }
 
     static class RestaurantListViewHolder extends RecyclerView.ViewHolder {
         private static final String TAG = RestaurantListViewHolder.class.getSimpleName();
-        private PlacesSearchResult restaurant;
+        private Restaurant restaurant;
 
         @BindView(R.id.restaurant_title)
         TextView title;
@@ -58,6 +61,8 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         ImageView star2;
         @BindView(R.id.restaurant_star_3)
         ImageView star3;
+        @BindView(R.id.restaurant_image)
+        ImageView restaurantThumbnail;
 
         public RestaurantListViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -65,12 +70,22 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
             itemView.setOnClickListener(v -> Log.d(TAG, "RestaurantListViewHolder: CLICK!"));
         }
 
-        void bindRestaurant(PlacesSearchResult restaurant) {
+        void bindRestaurant(Restaurant restaurant) {
             this.restaurant = restaurant;
             title.setText(restaurant.name);
-            address.setText(restaurant.formattedAddress); // TODO: Null?
+            address.setText(restaurant.address); // TODO: Null?
             //openingTime.setText(restaurant.openingHours.weekdayText[0]); // TODO: Null? // TODO: set day index
             workmatesNumber.setText("0"); // TODO: set workmates count
+            distance.setText((restaurant.distance != null) ? restaurant.distance + "m" : "");
+
+            if (restaurant.rate == Restaurant.Rate.UNKNOWN) {
+                star1.setAlpha(0f);
+                star2.setAlpha(0f);
+                star3.setAlpha(0f);
+            }
+            if (restaurant.rate == Restaurant.Rate.UNKNOWN || restaurant.rate == Restaurant.Rate.BAD) star2.setImageDrawable(itemView.getResources().getDrawable(R.drawable.star_gray, itemView.getContext().getTheme()));
+            if (restaurant.rate != Restaurant.Rate.GOOD) star3.setImageDrawable(itemView.getResources().getDrawable(R.drawable.star_gray, itemView.getContext().getTheme()));
+
         }
     }
 }

@@ -1,7 +1,9 @@
 package com.paulleclerc.go4lunch.closures;
 
-import com.google.maps.model.PlacesSearchResult;
+import com.paulleclerc.go4lunch.model.Restaurant;
+
+import java.util.List;
 
 public interface FetchPlacesCompletion {
-    void onComplete(PlacesSearchResult[] places);
+    void onComplete(List<Restaurant> restaurants);
 }

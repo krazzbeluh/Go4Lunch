@@ -1,4 +1,4 @@
-package com.paulleclerc.go4lunch.main;
+package com.paulleclerc.go4lunch.ui.main;
 
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
@@ -7,11 +7,13 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.google.android.libraries.places.api.Places;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.paulleclerc.go4lunch.main.fragments.map.MapFragment;
+import com.paulleclerc.go4lunch.BuildConfig;
+import com.paulleclerc.go4lunch.ui.main.fragments.map.MapFragment;
 import com.paulleclerc.go4lunch.R;
-import com.paulleclerc.go4lunch.main.fragments.list.RestaurantListFragment;
-import com.paulleclerc.go4lunch.main.fragments.WorkmatesFragment;
+import com.paulleclerc.go4lunch.ui.main.fragments.list.RestaurantListFragment;
+import com.paulleclerc.go4lunch.ui.main.fragments.workmates.WorkmatesFragment;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     @BindView(R.id.main_bottom_navigation)
@@ -21,6 +23,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Places.initialize(getApplicationContext(), BuildConfig.GOOGLE_MAPS_AND_PLACES_KEY);
 
         ButterKnife.bind(this);
 
@@ -37,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 openFragment(RestaurantListFragment.getInstance());
                 return true;
             case R.id.main_bottom_navigation_workmates:
-                openFragment(WorkmatesFragment.newInstance());
+                openFragment(WorkmatesFragment.getInstance());
                 return true;
         }
         return false;

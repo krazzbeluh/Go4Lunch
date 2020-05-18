@@ -1,4 +1,4 @@
-package com.paulleclerc.go4lunch.main.fragments.list;
+package com.paulleclerc.go4lunch.ui.main.fragments.list;
 
 import android.Manifest;
 import android.content.Context;
@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.maps.model.PlacesSearchResult;
 import com.paulleclerc.go4lunch.R;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;

@@ -1,4 +1,4 @@
-package com.paulleclerc.go4lunch.main.fragments.map;
+package com.paulleclerc.go4lunch.ui.main.fragments.map;
 
 import android.Manifest;
 import android.content.Context;
@@ -17,8 +17,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
-import com.google.maps.model.PlacesSearchResult;
 import com.paulleclerc.go4lunch.R;
+import com.paulleclerc.go4lunch.model.Restaurant;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -157,14 +157,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         moveCamera();
     }
 
-    void displayRestaurants(PlacesSearchResult[] restaurants) {
+    void displayRestaurants(@NonNull List<Restaurant> restaurants) {
         for (Marker marker: markers) {
             marker.remove();
         }
 
-        for (PlacesSearchResult restaurant: restaurants) {
+        for (Restaurant restaurant: restaurants) {
             MarkerOptions marker = new MarkerOptions()
-                    .position(new LatLng(restaurant.geometry.location.lat, restaurant.geometry.location.lng))
+                    .position(new LatLng(restaurant.location.latitude, restaurant.location.longitude))
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_restaurant_orange))
                     .title(restaurant.name);
             markers.add(map.addMarker(marker));

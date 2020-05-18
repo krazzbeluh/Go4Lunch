@@ -1,4 +1,4 @@
-package com.paulleclerc.go4lunch.login;
+package com.paulleclerc.go4lunch.ui.login;
 
 import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
