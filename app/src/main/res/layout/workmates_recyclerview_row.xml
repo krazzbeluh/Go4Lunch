@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
         android:layout_height="90dp"
         android:padding="8dp">
 
@@ -19,5 +19,6 @@
             android:layout_height="wrap_content" android:id="@+id/workmate_status"
             app:layout_constraintStart_toEndOf="@+id/workmate_avatar"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" android:textStyle="italic"/>
+            app:layout_constraintEnd_toEndOf="parent" android:textStyle="italic" android:paddingStart="8dp"
+            tools:ignore="RtlSymmetry"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

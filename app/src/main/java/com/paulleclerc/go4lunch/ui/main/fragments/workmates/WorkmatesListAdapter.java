@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.bumptech.glide.Glide;
 import com.paulleclerc.go4lunch.R;
 import com.paulleclerc.go4lunch.model.Workmate;
 
@@ -55,15 +56,14 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
             super(itemView);
 
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(v -> {
-                Log.d(TAG, "WorkmatesViewHolder: CLICK!");
-            });
+            itemView.setOnClickListener(v -> Log.d(TAG, "WorkmatesViewHolder: CLICK!"));
         }
 
         void bindWorkmate(Workmate workmate) {
             this.workmate = workmate;
 
-            workmateStatus.setText(itemView.getContext().getString(R.string.user_has_not_decided, workmate.uid));
+            Glide.with(itemView).load(workmate.avatarUri).placeholder(R.drawable.workmate).into(workmateAvatar);
+            workmateStatus.setText(itemView.getContext().getString(R.string.user_has_not_decided, workmate.username));
         }
     }
 }
