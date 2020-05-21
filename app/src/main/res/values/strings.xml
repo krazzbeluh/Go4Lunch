@@ -1,14 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Go4Lunch</string>
     <string name="facebook_application_id" translatable="false">2642016929378782</string>
-    <string name="facebook_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">fb2642016929378782</string>
+    <string name="facebook_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">
+        fb2642016929378782
+    </string>
     <string name="login_background_content_description">Login background</string>
     <string name="authentication_failed">Authentication Failed.</string>
     <string name="sign_in_with_facebook">Sign in with Facebook</string>
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="go4lunch_logo_content_description">Go4Lunch logo</string>
     <string name="logo_subtitle">Find a nice restaurant and invite your co-workers for lunch!</string>
-    <string name="permission_location_message">Go4Lunch needs your position to purpose you nice restaurants next to you!</string>
+    <string name="permission_location_message">Go4Lunch needs your position to purpose you nice restaurants next to
+        you!
+    </string>
     <string name="bottom_navigation_menu_map_view">Map View</string>
     <string name="bottom_navigation_menu_list_view">List View</string>
     <string name="bottom_navigation_menu_workmates">Workmates</string>
@@ -17,4 +21,5 @@
     <string name="user_has_not_decided">%1$s hasn\'t decided yet</string>
     <string name="workmates_array" translatable="false">WorkmatesArray</string>
     <string name="workmates_field" translatable="false">workmates</string>
+    <string name="workmate_serializable_key" translatable="false">workmate</string>
 </resources>

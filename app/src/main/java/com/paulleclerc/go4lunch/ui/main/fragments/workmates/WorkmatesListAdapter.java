@@ -1,7 +1,5 @@
 package com.paulleclerc.go4lunch.ui.main.fragments.workmates;
 
-import android.content.res.Resources;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdapter.WorkmatesViewHolder> {
+    private final OnClickOnItem clickListener;
     private List<Workmate> workmates = new ArrayList<>();
+
+    public WorkmatesListAdapter(OnClickOnItem clickListener) {
+        this.clickListener = clickListener;
+    }
 
     public void setWorkmates(List<Workmate> workmates) {
         this.workmates = workmates;
@@ -29,7 +32,7 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
     @Override
     public WorkmatesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View inflatedView = LayoutInflater.from(parent.getContext()).inflate(R.layout.workmates_recyclerview_row, parent, false);
-        return new WorkmatesViewHolder(inflatedView);
+        return new WorkmatesViewHolder(inflatedView, clickListener);
     }
 
     @Override
@@ -52,11 +55,11 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
         @BindView(R.id.workmate_avatar)
         ImageView workmateAvatar;
 
-        public WorkmatesViewHolder(@NonNull View itemView) {
+        public WorkmatesViewHolder(@NonNull View itemView, OnClickOnItem onClickListener) {
             super(itemView);
 
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(v -> Log.d(TAG, "WorkmatesViewHolder: CLICK!"));
+            itemView.setOnClickListener(v -> onClickListener.onClick(workmate));
         }
 
         void bindWorkmate(Workmate workmate) {
@@ -65,5 +68,9 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
             Glide.with(itemView).load(workmate.avatarUri).placeholder(R.drawable.workmate).into(workmateAvatar);
             workmateStatus.setText(itemView.getContext().getString(R.string.user_has_not_decided, workmate.username));
         }
+    }
+
+    interface OnClickOnItem {
+        void onClick(Workmate workmate);
     }
 }

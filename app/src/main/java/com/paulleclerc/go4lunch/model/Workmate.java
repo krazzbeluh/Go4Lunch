@@ -1,13 +1,13 @@
 package com.paulleclerc.go4lunch.model;
 
-import android.net.Uri;
+import java.io.Serializable;
 
-public class Workmate {
+public class Workmate implements Serializable {
     public final String uid;
     public final String username;
-    public final Uri avatarUri;
+    public final String avatarUri;
 
-    public Workmate(String uid, String username, Uri avatarUri) {
+    public Workmate(String uid, String username, String avatarUri) {
         this.uid = uid;
         this.username = username;
         this.avatarUri = avatarUri;

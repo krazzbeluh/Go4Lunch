@@ -6,14 +6,13 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.libraries.places.api.Places;
 import com.paulleclerc.go4lunch.model.Restaurant;
 import com.paulleclerc.go4lunch.repository.PlacesRepository;
 
 import java.util.List;
 
 public class RestaurantListViewModel extends AndroidViewModel {
-    private final PlacesRepository placesRepository = new PlacesRepository(Places.createClient(getApplication().getApplicationContext()));
+    private final PlacesRepository placesRepository = new PlacesRepository();
 
     private final MutableLiveData<List<Restaurant>> places = new MutableLiveData<>();
 

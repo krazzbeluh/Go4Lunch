@@ -7,9 +7,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.google.android.libraries.places.api.Places;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.paulleclerc.go4lunch.BuildConfig;
 import com.paulleclerc.go4lunch.ui.main.fragments.map.MapFragment;
 import com.paulleclerc.go4lunch.R;
 import com.paulleclerc.go4lunch.ui.main.fragments.list.RestaurantListFragment;
@@ -23,8 +21,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Places.initialize(getApplicationContext(), BuildConfig.GOOGLE_MAPS_AND_PLACES_KEY);
 
         ButterKnife.bind(this);
 
