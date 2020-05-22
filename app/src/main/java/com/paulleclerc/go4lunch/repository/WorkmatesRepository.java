@@ -73,7 +73,7 @@ public class WorkmatesRepository {
                             String avatarFileName = document.getString("avatarName");
 
                             storage.getUserAvatar(avatarFileName, (success, uri) -> {
-                                workmates.add(new Workmate(userID, username, uri.toString()));
+                                workmates.add(new Workmate(userID, username, (uri != null) ? uri.toString(): null));
                                 if (responses.incrementAndGet() == documents.size()) completion.onComplete(true, workmates);
                             });
                         }

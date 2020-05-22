@@ -72,7 +72,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 
         void bindRestaurant(Restaurant restaurant) {
             title.setText(restaurant.name);
-            address.setText(restaurant.address); // TODO: Null?
+            address.setText(restaurant.address);
             if (restaurant.isOpened != null) {
                 if (restaurant.isOpened) {
                     openingTime.setText(itemView.getContext().getString(R.string.restaurant_opened));
@@ -82,7 +82,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
                     openingTime.setTextColor(itemView.getContext().getColor(R.color.restaurant_closed));
                 }
             }
-            workmatesNumber.setText("0"); // TODO: set workmates count
+            workmatesNumber.setText(String.valueOf(restaurant.getInterestedWorkmates().size()));
             distance.setText((restaurant.distance != null) ? restaurant.distance + "m" : "");
 
             if (restaurant.rate == Restaurant.Rate.UNKNOWN) {

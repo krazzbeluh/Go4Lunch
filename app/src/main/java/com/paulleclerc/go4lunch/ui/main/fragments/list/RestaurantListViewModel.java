@@ -12,7 +12,7 @@ import com.paulleclerc.go4lunch.repository.PlacesRepository;
 import java.util.List;
 
 public class RestaurantListViewModel extends AndroidViewModel {
-    private final PlacesRepository placesRepository = new PlacesRepository();
+    private final PlacesRepository placesRepository = new PlacesRepository(getApplication().getApplicationContext());
 
     private final MutableLiveData<List<Restaurant>> places = new MutableLiveData<>();
 
