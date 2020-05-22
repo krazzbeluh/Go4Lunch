@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.bumptech.glide.Glide;
 import com.paulleclerc.go4lunch.R;
 import com.paulleclerc.go4lunch.model.Restaurant;
 
@@ -43,7 +44,6 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 
     static class RestaurantListViewHolder extends RecyclerView.ViewHolder {
         private static final String TAG = RestaurantListViewHolder.class.getSimpleName();
-        private Restaurant restaurant;
 
         @BindView(R.id.restaurant_title)
         TextView title;
@@ -71,10 +71,17 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         }
 
         void bindRestaurant(Restaurant restaurant) {
-            this.restaurant = restaurant;
             title.setText(restaurant.name);
             address.setText(restaurant.address); // TODO: Null?
-            //openingTime.setText(restaurant.openingHours.weekdayText[0]); // TODO: Null? // TODO: set day index
+            if (restaurant.isOpened != null) {
+                if (restaurant.isOpened) {
+                    openingTime.setText(itemView.getContext().getString(R.string.restaurant_opened));
+                    openingTime.setTextColor(itemView.getContext().getColor(R.color.restaurant_opened));
+                } else {
+                    openingTime.setText(itemView.getContext().getString(R.string.restaurant_closed));
+                    openingTime.setTextColor(itemView.getContext().getColor(R.color.restaurant_closed));
+                }
+            }
             workmatesNumber.setText("0"); // TODO: set workmates count
             distance.setText((restaurant.distance != null) ? restaurant.distance + "m" : "");
 
@@ -83,9 +90,16 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
                 star2.setAlpha(0f);
                 star3.setAlpha(0f);
             }
-            if (restaurant.rate == Restaurant.Rate.UNKNOWN || restaurant.rate == Restaurant.Rate.BAD) star2.setImageDrawable(itemView.getResources().getDrawable(R.drawable.star_gray, itemView.getContext().getTheme()));
-            if (restaurant.rate != Restaurant.Rate.GOOD) star3.setImageDrawable(itemView.getResources().getDrawable(R.drawable.star_gray, itemView.getContext().getTheme()));
+            if (restaurant.rate == Restaurant.Rate.UNKNOWN || restaurant.rate == Restaurant.Rate.BAD)
+                star2.setImageDrawable(itemView.getResources().getDrawable(R.drawable.star_gray, itemView.getContext().getTheme()));
+            if (restaurant.rate != Restaurant.Rate.GOOD)
+                star3.setImageDrawable(itemView.getResources().getDrawable(R.drawable.star_gray, itemView.getContext().getTheme()));
 
+            Glide.with(itemView.getContext())
+                    .load(restaurant.getPhotoUrl())
+                    .centerCrop()
+                    .placeholder(R.drawable.marker_restaurant_orange)
+                    .into(restaurantThumbnail);
         }
     }
 }

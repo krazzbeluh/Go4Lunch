@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import com.google.android.gms.maps.model.LatLng;
 import com.paulleclerc.go4lunch.closures.FetchPlacesCompletion;
 import com.paulleclerc.go4lunch.model.Restaurant;
+import com.paulleclerc.go4lunch.model.restaurant_response.Result;
 import com.paulleclerc.go4lunch.network.PlaceClient;
 
 import java.util.*;
@@ -12,14 +13,61 @@ public class PlacesRepository {
     private static final Map<LatLng, List<Restaurant>> placesCache = new HashMap<>();
 
     private static final String TAG = PlacesRepository.class.getSimpleName();
+    private final PlaceClient client;
 
-    public PlacesRepository() {
-
+    public PlacesRepository(PlaceClient client) {
+        this.client = client;
     }
 
-    public void fetchPlaces(LatLng position, FetchPlacesCompletion completion) {
-        PlaceClient client = new PlaceClient();
-        client.fetchRestaurants();
+    public PlacesRepository() {
+        this.client = new PlaceClient();
+    }
+
+    public void fetchPlaces(LatLng userPosition, FetchPlacesCompletion completion) {
+        List<Restaurant> restaurants = placesCache.get(userPosition);
+        if (restaurants != null) {
+            completion.onComplete(restaurants);
+        } else {
+            client.fetchRestaurants(userPosition, results -> {
+                List<Restaurant> restaurantList = new ArrayList<>();
+                for (Result result : results) {
+
+                    Double rating = result.getRating();
+                    Restaurant.Rate rate;
+                    if (rating == null) {
+                        rate = Restaurant.Rate.UNKNOWN;
+                    } else {
+                        rating = result.getRating() / 5 * 3;
+
+                        if (rating < 1) {
+                            rate = Restaurant.Rate.BAD;
+                        } else if (rating < 2) {
+                            rate = Restaurant.Rate.MEDIUM;
+                        } else {
+                            rate = Restaurant.Rate.GOOD;
+                        }
+                    }
+
+                    LatLng restaurantLocation = new LatLng(result.getGeometry().getLocation().getLat(), result.getGeometry().getLocation().getLng());
+
+                    String photoReference;
+                    if (result.getPhotos() == null) {
+                        photoReference = null;
+                    } else {
+                        photoReference = result.getPhotos().get(0).getPhotoReference();
+                    }
+
+                    Boolean isOpened;
+                    if (result.getOpeningHours() == null) isOpened = null;
+                    else isOpened = result.getOpeningHours().getOpenNow();
+
+                    restaurantList.add(new Restaurant(result.getId(), result.getName(), result.getVicinity(), photoReference, rate, restaurantLocation, getDistance(userPosition, restaurantLocation), isOpened));
+                }
+
+                placesCache.put(userPosition, restaurantList);
+                completion.onComplete(restaurantList);
+            });
+        }
     }
 
     private Integer getDistance(@Nullable LatLng StartP, LatLng EndP) {
@@ -38,9 +86,5 @@ public class PlacesRepository {
         double c = 2 * Math.asin(Math.sqrt(a));
 
         return (int) (Radius * c * 1000);
-    }
-
-    private interface FetchDetailsCallback {
-        void onComplete(List<Restaurant> restaurants);
     }
 }

@@ -2,17 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp">
 
     <TextView
-            android:text="Title"
+            android:text=""
             android:layout_width="0dp"
             android:layout_height="wrap_content" android:id="@+id/restaurant_title"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" android:textSize="18sp" android:textColor="#000000"
-            app:layout_constraintEnd_toStartOf="@+id/restaurant_distance"/>
+            app:layout_constraintEnd_toStartOf="@+id/restaurant_distance" android:singleLine="true"/>
     <ImageView
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -20,23 +20,24 @@
             android:id="@+id/restaurant_image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/restaurant_picture" app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:contentDescription="@string/restaurant_picture" app:layout_constraintDimensionRatio="1"
+            app:layout_constraintBottom_toBottomOf="parent" android:paddingStart="8dp" tools:ignore="RtlSymmetry"/>
     <TextView
-            android:text="Address"
+            android:text=""
             android:layout_width="0dp"
             android:layout_height="wrap_content" android:id="@+id/restaurant_adress"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@+id/restaurant_title"
             app:layout_constraintEnd_toStartOf="@+id/workmate_image"
             android:lines="2"/>
     <TextView
-            android:text="Opening Time"
+            android:text=""
             android:layout_width="0dp"
             android:layout_height="wrap_content" android:id="@+id/restaurant_opening_time"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@+id/restaurant_adress"
-            app:layout_constraintEnd_toStartOf="@+id/restaurant_star_1"/>
+            app:layout_constraintEnd_toStartOf="@+id/restaurant_star_1" android:textColor="#4CAF50"
+            android:textStyle="bold"/>
     <TextView
-            android:text="100m"
+            android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/restaurant_distance"
             app:layout_constraintEnd_toStartOf="@+id/restaurant_image"
@@ -44,26 +45,27 @@
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" app:srcCompat="@drawable/star" android:id="@+id/restaurant_star_3"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toStartOf="@+id/restaurant_image"/>
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toStartOf="@+id/restaurant_image"
+            android:contentDescription="@string/restaurant_rate_3"/>
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" app:srcCompat="@drawable/star" android:id="@+id/restaurant_star_2"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/restaurant_star_3"/>
+            app:layout_constraintEnd_toStartOf="@+id/restaurant_star_3" android:contentDescription="@string/restaurant_rate_2"/>
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" app:srcCompat="@drawable/star" android:id="@+id/restaurant_star_1"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toStartOf="@+id/restaurant_star_2"
-    />
+            android:contentDescription="@string/restaurant_rate_1"/>
     <ImageView
             android:layout_width="wrap_content"
             android:id="@+id/workmate_image"
             android:layout_height="wrap_content" app:srcCompat="@drawable/workmate"
             app:layout_constraintTop_toBottomOf="@id/restaurant_title" app:layout_constraintBottom_toTopOf="@id/restaurant_opening_time"
             app:layout_constraintVertical_bias="0.6" app:layout_constraintEnd_toStartOf="@+id/restaurant_workmates_number"
-    />
+            android:contentDescription="@string/workmates_picture"/>
     <TextView
-            android:text="(1)"
+            android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" app:layout_constraintBottom_toTopOf="@id/restaurant_opening_time"
             android:id="@+id/restaurant_workmates_number"
