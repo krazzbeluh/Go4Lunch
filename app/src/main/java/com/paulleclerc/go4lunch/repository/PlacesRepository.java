@@ -83,10 +83,10 @@ public class PlacesRepository {
                     for (Restaurant restaurant: restaurantList) {
                         restaurant.setInterestedWorkmates(interestedWorkmates.get(restaurant.id));
                     }
-                });
 
-                placesCache.put(userPosition, restaurantList);
-                completion.onComplete(restaurantList);
+                    placesCache.put(userPosition, restaurantList);
+                    completion.onComplete(restaurantList);
+                });
             });
         }
     }
