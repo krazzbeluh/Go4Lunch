@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Go4Lunch</string>
     <string name="login_background_content_description">Fond d\'écran de connexion</string>
     <string name="authentication_failed">Échec de la connexion.</string>
@@ -11,4 +11,13 @@
     <string name="bottom_navigation_menu_map_view">Plan</string>
     <string name="bottom_navigation_menu_list_view">Liste</string>
     <string name="bottom_navigation_menu_workmates">Collègues</string>
+    <string name="restaurant_picture">Photo du restaurant</string>
+    <string name="user_avatar">Avatar de l\'utilisateur</string>
+    <string name="user_has_not_decided">%1$s n\'a pas encore décidé</string>
+    <string name="restaurant_opened">Ouvert</string>
+    <string name="restaurant_closed">Fermé</string>
+    <string name="restaurant_rate_3">Note du restaurant 3/3</string>
+    <string name="restaurant_rate_2">Note du restaurant 2/3</string>
+    <string name="restaurant_rate_1" tools:ignore="TypographyFractions">Note du restaurant 1/3</string>
+    <string name="workmates_picture">Symbole de collègue</string>
 </resources>

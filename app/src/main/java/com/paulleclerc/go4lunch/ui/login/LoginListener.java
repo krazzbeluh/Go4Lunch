@@ -1,7 +1,6 @@
-package com.paulleclerc.go4lunch.login;
+package com.paulleclerc.go4lunch.ui.login;
 
 import androidx.annotation.StringRes;
-import com.google.firebase.auth.AuthCredential;
 
 public interface LoginListener {
     void launchNextActivity();

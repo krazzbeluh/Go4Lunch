@@ -1,4 +1,4 @@
-package com.paulleclerc.go4lunch.login;
+package com.paulleclerc.go4lunch.ui.login;
 
 import android.content.Intent;
 import android.util.Log;
@@ -21,7 +21,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.paulleclerc.go4lunch.R;
-import com.paulleclerc.go4lunch.main.MainActivity;
+import com.paulleclerc.go4lunch.enums.LoginState;
+import com.paulleclerc.go4lunch.ui.main.MainActivity;
 
 public class LogInActivity extends AppCompatActivity implements LoginListener {
     private final int RC_SIGN_IN = 1;
@@ -46,6 +47,7 @@ public class LogInActivity extends AppCompatActivity implements LoginListener {
 
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         viewModel.checkUserSignedIn();
+        observeIsUserAuthenticated();
 
         configureSignInWithGoogle();
         configureSignInWithFacebook();
@@ -97,20 +99,26 @@ public class LogInActivity extends AppCompatActivity implements LoginListener {
     private void getGoogleAuthCredential(GoogleSignInAccount googleSignInAccount) {
         String googleTokenId = googleSignInAccount.getIdToken();
         AuthCredential googleAuthCredential = GoogleAuthProvider.getCredential(googleTokenId, null);
-        signInAuthCredential(googleAuthCredential);
-    }
-
-    private void signInAuthCredential(AuthCredential credential) {
-        viewModel.signInWithCredential(credential);
-        viewModel.isUserAuthenticated.observe(this, isAuthenticated -> {
-            if (isAuthenticated) launchNextActivity();
-            else showSnackBar(R.string.authentication_failed);
-        });
+        viewModel.signInWithCredential(googleAuthCredential);
     }
 
     private void configureSignInWithFacebook() {
         facebookCallbackManager = CallbackManager.Factory.create();
         signInWithFacebookButton.setReadPermissions("email", "public_profile");
         signInWithFacebookButton.registerCallback(facebookCallbackManager, viewModel.createFacebookLoginCallback());
+    }
+
+    private void observeIsUserAuthenticated() {
+        viewModel.isUserAuthenticated.observe(this, isAuthenticated -> {
+            switch (isAuthenticated) {
+                case FAILED:
+                    showSnackBar(R.string.authentication_failed);
+                    viewModel.isUserAuthenticated.setValue(LoginState.NONE);
+                    break;
+                case SIGNED_IN:
+                    launchNextActivity();
+                    break;
+            }
+        });
     }
 }

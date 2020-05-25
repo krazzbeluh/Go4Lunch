@@ -1,4 +1,4 @@
-package com.paulleclerc.go4lunch.login;
+package com.paulleclerc.go4lunch.ui.login;
 
 import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
@@ -7,13 +7,14 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.google.firebase.auth.*;
+import com.paulleclerc.go4lunch.enums.LoginState;
 import com.paulleclerc.go4lunch.repository.AuthRepository;
 
 public class LoginViewModel extends AndroidViewModel {
     private static final String TAG = LoginViewModel.class.getSimpleName();
 
     private final AuthRepository authRepository;
-    MutableLiveData<Boolean> isUserAuthenticated;
+    MutableLiveData<LoginState> isUserAuthenticated = new MutableLiveData<>();
 
     public LoginViewModel(Application application) {
         super(application);
@@ -21,11 +22,11 @@ public class LoginViewModel extends AndroidViewModel {
     }
 
     public void checkUserSignedIn() {
-        isUserAuthenticated = authRepository.checkUserSignedIn();
+        isUserAuthenticated.setValue(authRepository.checkUserSignedIn() ? LoginState.SIGNED_IN : LoginState.NONE);
     }
 
     void signInWithCredential(AuthCredential credential) {
-        isUserAuthenticated = authRepository.firebaseSignInWithCredential(credential);
+        authRepository.firebaseSignInWithCredential(credential, loginState -> isUserAuthenticated.setValue(loginState));
     }
 
     FacebookCallback<LoginResult> createFacebookLoginCallback() {
@@ -41,7 +42,7 @@ public class LoginViewModel extends AndroidViewModel {
 
             @Override
             public void onError(FacebookException error) {
-                isUserAuthenticated.setValue(false);
+                isUserAuthenticated.setValue(LoginState.FAILED);
             }
         };
     }
