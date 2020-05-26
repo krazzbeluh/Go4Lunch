@@ -1,5 +1,6 @@
 package com.paulleclerc.go4lunch.ui.main;
 
+import android.content.Intent;
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,12 +9,14 @@ import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.paulleclerc.go4lunch.model.Restaurant;
 import com.paulleclerc.go4lunch.ui.main.fragments.map.MapFragment;
 import com.paulleclerc.go4lunch.R;
 import com.paulleclerc.go4lunch.ui.main.fragments.list.RestaurantListFragment;
 import com.paulleclerc.go4lunch.ui.main.fragments.workmates.WorkmatesFragment;
+import com.paulleclerc.go4lunch.ui.restaurant_detail.RestaurantDetailActivity;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, ShowDetailListener {
     @BindView(R.id.main_bottom_navigation)
     BottomNavigationView bottomNavigationView;
 
@@ -32,10 +35,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.main_bottom_navigation_map:
-                openFragment(MapFragment.getInstance());
+                openFragment(MapFragment.getInstance(this));
                 return true;
             case R.id.main_bottom_navigation_list:
-                openFragment(RestaurantListFragment.getInstance());
+                openFragment(RestaurantListFragment.getInstance(this));
                 return true;
             case R.id.main_bottom_navigation_workmates:
                 openFragment(WorkmatesFragment.getInstance());
@@ -49,5 +52,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public void showDetail(Restaurant restaurant) {
+        Intent intent = new Intent(this, RestaurantDetailActivity.class);
+        startActivity(intent);
     }
 }

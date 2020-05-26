@@ -19,6 +19,8 @@ import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 import com.paulleclerc.go4lunch.R;
 import com.paulleclerc.go4lunch.model.Restaurant;
+import com.paulleclerc.go4lunch.ui.main.MainActivity;
+import com.paulleclerc.go4lunch.ui.main.ShowDetailListener;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -43,13 +45,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     @BindView(R.id.map)
     MapView mapView;
 
+    private final ShowDetailListener showDetailListener;
     private MapViewModel viewModel;
     private LocationManager locationManager;
     private GoogleMap map;
     private final List<Marker> markers = new ArrayList<>();
 
-    public MapFragment() {
-        // Required empty public constructor
+    public MapFragment(ShowDetailListener showDetailListener) {
+        this.showDetailListener = showDetailListener;
     }
 
     /**
@@ -58,8 +61,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
      *
      * @return A new instance of fragment MapFragment.
      */
-    public static MapFragment getInstance() {
-        if (INSTANCE == null) INSTANCE = new MapFragment();
+    public static MapFragment getInstance(ShowDetailListener showDetailListener) {
+        if (INSTANCE == null) INSTANCE = new MapFragment(showDetailListener);
         return INSTANCE;
     }
 

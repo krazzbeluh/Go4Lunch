@@ -18,6 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.google.android.gms.maps.model.LatLng;
 import com.paulleclerc.go4lunch.R;
+import com.paulleclerc.go4lunch.ui.main.ShowDetailListener;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -35,6 +36,7 @@ public class RestaurantListFragment extends Fragment implements LocationListener
     private static final long MIN_TIME = 400;
     private static final long MIN_DISTANCE = 300;
 
+    private final ShowDetailListener showDetailListener;
     private RestaurantListViewModel viewModel;
     private LocationManager locationManager;
     private LinearLayoutManager linearLayoutManager;
@@ -43,8 +45,8 @@ public class RestaurantListFragment extends Fragment implements LocationListener
     @BindView(R.id.restaurant_recyclerview)
     RecyclerView recyclerView;
 
-    public RestaurantListFragment() {
-        // Required empty public constructor
+    public RestaurantListFragment(ShowDetailListener showDetailListener) {
+        this.showDetailListener = showDetailListener;
     }
 
     /**
@@ -54,8 +56,8 @@ public class RestaurantListFragment extends Fragment implements LocationListener
      * @return A new instance of fragment RestaurantListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RestaurantListFragment getInstance() {
-        return new RestaurantListFragment();
+    public static RestaurantListFragment getInstance(ShowDetailListener showDetailListener) {
+        return new RestaurantListFragment(showDetailListener);
     }
 
     @Override
@@ -73,7 +75,7 @@ public class RestaurantListFragment extends Fragment implements LocationListener
         ButterKnife.bind(this, view);
 
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new RestaurantListAdapter();
+        adapter = new RestaurantListAdapter(showDetailListener);
         viewModel = new ViewModelProvider(this).get(RestaurantListViewModel.class);
         viewModel.getPlaces().observe(getViewLifecycleOwner(), adapter::setPlaces);
 

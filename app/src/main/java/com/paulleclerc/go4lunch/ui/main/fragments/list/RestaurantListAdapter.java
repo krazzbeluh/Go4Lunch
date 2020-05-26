@@ -13,12 +13,18 @@ import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import com.paulleclerc.go4lunch.R;
 import com.paulleclerc.go4lunch.model.Restaurant;
+import com.paulleclerc.go4lunch.ui.main.ShowDetailListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAdapter.RestaurantListViewHolder> {
+    private final ShowDetailListener showDetailListener;
     private List<Restaurant> places = new ArrayList<>();
+
+    public RestaurantListAdapter(ShowDetailListener showDetailListener) {
+        this.showDetailListener = showDetailListener;
+    }
 
     public void setPlaces(List<Restaurant> places) {
         this.places = places;
@@ -29,7 +35,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
     @Override
     public RestaurantListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View inflatedView = LayoutInflater.from(parent.getContext()).inflate(R.layout.restaurant_recyclerview_row, parent, false);
-        return new RestaurantListViewHolder(inflatedView);
+        return new RestaurantListViewHolder(inflatedView, showDetailListener);
     }
 
     @Override
@@ -44,6 +50,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 
     static class RestaurantListViewHolder extends RecyclerView.ViewHolder {
         private static final String TAG = RestaurantListViewHolder.class.getSimpleName();
+        private Restaurant restaurant;
 
         @BindView(R.id.restaurant_title)
         TextView title;
@@ -64,13 +71,14 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         @BindView(R.id.restaurant_image)
         ImageView restaurantThumbnail;
 
-        public RestaurantListViewHolder(@NonNull View itemView) {
+        public RestaurantListViewHolder(@NonNull View itemView, ShowDetailListener showDetailListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(v -> Log.d(TAG, "RestaurantListViewHolder: CLICK!"));
+            itemView.setOnClickListener(v -> showDetailListener.showDetail(restaurant));
         }
 
         void bindRestaurant(Restaurant restaurant) {
+            this.restaurant = restaurant;
             title.setText(restaurant.name);
             address.setText(restaurant.address);
             if (restaurant.isOpened != null) {
