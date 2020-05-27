@@ -146,6 +146,10 @@ public class PlacesRepository {
         });
     }
 
+    public void fetchDetail(Restaurant restaurant, FetchDetailsCompletion completion) {
+        client.fetchDetails(restaurant, details -> completion.onComplete(new Restaurant.RestaurantDetails(details.getFormattedPhoneNumber(), details.getWebsite())));
+    }
+
     private Integer getDistance(@Nullable LatLng StartP, LatLng EndP) {
         if (StartP == null) return null;
         int Radius = 6371;// radius of earth in Km (Type1, Type2) -> TypeR in {}
@@ -166,5 +170,9 @@ public class PlacesRepository {
 
     private interface FetchInterestedWorkmatesCompletion {
         void onComplete(Map<String, List<Workmate>> results);
+    }
+
+    public interface FetchDetailsCompletion {
+        void onComplete(Restaurant.RestaurantDetails details);
     }
 }

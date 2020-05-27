@@ -3,6 +3,7 @@ package com.paulleclerc.go4lunch.model;
 import androidx.annotation.Nullable;
 import com.google.android.gms.maps.model.LatLng;
 import com.paulleclerc.go4lunch.BuildConfig;
+import com.paulleclerc.go4lunch.ui.restaurant_detail.RestaurantDetailViewModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class Restaurant implements Serializable {
     public final Rate rate;
     public final Boolean isOpened;
     private List<Workmate> interestedWorkmates;
+    private RestaurantDetails details;
 
     public Restaurant(String id, String name, String address, String photoReference, Rate rate, LatLng location, Integer distance, Boolean isOpened, @Nullable List<Workmate> interestedWorkmates) {
         this.id = id;
@@ -51,10 +53,36 @@ public class Restaurant implements Serializable {
         return interestedWorkmates;
     }
 
+    public void setDetails(RestaurantDetails details) {
+        this.details = details;
+    }
+
+    public RestaurantDetails getDetails() {
+        return this.details;
+    }
+
     public enum Rate {
         GOOD,
         MEDIUM,
         BAD,
         UNKNOWN
+    }
+
+    public static class RestaurantDetails {
+        private final String phone;
+        private final String website;
+
+        public RestaurantDetails(String phone, String website) {
+            this.phone = phone;
+            this.website = website;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public String getWebsite() {
+            return website;
+        }
     }
 }

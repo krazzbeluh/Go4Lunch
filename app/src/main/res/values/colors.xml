@@ -6,4 +6,5 @@
     <color name="restaurant_opened">#FF4CAF50</color>
     <color name="restaurant_closed">#C62828</color>
     <color name="dark_white">#fdfdfd</color>
+    <color name="gray_out">#A5A5A5</color>
 </resources>
