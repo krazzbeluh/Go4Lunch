@@ -1,10 +1,20 @@
+/*
+ * WorkmatesViewModel.java
+ *   Go4Lunch
+ *
+ *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Copyright © 2020 Paul Leclerc. All rights reserved.
+ */
+
 package com.paulleclerc.go4lunch.ui.main.fragments.workmates;
 
 import android.app.Application;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import com.paulleclerc.go4lunch.model.Workmate;
 import com.paulleclerc.go4lunch.repository.WorkmatesRepository;
 
@@ -23,7 +33,7 @@ public class WorkmatesViewModel extends AndroidViewModel {
         return workmates;
     }
 
-    public void fetchWorkmates() {
+    void fetchWorkmates() {
         workmatesRepository.fetchWorkmates(getApplication().getApplicationContext(), (success, workmates) -> {
             if (success) this.workmates.setValue(workmates);
         });

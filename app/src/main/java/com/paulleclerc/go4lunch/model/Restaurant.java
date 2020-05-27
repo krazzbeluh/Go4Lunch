@@ -1,9 +1,17 @@
+/*
+ * Restaurant.java
+ *   Go4Lunch
+ *
+ *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Copyright © 2020 Paul Leclerc. All rights reserved.
+ */
+
 package com.paulleclerc.go4lunch.model;
 
 import androidx.annotation.Nullable;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.paulleclerc.go4lunch.BuildConfig;
-import com.paulleclerc.go4lunch.ui.restaurant_detail.RestaurantDetailViewModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;

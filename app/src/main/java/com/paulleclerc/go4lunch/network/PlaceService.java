@@ -1,12 +1,19 @@
+/*
+ * PlaceService.java
+ *   Go4Lunch
+ *
+ *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Copyright © 2020 Paul Leclerc. All rights reserved.
+ */
+
 package com.paulleclerc.go4lunch.network;
 
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.paulleclerc.go4lunch.BuildConfig;
 import com.paulleclerc.go4lunch.model.restaurant_response.RestaurantSearchResponse;
 import com.paulleclerc.go4lunch.network.restaurant_detail_response.RestaurantDetailResponse;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface PlaceService {

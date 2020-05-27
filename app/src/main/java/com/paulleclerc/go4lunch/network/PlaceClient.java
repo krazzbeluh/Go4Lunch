@@ -1,20 +1,29 @@
+/*
+ * PlaceClient.java
+ *   Go4Lunch
+ *
+ *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Copyright © 2020 Paul Leclerc. All rights reserved.
+ */
+
 package com.paulleclerc.go4lunch.network;
 
 import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.paulleclerc.go4lunch.model.Restaurant;
 import com.paulleclerc.go4lunch.model.restaurant_response.RestaurantSearchResponse;
 import com.paulleclerc.go4lunch.model.restaurant_response.Result;
 import com.paulleclerc.go4lunch.network.restaurant_detail_response.RestaurantDetailResponse;
+
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.internal.EverythingIsNonNull;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PlaceClient {
     private static final String TAG = PlaceClient.class.getSimpleName();

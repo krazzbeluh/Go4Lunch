@@ -1,8 +1,16 @@
+/*
+ * ExampleUnitTest.java
+ *   Go4Lunch
+ *
+ *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Copyright © 2020 Paul Leclerc. All rights reserved.
+ */
+
 package com.paulleclerc.go4lunch;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Example local unit test, which will execute on the development machine (host).

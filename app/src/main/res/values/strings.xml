@@ -1,3 +1,11 @@
+<!--
+  ~ strings.xml
+  ~   Go4Lunch
+  ~
+  ~   Created by paulleclerc on 5/27/20 5:13 PM.
+  ~   Copyright © 2020 Paul Leclerc. All rights reserved.
+  -->
+
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Go4Lunch</string>
     <string name="facebook_application_id" translatable="false">2642016929378782</string>

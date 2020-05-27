@@ -1,20 +1,31 @@
+/*
+ * MainActivity.java
+ *   Go4Lunch
+ *
+ *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Copyright © 2020 Paul Leclerc. All rights reserved.
+ */
+
 package com.paulleclerc.go4lunch.ui.main;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.paulleclerc.go4lunch.model.Restaurant;
-import com.paulleclerc.go4lunch.ui.main.fragments.map.MapFragment;
 import com.paulleclerc.go4lunch.R;
+import com.paulleclerc.go4lunch.model.Restaurant;
 import com.paulleclerc.go4lunch.ui.main.fragments.list.RestaurantListFragment;
+import com.paulleclerc.go4lunch.ui.main.fragments.map.MapFragment;
 import com.paulleclerc.go4lunch.ui.main.fragments.workmates.WorkmatesFragment;
 import com.paulleclerc.go4lunch.ui.restaurant_detail.RestaurantDetailActivity;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, ShowDetailListener {
     @BindView(R.id.main_bottom_navigation)

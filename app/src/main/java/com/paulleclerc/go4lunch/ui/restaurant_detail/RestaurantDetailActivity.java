@@ -1,20 +1,31 @@
+/*
+ * RestaurantDetailActivity.java
+ *   Go4Lunch
+ *
+ *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Copyright © 2020 Paul Leclerc. All rights reserved.
+ */
+
 package com.paulleclerc.go4lunch.ui.restaurant_detail;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
+import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import com.bumptech.glide.Glide;
 import com.paulleclerc.go4lunch.R;
 import com.paulleclerc.go4lunch.model.Restaurant;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
     private static final String TAG = RestaurantDetailActivity.class.getSimpleName();
@@ -86,13 +97,13 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         restaurant.setDetails(details);
 
         if (details.getPhone() != null) {
-            callImageView.setColorFilter(getColor(R.color.colorPrimary));
-            callTextView.setTextColor(getColor(R.color.colorPrimary));
+            callImageView.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary));
+            callTextView.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
 
         if (details.getWebsite() != null) {
-            websiteImageView.setColorFilter(getColor(R.color.colorPrimary));
-            websiteTextView.setTextColor(getColor(R.color.colorPrimary));
+            websiteImageView.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary));
+            websiteTextView.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
     }
 }

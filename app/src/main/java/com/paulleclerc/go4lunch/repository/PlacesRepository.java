@@ -1,8 +1,18 @@
+/*
+ * PlacesRepository.java
+ *   Go4Lunch
+ *
+ *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Copyright © 2020 Paul Leclerc. All rights reserved.
+ */
+
 package com.paulleclerc.go4lunch.repository;
 
 import android.content.Context;
 import android.util.Log;
+
 import androidx.annotation.Nullable;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -13,7 +23,11 @@ import com.paulleclerc.go4lunch.model.Workmate;
 import com.paulleclerc.go4lunch.model.restaurant_response.Result;
 import com.paulleclerc.go4lunch.network.PlaceClient;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class PlacesRepository {
     private static final Map<LatLng, List<Restaurant>> placesCache = new HashMap<>();

@@ -1,9 +1,16 @@
+/*
+ * AuthRepository.java
+ *   Go4Lunch
+ *
+ *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Copyright © 2020 Paul Leclerc. All rights reserved.
+ */
+
 package com.paulleclerc.go4lunch.repository;
 
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.auth.User;
 import com.paulleclerc.go4lunch.closures.FirebaseSignInWithCredentialClosure;
 import com.paulleclerc.go4lunch.enums.LoginState;
 
@@ -18,7 +25,7 @@ public class AuthRepository {
         return auth.getCurrentUser() != null;
     }
 
-    public String getUid() {
+    String getUid() {
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) return null;
         return user.getUid();

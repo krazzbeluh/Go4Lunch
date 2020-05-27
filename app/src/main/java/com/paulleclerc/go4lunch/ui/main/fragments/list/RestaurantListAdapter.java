@@ -1,15 +1,23 @@
+/*
+ * RestaurantListAdapter.java
+ *   Go4Lunch
+ *
+ *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Copyright © 2020 Paul Leclerc. All rights reserved.
+ */
+
 package com.paulleclerc.go4lunch.ui.main.fragments.list;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import com.bumptech.glide.Glide;
 import com.paulleclerc.go4lunch.R;
 import com.paulleclerc.go4lunch.model.Restaurant;
@@ -18,15 +26,18 @@ import com.paulleclerc.go4lunch.ui.main.ShowDetailListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAdapter.RestaurantListViewHolder> {
     private final ShowDetailListener showDetailListener;
     private List<Restaurant> places = new ArrayList<>();
 
-    public RestaurantListAdapter(ShowDetailListener showDetailListener) {
+    RestaurantListAdapter(ShowDetailListener showDetailListener) {
         this.showDetailListener = showDetailListener;
     }
 
-    public void setPlaces(List<Restaurant> places) {
+    void setPlaces(List<Restaurant> places) {
         this.places = places;
         this.notifyDataSetChanged();
     }
@@ -49,7 +60,6 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
     }
 
     static class RestaurantListViewHolder extends RecyclerView.ViewHolder {
-        private static final String TAG = RestaurantListViewHolder.class.getSimpleName();
         private Restaurant restaurant;
 
         @BindView(R.id.restaurant_title)
@@ -71,7 +81,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         @BindView(R.id.restaurant_image)
         ImageView restaurantThumbnail;
 
-        public RestaurantListViewHolder(@NonNull View itemView, ShowDetailListener showDetailListener) {
+        RestaurantListViewHolder(@NonNull View itemView, ShowDetailListener showDetailListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(v -> showDetailListener.showDetail(restaurant));
@@ -84,10 +94,10 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
             if (restaurant.isOpened != null) {
                 if (restaurant.isOpened) {
                     openingTime.setText(itemView.getContext().getString(R.string.restaurant_opened));
-                    openingTime.setTextColor(itemView.getContext().getColor(R.color.restaurant_opened));
+                    openingTime.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.restaurant_opened));
                 } else {
                     openingTime.setText(itemView.getContext().getString(R.string.restaurant_closed));
-                    openingTime.setTextColor(itemView.getContext().getColor(R.color.restaurant_closed));
+                    openingTime.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.restaurant_closed));
                 }
             }
             workmatesNumber.setText(String.valueOf(restaurant.getInterestedWorkmates().size()));
@@ -99,9 +109,9 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
                 star3.setAlpha(0f);
             }
             if (restaurant.rate == Restaurant.Rate.UNKNOWN || restaurant.rate == Restaurant.Rate.BAD)
-                star2.setImageDrawable(itemView.getResources().getDrawable(R.drawable.star_gray, itemView.getContext().getTheme()));
+                star2.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), R.drawable.star_gray));
             if (restaurant.rate != Restaurant.Rate.GOOD)
-                star3.setImageDrawable(itemView.getResources().getDrawable(R.drawable.star_gray, itemView.getContext().getTheme()));
+                star3.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), R.drawable.star_gray));
 
             Glide.with(itemView.getContext())
                     .load(restaurant.getPhotoUrl())

@@ -1,3 +1,11 @@
+/*
+ * RestaurantListFragment.java
+ *   Go4Lunch
+ *
+ *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Copyright © 2020 Paul Leclerc. All rights reserved.
+ */
+
 package com.paulleclerc.go4lunch.ui.main.fragments.list;
 
 import android.Manifest;
@@ -6,23 +14,26 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.paulleclerc.go4lunch.R;
 import com.paulleclerc.go4lunch.ui.main.ShowDetailListener;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
 
 import java.util.Objects;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 
 /**
@@ -45,7 +56,7 @@ public class RestaurantListFragment extends Fragment implements LocationListener
     @BindView(R.id.restaurant_recyclerview)
     RecyclerView recyclerView;
 
-    public RestaurantListFragment(ShowDetailListener showDetailListener) {
+    private RestaurantListFragment(ShowDetailListener showDetailListener) {
         this.showDetailListener = showDetailListener;
     }
 

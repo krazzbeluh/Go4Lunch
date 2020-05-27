@@ -1,4 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ activity_login.xml
+  ~   Go4Lunch
+  ~
+  ~   Created by paulleclerc on 5/27/20 5:13 PM.
+  ~   Copyright © 2020 Paul Leclerc. All rights reserved.
+  -->
+
 <layout>
     <data>
         <variable name="viewModel" type="com.paulleclerc.go4lunch.ui.login.LoginViewModel"/>

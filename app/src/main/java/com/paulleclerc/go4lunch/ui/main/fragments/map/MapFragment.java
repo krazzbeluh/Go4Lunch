@@ -1,3 +1,11 @@
+/*
+ * MapFragment.java
+ *   Go4Lunch
+ *
+ *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Copyright © 2020 Paul Leclerc. All rights reserved.
+ */
+
 package com.paulleclerc.go4lunch.ui.main.fragments.map;
 
 import android.Manifest;
@@ -7,26 +15,36 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.model.*;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.paulleclerc.go4lunch.R;
 import com.paulleclerc.go4lunch.model.Restaurant;
-import com.paulleclerc.go4lunch.ui.main.MainActivity;
 import com.paulleclerc.go4lunch.ui.main.ShowDetailListener;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 
 /**
@@ -41,17 +59,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     private static final long MIN_DISTANCE = 300;
     private static final String TAG = MapFragment.class.getSimpleName();
     private static MapFragment INSTANCE;
-
+    private final ShowDetailListener showDetailListener;
+    private final List<Marker> markers = new ArrayList<>();
     @BindView(R.id.map)
     MapView mapView;
-
-    private final ShowDetailListener showDetailListener;
     private MapViewModel viewModel;
     private LocationManager locationManager;
     private GoogleMap map;
-    private final List<Marker> markers = new ArrayList<>();
+    private LatLng position;
 
-    public MapFragment(ShowDetailListener showDetailListener) {
+    private MapFragment(ShowDetailListener showDetailListener) {
         this.showDetailListener = showDetailListener;
     }
 
@@ -77,7 +94,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.bind(this, view);
-        
+
         viewModel = new ViewModelProvider(this).get(MapViewModel.class);
 
         requiresAccessLocationPermission();
@@ -104,7 +121,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     @Override
     public void onStart() {
         super.onStart();
-         if (mapView != null) mapView.onStart();
+        if (mapView != null) mapView.onStart();
     }
 
     @Override
@@ -119,15 +136,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         mapView.onDestroy();
     }
 
+    /*
+        Permissions management
+     */
+
     @Override
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
     }
-
-    /*
-        Permissions management
-     */
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -160,12 +177,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         moveCamera();
     }
 
-    void displayRestaurants(@NonNull List<Restaurant> restaurants) {
-        for (Marker marker: markers) {
+    private void displayRestaurants(@NonNull List<Restaurant> restaurants) {
+        for (Marker marker : markers) {
             marker.remove();
         }
 
-        for (Restaurant restaurant: restaurants) {
+        for (Restaurant restaurant : restaurants) {
             LatLng location = restaurant.getLocation();
             MarkerOptions marker = new MarkerOptions()
                     .position(new LatLng(location.latitude, location.longitude))
@@ -175,7 +192,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         }
     }
 
-    private LatLng position;
     private void moveCamera() {
         if (map != null) {
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 17));
