@@ -20,4 +20,11 @@
     <string name="restaurant_rate_2">Note du restaurant 2/3</string>
     <string name="restaurant_rate_1" tools:ignore="TypographyFractions">Note du restaurant 1/3</string>
     <string name="workmates_picture">Symbole de collègue</string>
+    <string name="restaurant_image">Photo du restaurant</string>
+    <string name="call_image">Pictogramme \"appeler\"</string>
+    <string name="call">Appeler</string>
+    <string name="like">J\'aime</string>
+    <string name="website">Site web</string>
+    <string name="like_restaurant">Pictogramme \"J\'aime\"</string>
+    <string name="website_picture">Pictogramme \"Site web\"</string>
 </resources>

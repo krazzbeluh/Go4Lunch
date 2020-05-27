@@ -166,8 +166,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         }
 
         for (Restaurant restaurant: restaurants) {
+            LatLng location = restaurant.getLocation();
             MarkerOptions marker = new MarkerOptions()
-                    .position(new LatLng(restaurant.location.latitude, restaurant.location.longitude))
+                    .position(new LatLng(location.latitude, location.longitude))
                     .icon(BitmapDescriptorFactory.fromResource((restaurant.getInterestedWorkmates().size() == 0) ? R.drawable.marker_restaurant_orange : R.drawable.marker_restaurant_green))
                     .title(restaurant.name);
             markers.add(map.addMarker(marker));

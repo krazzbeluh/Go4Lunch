@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public void showDetail(Restaurant restaurant) {
         Intent intent = new Intent(this, RestaurantDetailActivity.class);
+        intent.putExtra(getString(R.string.restaurant_extra_identifier), restaurant);
         startActivity(intent);
     }
 }

@@ -35,4 +35,5 @@
     <string name="website">Website</string>
     <string name="like_restaurant">like restaurant</string>
     <string name="website_picture">website picture</string>
+    <string name="restaurant_extra_identifier" translatable="false">Restaurant</string>
 </resources>

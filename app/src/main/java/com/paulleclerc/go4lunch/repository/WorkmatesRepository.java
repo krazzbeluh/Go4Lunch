@@ -21,6 +21,7 @@ public class WorkmatesRepository {
     private final AuthRepository auth = new AuthRepository();
     private final FirStorageRepository storage = new FirStorageRepository();
 
+    @SuppressWarnings("unchecked")
     public void fetchWorkmates(Context context, FetchWorkmatesCompletion completion) {
         db.collection(context.getString(R.string.workmates_array))
                 .whereArrayContains(context.getString(R.string.workmates_field), auth.getUid())
