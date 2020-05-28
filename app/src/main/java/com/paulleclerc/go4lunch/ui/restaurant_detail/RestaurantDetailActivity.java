@@ -2,7 +2,7 @@
  * RestaurantDetailActivity.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Created by paulleclerc on 5/28/20 9:52 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -19,6 +19,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.paulleclerc.go4lunch.R;
@@ -32,6 +34,9 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
     private RestaurantDetailViewModel viewModel;
     private Restaurant restaurant;
+    @BindView(R.id.restaurant_detail_workmates_list)
+    RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;
 
     @BindView(R.id.restaurant_detail_title)
     TextView titleTextView;
@@ -52,6 +57,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     ImageView websiteImageView;
     @BindView(R.id.restaurant_detail_website_text)
     TextView websiteTextView;
+    private RestaurantDetailWorkmatesListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +74,12 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         viewModel.getPlaceDetail(restaurant).observe(this, this::setDetails);
 
         ButterKnife.bind(this);
+
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        adapter = new RestaurantDetailWorkmatesListAdapter();
+        adapter.setWorkmates(restaurant.getInterestedWorkmates());
+        recyclerView.setAdapter(adapter);
 
         titleTextView.setText(restaurant.name);
         addressTextView.setText(restaurant.address);
