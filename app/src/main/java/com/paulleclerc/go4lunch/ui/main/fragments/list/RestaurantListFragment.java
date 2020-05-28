@@ -1,3 +1,11 @@
+/*
+ * RestaurantListFragment.java
+ *   Go4Lunch
+ *
+ *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Copyright © 2020 Paul Leclerc. All rights reserved.
+ */
+
 package com.paulleclerc.go4lunch.ui.main.fragments.list;
 
 import android.Manifest;
@@ -6,22 +14,26 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.paulleclerc.go4lunch.R;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
+import com.paulleclerc.go4lunch.ui.main.ShowDetailListener;
 
 import java.util.Objects;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 
 /**
@@ -35,6 +47,7 @@ public class RestaurantListFragment extends Fragment implements LocationListener
     private static final long MIN_TIME = 400;
     private static final long MIN_DISTANCE = 300;
 
+    private final ShowDetailListener showDetailListener;
     private RestaurantListViewModel viewModel;
     private LocationManager locationManager;
     private LinearLayoutManager linearLayoutManager;
@@ -43,8 +56,8 @@ public class RestaurantListFragment extends Fragment implements LocationListener
     @BindView(R.id.restaurant_recyclerview)
     RecyclerView recyclerView;
 
-    public RestaurantListFragment() {
-        // Required empty public constructor
+    private RestaurantListFragment(ShowDetailListener showDetailListener) {
+        this.showDetailListener = showDetailListener;
     }
 
     /**
@@ -54,8 +67,8 @@ public class RestaurantListFragment extends Fragment implements LocationListener
      * @return A new instance of fragment RestaurantListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RestaurantListFragment getInstance() {
-        return new RestaurantListFragment();
+    public static RestaurantListFragment getInstance(ShowDetailListener showDetailListener) {
+        return new RestaurantListFragment(showDetailListener);
     }
 
     @Override
@@ -73,7 +86,7 @@ public class RestaurantListFragment extends Fragment implements LocationListener
         ButterKnife.bind(this, view);
 
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new RestaurantListAdapter();
+        adapter = new RestaurantListAdapter(showDetailListener);
         viewModel = new ViewModelProvider(this).get(RestaurantListViewModel.class);
         viewModel.getPlaces().observe(getViewLifecycleOwner(), adapter::setPlaces);
 

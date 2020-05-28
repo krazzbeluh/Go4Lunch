@@ -1,15 +1,23 @@
+/*
+ * LogInActivity.java
+ *   Go4Lunch
+ *
+ *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Copyright © 2020 Paul Leclerc. All rights reserved.
+ */
+
 package com.paulleclerc.go4lunch.ui.login;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import androidx.lifecycle.ViewModelProvider;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import com.facebook.*;
+
+import com.facebook.CallbackManager;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -23,6 +31,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.paulleclerc.go4lunch.R;
 import com.paulleclerc.go4lunch.enums.LoginState;
 import com.paulleclerc.go4lunch.ui.main.MainActivity;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class LogInActivity extends AppCompatActivity implements LoginListener {
     private final int RC_SIGN_IN = 1;

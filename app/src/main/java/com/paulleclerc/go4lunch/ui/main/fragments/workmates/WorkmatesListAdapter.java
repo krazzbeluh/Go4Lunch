@@ -1,3 +1,11 @@
+/*
+ * WorkmatesListAdapter.java
+ *   Go4Lunch
+ *
+ *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Copyright © 2020 Paul Leclerc. All rights reserved.
+ */
+
 package com.paulleclerc.go4lunch.ui.main.fragments.workmates;
 
 import android.view.LayoutInflater;
@@ -5,10 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import com.bumptech.glide.Glide;
 import com.paulleclerc.go4lunch.R;
 import com.paulleclerc.go4lunch.model.Workmate;
@@ -16,11 +24,14 @@ import com.paulleclerc.go4lunch.model.Workmate;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdapter.WorkmatesViewHolder> {
     private final OnClickOnItem clickListener;
     private List<Workmate> workmates = new ArrayList<>();
 
-    public WorkmatesListAdapter(OnClickOnItem clickListener) {
+    WorkmatesListAdapter(OnClickOnItem clickListener) {
         this.clickListener = clickListener;
     }
 
@@ -46,7 +57,6 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
     }
 
     static class WorkmatesViewHolder extends RecyclerView.ViewHolder {
-        private static final String TAG = WorkmatesViewModel.class.getSimpleName();
 
         private Workmate workmate;
 
@@ -55,7 +65,7 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
         @BindView(R.id.workmate_avatar)
         ImageView workmateAvatar;
 
-        public WorkmatesViewHolder(@NonNull View itemView, OnClickOnItem onClickListener) {
+        WorkmatesViewHolder(@NonNull View itemView, OnClickOnItem onClickListener) {
             super(itemView);
 
             ButterKnife.bind(this, itemView);

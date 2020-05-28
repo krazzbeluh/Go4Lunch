@@ -1,8 +1,18 @@
+/*
+ * PlacesRepository.java
+ *   Go4Lunch
+ *
+ *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Copyright © 2020 Paul Leclerc. All rights reserved.
+ */
+
 package com.paulleclerc.go4lunch.repository;
 
 import android.content.Context;
 import android.util.Log;
+
 import androidx.annotation.Nullable;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -13,7 +23,11 @@ import com.paulleclerc.go4lunch.model.Workmate;
 import com.paulleclerc.go4lunch.model.restaurant_response.Result;
 import com.paulleclerc.go4lunch.network.PlaceClient;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class PlacesRepository {
     private static final Map<LatLng, List<Restaurant>> placesCache = new HashMap<>();
@@ -146,6 +160,10 @@ public class PlacesRepository {
         });
     }
 
+    public void fetchDetail(Restaurant restaurant, FetchDetailsCompletion completion) {
+        client.fetchDetails(restaurant, details -> completion.onComplete(new Restaurant.RestaurantDetails(details.getFormattedPhoneNumber(), details.getWebsite())));
+    }
+
     private Integer getDistance(@Nullable LatLng StartP, LatLng EndP) {
         if (StartP == null) return null;
         int Radius = 6371;// radius of earth in Km (Type1, Type2) -> TypeR in {}
@@ -166,5 +184,9 @@ public class PlacesRepository {
 
     private interface FetchInterestedWorkmatesCompletion {
         void onComplete(Map<String, List<Workmate>> results);
+    }
+
+    public interface FetchDetailsCompletion {
+        void onComplete(Restaurant.RestaurantDetails details);
     }
 }

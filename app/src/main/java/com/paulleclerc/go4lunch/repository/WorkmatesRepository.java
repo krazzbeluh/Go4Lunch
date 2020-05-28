@@ -1,7 +1,16 @@
+/*
+ * WorkmatesRepository.java
+ *   Go4Lunch
+ *
+ *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Copyright © 2020 Paul Leclerc. All rights reserved.
+ */
+
 package com.paulleclerc.go4lunch.repository;
 
 import android.content.Context;
 import android.util.Log;
+
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -21,6 +30,7 @@ public class WorkmatesRepository {
     private final AuthRepository auth = new AuthRepository();
     private final FirStorageRepository storage = new FirStorageRepository();
 
+    @SuppressWarnings("unchecked")
     public void fetchWorkmates(Context context, FetchWorkmatesCompletion completion) {
         db.collection(context.getString(R.string.workmates_array))
                 .whereArrayContains(context.getString(R.string.workmates_field), auth.getUid())
