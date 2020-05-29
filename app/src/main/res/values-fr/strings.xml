@@ -2,7 +2,7 @@
   ~ strings.xml
   ~   Go4Lunch
   ~
-  ~   Created by paulleclerc on 5/28/20 9:52 AM.
+  ~   Created by paulleclerc on 5/29/20 3:25 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -35,4 +35,7 @@
     <string name="like_restaurant">Pictogramme \"J\'aime\"</string>
     <string name="website_picture">Pictogramme \"Site web\"</string>
     <string name="workmate_is_joining">%1$s est intéressé !</string>
+    <string name="me">Moi</string>
+    <string name="chat_message_placeholder">Votre message…</string>
+    <string name="send_picture">Pictogramme \"envoyer\"</string>
 </resources>

@@ -2,7 +2,7 @@
  * PlacesRepository.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Created by paulleclerc on 5/29/20 3:25 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -106,7 +106,7 @@ public class PlacesRepository {
     }
 
     private void fetchInterestedWorkmates(List<String> placeIDs, FetchInterestedWorkmatesCompletion completion) {
-        workmatesRepository.fetchWorkmates(context, (success, workmates) -> {
+        workmatesRepository.fetchWorkmates((success, workmates) -> {
             if (success) {
                 List<String> workmatesIDs = new ArrayList<>();
 
