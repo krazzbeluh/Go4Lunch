@@ -2,26 +2,37 @@
   ~ chat_recyclerview_row.xml
   ~   Go4Lunch
   ~
-  ~   Created by paulleclerc on 5/27/20 5:13 PM.
+  ~   Created by paulleclerc on 5/29/20 11:36 AM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="wrap_content">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <TextView
-            android:text=""
-            android:layout_width="100dp"
-            android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent"
-            android:id="@+id/textView2" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" android:textColor="#2196F3" android:textSize="14sp"/>
+        android:id="@+id/chat_row_username"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text=""
+        android:textAlignment="textEnd"
+        android:textColor="#2196F3"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
-            android:text=""
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" android:id="@+id/textView3"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView2" android:textColor="#000000"/>
+        android:id="@+id/chat_row_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text=""
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/chat_row_username"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

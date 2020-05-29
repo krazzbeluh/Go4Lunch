@@ -2,7 +2,7 @@
   ~ strings.xml
   ~   Go4Lunch
   ~
-  ~   Created by paulleclerc on 5/28/20 9:52 AM.
+  ~   Created by paulleclerc on 5/29/20 11:36 AM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -27,8 +27,6 @@
     <string name="restaurant_picture">Restaurant picture</string>
     <string name="user_avatar">User avatar</string>
     <string name="user_has_not_decided">%1$s hasn\'t decided yet</string>
-    <string name="workmates_array" translatable="false">WorkmatesArray</string>
-    <string name="workmates_field" translatable="false">workmates</string>
     <string name="workmate_serializable_key" translatable="false">workmate</string>
     <string name="restaurant_opened">Opened</string>
     <string name="restaurant_closed">Closed</string>
@@ -45,4 +43,5 @@
     <string name="website_picture">website picture</string>
     <string name="restaurant_extra_identifier" translatable="false">Restaurant</string>
     <string name="workmate_is_joining">%1$s is joining!</string>
+    <string name="me">Me</string>
 </resources>

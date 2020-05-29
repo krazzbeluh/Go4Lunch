@@ -2,7 +2,7 @@
   ~ activity_chat.xml
   ~   Go4Lunch
   ~
-  ~   Created by paulleclerc on 5/27/20 5:13 PM.
+  ~   Created by paulleclerc on 5/29/20 11:36 AM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -14,31 +14,46 @@
         android:layout_height="match_parent"
         tools:context=".ui.chat.ChatActivity">
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" android:id="@+id/constraintLayout">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/constraintLayout">
 
         <ImageView
-                android:layout_width="40dp"
-                android:layout_height="0dp" app:srcCompat="@drawable/workmate" android:id="@+id/imageView3"
-                android:layout_weight="1" app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintDimensionRatio="1" android:contentDescription="@string/user_avatar"/>
-        <TextView
-                android:text=""
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" android:id="@+id/textView" android:layout_weight="1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView3" app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.5"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="409dp"
-            android:layout_height="804dp" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/chat_workmate_avatar"
+            android:layout_width="40dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/user_avatar"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-            tools:listitem="@layout/chat_recyclerview_row"/>
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/workmate" />
+
+        <TextView
+            android:id="@+id/chat_workmate_username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text=""
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/chat_workmate_avatar"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chat_recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        tools:listitem="@layout/chat_recyclerview_row" />
 </androidx.constraintlayout.widget.ConstraintLayout>

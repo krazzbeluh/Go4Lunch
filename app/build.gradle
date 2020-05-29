@@ -2,7 +2,7 @@
  * build.gradle
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/28/20 9:52 AM.
+ *   Created by paulleclerc on 5/29/20 11:36 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -35,14 +35,14 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "GOOGLE_MAPS_AND_PLACES_KEY", "\"AIzaSyAcPF3KPwd5NYJnmYocROfD-cROs_Z3MnA\"")
-            resValue("string", "google_maps_and_places_key", "AIzaSyAcPF3KPwd5NYJnmYocROfD-cROs_Z3MnA")
+            buildConfigField("String", "GOOGLE_MAPS_AND_PLACES_KEY", "\"AIzaSyDVF5dRhL6urdWEdtuFEHqhtJvmO3oC6Eg\"")
+            resValue("string", "google_maps_and_places_key", "AIzaSyDVF5dRhL6urdWEdtuFEHqhtJvmO3oC6Eg")
         }
 
         debug {
             testCoverageEnabled true
-            buildConfigField("String", "GOOGLE_MAPS_AND_PLACES_KEY", "\"AIzaSyAcPF3KPwd5NYJnmYocROfD-cROs_Z3MnA\"")
-            resValue("string", "google_maps_and_places_key", "AIzaSyAcPF3KPwd5NYJnmYocROfD-cROs_Z3MnA")
+            buildConfigField("String", "GOOGLE_MAPS_AND_PLACES_KEY", "\"AIzaSyDVF5dRhL6urdWEdtuFEHqhtJvmO3oC6Eg\"")
+            resValue("string", "google_maps_and_places_key", "AIzaSyDVF5dRhL6urdWEdtuFEHqhtJvmO3oC6Eg")
         }
     }
 

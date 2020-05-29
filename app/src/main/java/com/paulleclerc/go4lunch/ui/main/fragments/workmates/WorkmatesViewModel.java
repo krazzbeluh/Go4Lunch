@@ -2,7 +2,7 @@
  * WorkmatesViewModel.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Created by paulleclerc on 5/29/20 11:36 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -34,7 +34,7 @@ public class WorkmatesViewModel extends AndroidViewModel {
     }
 
     void fetchWorkmates() {
-        workmatesRepository.fetchWorkmates(getApplication().getApplicationContext(), (success, workmates) -> {
+        workmatesRepository.fetchWorkmates((success, workmates) -> {
             if (success) this.workmates.setValue(workmates);
         });
     }
