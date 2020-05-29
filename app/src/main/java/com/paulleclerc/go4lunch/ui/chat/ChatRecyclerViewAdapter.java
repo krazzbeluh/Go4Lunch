@@ -2,12 +2,13 @@
  * ChatRecyclerViewAdapter.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/29/20 11:36 AM.
+ *   Created by paulleclerc on 5/29/20 3:23 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
 package com.paulleclerc.go4lunch.ui.chat;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,10 +71,12 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
             ButterKnife.bind(this, itemView);
 
             message.setText(chatMessage.message);
-            username.setText(
-                    chatMessage.serderID.equals(workmate.uid)
-                            ? workmate.username
-                            : itemView.getContext().getString(R.string.me));
+
+            if (chatMessage.senderID.equals(workmate.uid)) username.setText(workmate.username);
+            else {
+                username.setText(itemView.getContext().getString(R.string.me));
+                username.setTextColor(Color.RED);
+            }
         }
     }
 }

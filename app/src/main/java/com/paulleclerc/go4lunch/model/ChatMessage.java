@@ -2,7 +2,7 @@
  * ChatMessage.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/29/20 11:36 AM.
+ *   Created by paulleclerc on 5/29/20 3:23 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -12,12 +12,12 @@ import java.util.Date;
 
 public class ChatMessage {
     public final String message;
-    public final String serderID;
+    public final String senderID;
     public final Date date;
 
-    public ChatMessage(String message, String serderID, Date date) {
+    public ChatMessage(String message, String senderID, Date date) {
         this.message = message;
-        this.serderID = serderID;
+        this.senderID = senderID;
         this.date = date;
     }
 }

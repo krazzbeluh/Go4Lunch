@@ -2,7 +2,7 @@
  * ChatViewModel.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/29/20 11:36 AM.
+ *   Created by paulleclerc on 5/29/20 3:23 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -32,5 +32,9 @@ public class ChatViewModel extends AndroidViewModel {
     LiveData<List<ChatMessage>> fetchMessages(Workmate workmate) {
         chatService.fetchMessages(workmate, messages -> this.chatMessages.setValue(messages));
         return chatMessages;
+    }
+
+    void sendMessage(Workmate workmate, String message) {
+        chatService.sendChatMessage(workmate, message);
     }
 }
