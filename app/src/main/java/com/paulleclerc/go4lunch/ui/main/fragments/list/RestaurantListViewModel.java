@@ -2,7 +2,7 @@
  * RestaurantListViewModel.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Updated by paulleclerc on 6/2/20 5:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -22,7 +22,7 @@ import com.paulleclerc.go4lunch.repository.PlacesRepository;
 import java.util.List;
 
 public class RestaurantListViewModel extends AndroidViewModel {
-    private final PlacesRepository placesRepository = new PlacesRepository(getApplication().getApplicationContext());
+    private final PlacesRepository placesRepository = new PlacesRepository();
 
     private final MutableLiveData<List<Restaurant>> places = new MutableLiveData<>();
 

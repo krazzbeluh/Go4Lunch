@@ -2,18 +2,18 @@
  * PlacesRepository.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/29/20 3:25 PM.
+ *   Updated by paulleclerc on 6/2/20 5:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
 package com.paulleclerc.go4lunch.repository;
 
-import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -34,18 +34,16 @@ public class PlacesRepository {
 
     private static final String TAG = PlacesRepository.class.getSimpleName();
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseAuth auth = FirebaseAuth.getInstance();
     private final WorkmatesRepository workmatesRepository;
-    private final Context context;
     private final PlaceClient client;
 
-    public PlacesRepository(WorkmatesRepository workmatesRepository, Context context, PlaceClient client) {
+    public PlacesRepository(WorkmatesRepository workmatesRepository, PlaceClient client) {
         this.workmatesRepository = workmatesRepository;
-        this.context = context;
         this.client = client;
     }
 
-    public PlacesRepository(Context context) {
-        this.context = context;
+    public PlacesRepository() {
         this.workmatesRepository = new WorkmatesRepository();
         this.client = new PlaceClient();
     }
@@ -182,11 +180,75 @@ public class PlacesRepository {
         return (int) (Radius * c * 1000);
     }
 
+    public void getIsLiked(String id, LikeRestaurantCompletion completion) {
+        db.collection("Like")
+                .whereEqualTo("placeID", id)
+                .whereEqualTo("userID", Objects.requireNonNull(auth.getCurrentUser()).getUid())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful() || task.getResult() == null) {
+                        Log.e(TAG, "getIsLiked: ", task.getException());
+                        completion.onComplete(false, null);
+                        return;
+                    }
+
+                    completion.onComplete(true, task.getResult().getDocuments().size() > 0);
+                });
+    }
+
+    public void likePlace(String id, LikeRestaurantCompletion completion) {
+        Map<String, Object> documentData = new HashMap<>();
+        documentData.put("placeID", id);
+        documentData.put("userID", Objects.requireNonNull(auth.getCurrentUser()).getUid());
+
+        db.collection("Like")
+                .document()
+                .set(documentData)
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.e(TAG, "likePlace: ", task.getException());
+                        completion.onComplete(false, null);
+                    } else {
+                        completion.onComplete(true, true);
+                    }
+                });
+    }
+
+    public void dislikePlace(String id, LikeRestaurantCompletion completion) {
+        db.collection("Like")
+                .whereEqualTo("placeID", id)
+                .whereEqualTo("userID", Objects.requireNonNull(auth.getCurrentUser()).getUid())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful() || task.getResult() == null) {
+                        Log.e(TAG, "dislikePlace: ", task.getException());
+                        completion.onComplete(true, null);
+                        return;
+                    }
+
+                    List<DocumentSnapshot> documents = task.getResult().getDocuments();
+                    for (DocumentSnapshot document : documents) {
+                        document.getReference().delete().addOnCompleteListener(task1 -> {
+                            if (!task1.isSuccessful()) {
+                                Log.e(TAG, "dislikePlace: ", task1.getException());
+                                completion.onComplete(false, null);
+                            } else {
+                                completion.onComplete(true, false);
+                            }
+                        });
+                    }
+                });
+    }
+
     private interface FetchInterestedWorkmatesCompletion {
         void onComplete(Map<String, List<Workmate>> results);
     }
 
     public interface FetchDetailsCompletion {
         void onComplete(Restaurant.RestaurantDetails details);
+    }
+
+    public interface LikeRestaurantCompletion {
+        void onComplete(boolean success, Boolean isLiked);
     }
 }

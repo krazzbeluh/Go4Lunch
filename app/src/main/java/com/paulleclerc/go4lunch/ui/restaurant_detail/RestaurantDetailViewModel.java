@@ -2,7 +2,7 @@
  * RestaurantDetailViewModel.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Updated by paulleclerc on 6/2/20 5:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -23,13 +23,37 @@ public class RestaurantDetailViewModel extends AndroidViewModel {
         super(application);
     }
 
-    private final PlacesRepository placesRepository = new PlacesRepository(getApplication().getApplicationContext());
+    private final PlacesRepository placesRepository = new PlacesRepository();
 
     private final MutableLiveData<Restaurant.RestaurantDetails> placeDetail = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isLiked = new MutableLiveData<>();
 
     LiveData<Restaurant.RestaurantDetails> getPlaceDetail(Restaurant restaurant) {
         placesRepository.fetchDetail(restaurant, placeDetail::setValue);
 
         return placeDetail;
+    }
+
+    LiveData<Boolean> getIsLiked(Restaurant restaurant) {
+        if (isLiked.getValue() == null)
+            placesRepository.getIsLiked(restaurant.id, (success, isLiked) -> {
+                if (success && isLiked != null) this.isLiked.setValue(isLiked);
+            });
+        return isLiked;
+    }
+
+    void switchLike(Restaurant restaurant) {
+        Boolean isLiked = this.isLiked.getValue();
+        if (isLiked == null) return;
+
+        if (!isLiked) {
+            placesRepository.likePlace(restaurant.id, (success, isLiked1) -> {
+                if (success && isLiked1 != null) this.isLiked.setValue(isLiked1);
+            });
+        } else {
+            placesRepository.dislikePlace(restaurant.id, (success, isLiked1) -> {
+                if (success && isLiked1 != null) this.isLiked.setValue(isLiked1);
+            });
+        }
     }
 }

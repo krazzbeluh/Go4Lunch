@@ -2,7 +2,7 @@
  * RestaurantDetailActivity.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/28/20 9:52 AM.
+ *   Updated by paulleclerc on 6/2/20 5:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -45,7 +45,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     @BindView(R.id.restaurant_detail_background)
     ImageView backgroundImageView;
 
-    @BindView(R.id.call_layout)
+    @BindView(R.id.restaurant_detail_call_layout)
     LinearLayout callLayout;
     @BindView(R.id.restaurant_detail_call_image)
     ImageView callImageView;
@@ -57,6 +57,12 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     ImageView websiteImageView;
     @BindView(R.id.restaurant_detail_website_text)
     TextView websiteTextView;
+    @BindView(R.id.restaurant_detail_like_layout)
+    LinearLayout likeLayout;
+    @BindView(R.id.restaurant_detail_like_image)
+    ImageView likeImageView;
+    @BindView(R.id.restaurant_detail_like_text)
+    TextView likeTextView;
     private RestaurantDetailWorkmatesListAdapter adapter;
 
     @Override
@@ -72,6 +78,11 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(RestaurantDetailViewModel.class);
         viewModel.getPlaceDetail(restaurant).observe(this, this::setDetails);
+        viewModel.getIsLiked(restaurant).observe(this, isLiked -> {
+            likeTextView.setTextColor(getResources().getColor(R.color.colorPrimary));
+            likeImageView.setImageDrawable(isLiked ? getResources().getDrawable(R.drawable.star) : getResources().getDrawable(R.drawable.star_border));
+            likeImageView.setColorFilter(getResources().getColor(R.color.colorPrimary));
+        });
 
         ButterKnife.bind(this);
 
@@ -102,7 +113,9 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             startActivity(browserIntent);
         });
 
-
+        likeLayout.setOnClickListener(v -> {
+            viewModel.switchLike(restaurant);
+        });
     }
 
     private void setDetails(Restaurant.RestaurantDetails details) {
