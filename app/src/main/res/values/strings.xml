@@ -2,7 +2,7 @@
   ~ strings.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/4/20 3:51 PM.
+  ~   Updated by paulleclerc on 6/4/20 5:20 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -12,7 +12,7 @@
     <string name="facebook_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">
         fb2642016929378782
     </string>
-    <string name="login_background_content_description">Login background</string>
+    <string name="background_content_description">Background</string>
     <string name="authentication_failed">Authentication Failed.</string>
     <string name="sign_in_with_facebook">Sign in with Facebook</string>
     <string name="sign_in_with_google">Sign in with Google</string>
@@ -51,4 +51,5 @@
     <string name="logout">Logout</string>
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="your_avatar">Your avatar</string>
 </resources>
