@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ activity_main_drawer.xml
+  ~   Go4Lunch
+  ~
+  ~   Updated by paulleclerc on 6/4/20 3:51 PM.
+  ~   Copyright © 2020 Paul Leclerc. All rights reserved.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/lunch"
+            android:icon="@drawable/cutlery"
+            android:title="@string/menu_your_lunch" />
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/settings"
+            android:title="@string/settings" />
+        <item
+            android:id="@+id/log_out"
+            android:icon="@drawable/power_settings"
+            android:title="@string/logout" />
+    </group>
+</menu>
