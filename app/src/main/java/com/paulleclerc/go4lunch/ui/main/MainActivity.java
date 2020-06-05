@@ -2,7 +2,7 @@
  * MainActivity.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/5/20 9:49 AM.
+ *   Updated by paulleclerc on 6/5/20 11:58 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -29,6 +29,7 @@ import com.paulleclerc.go4lunch.ui.main.fragments.list.RestaurantListFragment;
 import com.paulleclerc.go4lunch.ui.main.fragments.map.MapFragment;
 import com.paulleclerc.go4lunch.ui.main.fragments.workmates.WorkmatesFragment;
 import com.paulleclerc.go4lunch.ui.restaurant_detail.RestaurantDetailActivity;
+import com.paulleclerc.go4lunch.ui.settings.SettingsActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -85,6 +86,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
                 return false;
             case R.id.lateral_menu_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
                 return false;
             case R.id.lateral_menu_log_out:
                 viewModel.logOut();
