@@ -2,7 +2,7 @@
  * MainActivity.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/4/20 5:20 PM.
+ *   Updated by paulleclerc on 6/5/20 9:45 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -11,6 +11,7 @@ package com.paulleclerc.go4lunch.ui.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -18,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -31,10 +33,11 @@ import com.paulleclerc.go4lunch.ui.restaurant_detail.RestaurantDetailActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, ShowDetailListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationView.OnNavigationItemSelectedListener, ShowDetailListener {
+    private MainViewModel viewModel;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
     @BindView(R.id.main_bottom_navigation)
     BottomNavigationView bottomNavigationView;
     @BindView(R.id.drawer_layout)
@@ -51,12 +54,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         setSupportActionBar(toolbar);
 
+        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+
+        viewModel.isUserSignedIn().observe(this, isUserSignedIn -> {
+            if (!isUserSignedIn) finish();
+        });
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.dark_white));
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.main_bottom_navigation_map);
     }
 
@@ -72,6 +82,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.main_bottom_navigation_workmates:
                 openFragment(WorkmatesFragment.getInstance());
                 return true;
+            case R.id.lateral_menu_lunch:
+                Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
+                return false;
+            case R.id.lateral_menu_settings:
+                return false;
+            case R.id.lateral_menu_log_out:
+                viewModel.logOut();
+                return false;
         }
         return false;
     }
