@@ -3,13 +3,14 @@
   ~ AndroidManifest.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/5/20 11:58 AM.
+  ~   Updated by paulleclerc on 6/5/20 5:42 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.paulleclerc.go4lunch">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />

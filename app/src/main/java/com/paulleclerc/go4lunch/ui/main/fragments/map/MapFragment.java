@@ -2,7 +2,7 @@
  * MapFragment.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Updated by paulleclerc on 6/5/20 5:42 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -39,7 +39,6 @@ import com.paulleclerc.go4lunch.ui.main.ShowDetailListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -102,7 +101,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         mapView.onCreate(savedInstanceState);
 
         try {
-            MapsInitializer.initialize(Objects.requireNonNull(this.getContext()));
+            MapsInitializer.initialize(this.requireContext());
         } catch (Exception e) {
             Log.e(TAG, "onCreateView: ", e);
         }
@@ -156,8 +155,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
     @AfterPermissionGranted(GET_LOCATION_PERMS)
     private void requiresAccessLocationPermission() {
-        if (EasyPermissions.hasPermissions(Objects.requireNonNull(getContext()), PERM)) {
-            locationManager = (LocationManager) Objects.requireNonNull(getActivity()).getSystemService(Context.LOCATION_SERVICE);
+        if (EasyPermissions.hasPermissions(requireContext(), PERM)) {
+            locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
             assert locationManager != null;
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
         } else {
@@ -166,15 +165,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     }
 
     @Override
+    @AfterPermissionGranted(GET_LOCATION_PERMS)
     public void onMapReady(GoogleMap googleMap) {
-        map = googleMap;
-        map.setMyLocationEnabled(true);
+        if (EasyPermissions.hasPermissions(requireContext(), PERM)) {
+            map = googleMap;
+            map.setMyLocationEnabled(true);
 
-        map.setMapStyle(MapStyleOptions.loadRawResourceStyle(Objects.requireNonNull(getContext()), R.raw.google_map_style));
-        mapView.onResume();
+            map.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.google_map_style));
+            mapView.onResume();
 
-        viewModel.getPlaces().observe(this, this::displayRestaurants);
-        moveCamera();
+            viewModel.getPlaces().observe(this, this::displayRestaurants);
+            moveCamera();
+        }
     }
 
     private void displayRestaurants(@NonNull List<Restaurant> restaurants) {

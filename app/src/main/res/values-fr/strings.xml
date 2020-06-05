@@ -2,7 +2,7 @@
   ~ strings.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/5/20 11:58 AM.
+  ~   Updated by paulleclerc on 6/5/20 5:42 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -49,4 +49,5 @@
     <string name="notifications">Paramètres des notifications</string>
     <string name="allow_chat_notifications">Autoriser les notifications chat</string>
     <string name="allow_daily_noon_notification">Autoriser les notifications quotidiennes</string>
+    <string name="permission_storage_message">Go4Lunch a besoin d\'accéder à votre disque.</string>
 </resources>

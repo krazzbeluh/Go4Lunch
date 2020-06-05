@@ -2,7 +2,7 @@
   ~ activity_settings.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/5/20 11:58 AM.
+  ~   Updated by paulleclerc on 6/5/20 5:42 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -65,7 +65,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/guideline4"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@drawable/workmate" />
+                    app:srcCompat="@drawable/workmate" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline4"
