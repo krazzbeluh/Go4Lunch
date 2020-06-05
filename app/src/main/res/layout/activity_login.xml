@@ -2,7 +2,7 @@
   ~ activity_login.xml
   ~   Go4Lunch
   ~
-  ~   Created by paulleclerc on 5/27/20 5:13 PM.
+  ~   Updated by paulleclerc on 6/5/20 9:49 AM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -19,12 +19,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".ui.login.LogInActivity">
+
         <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" app:srcCompat="@drawable/background" android:id="@+id/imageView"
-                android:scaleType="centerCrop" android:contentDescription="@string/login_background_content_description"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/background_content_description"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/background" />
         <View
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/fullscreen_view"

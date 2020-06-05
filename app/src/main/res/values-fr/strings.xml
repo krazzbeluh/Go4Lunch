@@ -2,13 +2,13 @@
   ~ strings.xml
   ~   Go4Lunch
   ~
-  ~   Created by paulleclerc on 5/29/20 3:25 PM.
+  ~   Updated by paulleclerc on 6/5/20 9:49 AM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Go4Lunch</string>
-    <string name="login_background_content_description">Fond d\'écran de connexion</string>
+    <string name="background_content_description">Fond d\'écran</string>
     <string name="authentication_failed">Échec de la connexion.</string>
     <string name="sign_in_with_facebook">Se connecter avec Facebook</string>
     <string name="sign_in_with_google">Se connecter avec Google</string>
@@ -38,4 +38,8 @@
     <string name="me">Moi</string>
     <string name="chat_message_placeholder">Votre message…</string>
     <string name="send_picture">Pictogramme \"envoyer\"</string>
+    <string name="menu_your_lunch">Votre déjeuner</string>
+    <string name="settings">Paramètres</string>
+    <string name="logout">Déconnexion</string>
+    <string name="your_avatar">Votre avatar</string>
 </resources>

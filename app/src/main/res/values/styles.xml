@@ -2,7 +2,7 @@
   ~ styles.xml
   ~   Go4Lunch
   ~
-  ~   Created by paulleclerc on 5/27/20 5:13 PM.
+  ~   Updated by paulleclerc on 6/5/20 9:49 AM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -14,6 +14,20 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.LateralMenu">
+        <item name="itemTextColor">@color/dark_white</item>
+        <item name="drawableTint">@color/dark_white</item>
+    </style>
+
+    <style name="AppTheme.ToolbarStyle">
+        <item name="android:textColorPrimary">@color/dark_white</item>
     </style>
 
 </resources>
