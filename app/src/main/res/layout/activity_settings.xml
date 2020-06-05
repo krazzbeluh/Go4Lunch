@@ -2,7 +2,7 @@
   ~ activity_settings.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/5/20 5:42 PM.
+  ~   Updated by paulleclerc on 6/5/20 11:24 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -149,7 +149,7 @@
     </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton2"
+        android:id="@+id/settings_validate_changes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"

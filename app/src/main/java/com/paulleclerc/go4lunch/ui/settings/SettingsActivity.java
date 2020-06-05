@@ -2,7 +2,7 @@
  * SettingsActivity.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/5/20 5:42 PM.
+ *   Updated by paulleclerc on 6/5/20 11:24 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -11,6 +11,7 @@ package com.paulleclerc.go4lunch.ui.settings;
 import android.Manifest;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -67,6 +68,10 @@ public class SettingsActivity extends AppCompatActivity {
             if (!isImageFromGallery)
                 Glide.with(this).load(avatarUrl).placeholder(R.drawable.workmate).into(avatarImage);
         });
+
+        viewModel.getAvatar().observe(this, avatar -> {
+            if (isImageFromGallery) avatarImage.setImageBitmap(avatar);
+        });
     }
 
     @AfterPermissionGranted(GET_STORAGE_PERMS)
@@ -84,6 +89,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Bitmap avatar = null;
         if (requestCode == KEY_RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
             Uri selectedImage = data.getData();
             if (selectedImage != null) {
@@ -116,7 +122,7 @@ public class SettingsActivity extends AppCompatActivity {
                             }
                         }
 
-                        avatarImage.setImageBitmap(BitmapFactory.decodeFile(file.getPath()));
+                        avatar = BitmapFactory.decodeFile(file.getPath());
                     }
                 } else {
                     String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -127,13 +133,21 @@ public class SettingsActivity extends AppCompatActivity {
                         String picturePath = cursor.getString(columnIndex);
                         cursor.close();
 
-                        avatarImage.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-
-                        isImageFromGallery = true;
+                        avatar = BitmapFactory.decodeFile(picturePath);
                     }
                 }
             }
         }
+
+        if (avatar != null) {
+            isImageFromGallery = true;
+            viewModel.setAvatar(avatar);
+        }
+    }
+
+    @OnClick(R.id.settings_validate_changes)
+    public void validateChanges() {
+        viewModel.validateChanges();
     }
 
     @Override

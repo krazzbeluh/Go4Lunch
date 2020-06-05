@@ -2,7 +2,7 @@
  * FirestoreRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/5/20 11:58 AM.
+ *   Updated by paulleclerc on 6/5/20 11:24 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -20,6 +20,7 @@ public class FirestoreRepository {
     private static final String KEY_AVATAR_NAME = "avatarName";
 
     private final FirStorageRepository storage = new FirStorageRepository();
+    private final AuthRepository auth = new AuthRepository();
 
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -34,10 +35,19 @@ public class FirestoreRepository {
                 if (name == null || !name.equals(oldName.get())) {
                     oldName.set(name);
 
-                    storage.getUserAvatar(name, (success, uri) -> completion.onAvatarChange(uri.toString()));
+                    storage.getUserAvatar(name, (success, uri) -> {
+                        if (uri != null) completion.onAvatarChange(uri.toString());
+                    });
                 }
             }
         });
+    }
+
+    void setNewUserAvatar(String avatarFileName) {
+        db.collection(KEY_USER_COLLECTION)
+                .document(auth.getUid())
+                .update(KEY_AVATAR_NAME, avatarFileName)
+                .addOnFailureListener(e -> Log.e(TAG, "setNewUserAvatar: ", e));
     }
 
     interface GetAvatarUrlCompletion {
