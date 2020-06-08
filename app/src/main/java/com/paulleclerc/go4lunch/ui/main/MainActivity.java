@@ -2,7 +2,7 @@
  * MainActivity.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/8/20 2:52 PM.
+ *   Updated by paulleclerc on 6/8/20 4:54 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public void showDetail(Restaurant restaurant) {
         Intent intent = new Intent(this, RestaurantDetailActivity.class);
-        intent.putExtra(getString(R.string.restaurant_extra_identifier), restaurant);
+        intent.putExtra(RestaurantDetailActivity.KEY_RESTAURANT_EXTRA_SERIALIZABLE, restaurant);
         startActivity(intent);
     }
 }

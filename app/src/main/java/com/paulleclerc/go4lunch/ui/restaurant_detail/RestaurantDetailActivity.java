@@ -2,7 +2,7 @@
  * RestaurantDetailActivity.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/2/20 5:34 PM.
+ *   Updated by paulleclerc on 6/8/20 4:54 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -31,6 +31,7 @@ import butterknife.ButterKnife;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
     private static final String TAG = RestaurantDetailActivity.class.getSimpleName();
+    public static final String KEY_RESTAURANT_EXTRA_SERIALIZABLE = "RESTAURANT_EXTRA_SERIALIZABLE";
 
     private RestaurantDetailViewModel viewModel;
     private Restaurant restaurant;
@@ -73,7 +74,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.hide();
 
-        this.restaurant = (Restaurant) getIntent().getSerializableExtra(getString(R.string.restaurant_extra_identifier));
+        this.restaurant = (Restaurant) getIntent().getSerializableExtra(KEY_RESTAURANT_EXTRA_SERIALIZABLE);
         if (restaurant == null) finish();
 
         viewModel = new ViewModelProvider(this).get(RestaurantDetailViewModel.class);
@@ -113,9 +114,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             startActivity(browserIntent);
         });
 
-        likeLayout.setOnClickListener(v -> {
-            viewModel.switchLike(restaurant);
-        });
+        likeLayout.setOnClickListener(v -> viewModel.switchLike(restaurant));
     }
 
     private void setDetails(Restaurant.RestaurantDetails details) {
