@@ -2,7 +2,7 @@
  * RestaurantListFragment.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Updated by paulleclerc on 6/8/20 2:52 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -20,15 +20,21 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.model.Place;
 import com.paulleclerc.go4lunch.R;
+import com.paulleclerc.go4lunch.model.Restaurant;
+import com.paulleclerc.go4lunch.model.Workmate;
 import com.paulleclerc.go4lunch.ui.main.ShowDetailListener;
+import com.paulleclerc.go4lunch.ui.main.fragments.DisplayRestaurantsInterface;
 
-import java.util.Objects;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,7 +47,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  * Use the {@link RestaurantListFragment#getInstance} factory method to
  * create an instance of this fragment.
  */
-public class RestaurantListFragment extends Fragment implements LocationListener {
+public class RestaurantListFragment extends Fragment implements LocationListener, DisplayRestaurantsInterface {
     private static final String PERM = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final int GET_LOCATION_PERMS = 100;
     private static final long MIN_TIME = 400;
@@ -100,6 +106,7 @@ public class RestaurantListFragment extends Fragment implements LocationListener
     @Override
     public void onLocationChanged(Location location) {
         LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
+        adapter.setUserLocation(new LatLng(location.getLatitude(), location.getLongitude()));
         viewModel.fetchPlaces(position);
     }
 
@@ -128,12 +135,31 @@ public class RestaurantListFragment extends Fragment implements LocationListener
 
     @AfterPermissionGranted(GET_LOCATION_PERMS)
     private void requiresAccessLocationPermission() {
-        if (EasyPermissions.hasPermissions(Objects.requireNonNull(getContext()), PERM)) {
-            locationManager = (LocationManager) Objects.requireNonNull(getActivity()).getSystemService(Context.LOCATION_SERVICE);
+        if (EasyPermissions.hasPermissions(requireContext(), PERM)) {
+            locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
             assert locationManager != null;
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
         } else {
             EasyPermissions.requestPermissions(this, getString(R.string.permission_location_message), GET_LOCATION_PERMS, PERM);
+        }
+    }
+
+    @Override
+    public void addPlace(Place place) {
+        if (place.getLatLng() != null) {
+            LiveData<List<Workmate>> workmatesList = viewModel.getInterestedWorkmates(place.getId());
+            workmatesList.observe(this, new Observer<List<Workmate>>() {
+                @Override
+                public void onChanged(List<Workmate> workmates) {
+                    Restaurant restaurant = new Restaurant(place.getId(), place.getName(), place.getAddress(), null, place.getRating(), place.getLatLng(), place.isOpen(), workmates);
+                    List<Restaurant> restaurants = adapter.getPlaces();
+                    restaurants.add(restaurant);
+                    adapter.setPlaces(restaurants);
+                    if (workmates != null) workmatesList.removeObserver(this);
+                }
+            });
+
+
         }
     }
 }

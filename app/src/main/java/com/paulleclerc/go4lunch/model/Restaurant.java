@@ -2,7 +2,7 @@
  * Restaurant.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Updated by paulleclerc on 6/8/20 2:52 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -24,25 +24,42 @@ public class Restaurant implements Serializable {
     private final String photoReference;
     private final double lat;
     private final double lng;
-    public final Integer distance;
     public final Rate rate;
     public final Boolean isOpened;
     private List<Workmate> interestedWorkmates;
     private RestaurantDetails details;
 
-    public Restaurant(String id, String name, String address, String photoReference, Rate rate, LatLng location, Integer distance, Boolean isOpened, @Nullable List<Workmate> interestedWorkmates) {
+    public Restaurant(String id, String name, String address, String photoReference, Double rate, LatLng location, Boolean isOpened, @Nullable List<Workmate> interestedWorkmates) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.photoReference = photoReference;
         this.lat = location.latitude;
         this.lng = location.longitude;
-        this.rate = rate;
-        this.distance = distance;
+        this.rate = getRateFromPlaceRating(rate);
         this.isOpened = isOpened;
 
         if (interestedWorkmates != null) this.interestedWorkmates = interestedWorkmates;
         else this.interestedWorkmates = new ArrayList<>();
+    }
+
+    private Rate getRateFromPlaceRating(Double rating) {
+        Rate rate;
+        if (rating == null) {
+            rate = Restaurant.Rate.UNKNOWN;
+        } else {
+            rating = rating / 5 * 3;
+
+            if (rating < 1) {
+                rate = Restaurant.Rate.BAD;
+            } else if (rating < 2) {
+                rate = Restaurant.Rate.MEDIUM;
+            } else {
+                rate = Restaurant.Rate.GOOD;
+            }
+        }
+
+        return rate;
     }
 
     public String getPhotoUrl() {
@@ -74,6 +91,25 @@ public class Restaurant implements Serializable {
         MEDIUM,
         BAD,
         UNKNOWN
+    }
+
+    public Integer getDistance(LatLng location) {
+        LatLng selfLocation = getLocation();
+        if (selfLocation == null) return null;
+        int Radius = 6371;// radius of earth in Km (Type1, Type2) -> TypeR in {}
+        double lat1 = selfLocation.latitude;
+        double lat2 = location.latitude;
+        double lon1 = selfLocation.longitude;
+        double lon2 = location.longitude;
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+
+        return (int) (Radius * c * 1000);
     }
 
     public static class RestaurantDetails {

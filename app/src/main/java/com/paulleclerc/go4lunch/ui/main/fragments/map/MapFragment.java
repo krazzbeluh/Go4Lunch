@@ -2,7 +2,7 @@
  * MapFragment.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/8/20 10:44 AM.
+ *   Updated by paulleclerc on 6/8/20 2:52 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -33,9 +33,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.model.Place;
 import com.paulleclerc.go4lunch.R;
 import com.paulleclerc.go4lunch.model.Restaurant;
 import com.paulleclerc.go4lunch.ui.main.ShowDetailListener;
+import com.paulleclerc.go4lunch.ui.main.fragments.DisplayRestaurantsInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +53,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  * Use the {@link MapFragment#getInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapFragment extends Fragment implements OnMapReadyCallback, LocationListener {
+public class MapFragment extends Fragment implements OnMapReadyCallback, LocationListener, DisplayRestaurantsInterface {
     private static final String PERM = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final int GET_LOCATION_PERMS = 100;
     private static final long MIN_TIME = 400;
@@ -221,5 +223,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+
+    @Override
+    public void addPlace(Place place) {
+        // TODO
     }
 }

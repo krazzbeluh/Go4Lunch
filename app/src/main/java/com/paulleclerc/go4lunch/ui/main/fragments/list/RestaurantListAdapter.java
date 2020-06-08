@@ -2,12 +2,13 @@
  * RestaurantListAdapter.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Updated by paulleclerc on 6/8/20 2:52 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
 package com.paulleclerc.go4lunch.ui.main.fragments.list;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.model.LatLng;
 import com.paulleclerc.go4lunch.R;
 import com.paulleclerc.go4lunch.model.Restaurant;
 import com.paulleclerc.go4lunch.ui.main.ShowDetailListener;
@@ -32,6 +34,7 @@ import butterknife.ButterKnife;
 public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAdapter.RestaurantListViewHolder> {
     private final ShowDetailListener showDetailListener;
     private List<Restaurant> places = new ArrayList<>();
+    private LatLng userLocation;
 
     RestaurantListAdapter(ShowDetailListener showDetailListener) {
         this.showDetailListener = showDetailListener;
@@ -40,6 +43,14 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
     void setPlaces(List<Restaurant> places) {
         this.places = places;
         this.notifyDataSetChanged();
+    }
+
+    void setUserLocation(LatLng location) {
+        this.userLocation = location;
+    }
+
+    List<Restaurant> getPlaces() {
+        return this.places;
     }
 
     @NonNull
@@ -51,7 +62,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 
     @Override
     public void onBindViewHolder(@NonNull RestaurantListViewHolder holder, int position) {
-        holder.bindRestaurant(places.get(position));
+        holder.bindRestaurant(places.get(position), userLocation);
     }
 
     @Override
@@ -65,7 +76,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         @BindView(R.id.restaurant_title)
         TextView title;
         @BindView(R.id.restaurant_distance)
-        TextView distance;
+        TextView distanceTextView;
         @BindView(R.id.restaurant_adress)
         TextView address;
         @BindView(R.id.restaurant_opening_time)
@@ -87,7 +98,8 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
             itemView.setOnClickListener(v -> showDetailListener.showDetail(restaurant));
         }
 
-        void bindRestaurant(Restaurant restaurant) {
+        @SuppressLint("SetTextI18n")
+        void bindRestaurant(Restaurant restaurant, LatLng userLocation) {
             this.restaurant = restaurant;
             title.setText(restaurant.name);
             address.setText(restaurant.address);
@@ -101,7 +113,8 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
                 }
             }
             workmatesNumber.setText(String.valueOf(restaurant.getInterestedWorkmates().size()));
-            distance.setText((restaurant.distance != null) ? restaurant.distance + "m" : "");
+            Integer distance = restaurant.getDistance(userLocation);
+            distanceTextView.setText(distance + "m");
 
             if (restaurant.rate == Restaurant.Rate.UNKNOWN) {
                 star1.setAlpha(0f);
