@@ -2,7 +2,7 @@
  * SettingsViewModel.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/8/20 10:22 AM.
+ *   Updated by paulleclerc on 6/8/20 10:42 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -40,6 +40,7 @@ public class SettingsViewModel extends AndroidViewModel {
 
     private MutableLiveData<Bitmap> avatar = new MutableLiveData<>();
     private Bitmap avatarFromLibrary = null;
+    private MutableLiveData<String> username = new MutableLiveData<>();
 
     public SettingsViewModel(@NonNull Application application) {
         super(application);
@@ -53,7 +54,12 @@ public class SettingsViewModel extends AndroidViewModel {
         return avatar;
     }
 
-    public void validateChanges() {
+    public LiveData<String> getUsername() {
+        user.getUsername(this.username::setValue);
+        return username;
+    }
+
+    public void validateChanges(String username) {
         Bitmap avatar = this.avatar.getValue();
 
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -63,6 +69,10 @@ public class SettingsViewModel extends AndroidViewModel {
                     avatar, UUID.randomUUID().toString(), null);
 
             user.setUserAvatar(Uri.parse(path));
+        }
+
+        if (username != null && !username.equals(this.username.getValue())) {
+            user.setUsername(username);
         }
     }
 

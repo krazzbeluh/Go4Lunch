@@ -2,7 +2,7 @@
  * UserRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/8/20 10:22 AM.
+ *   Updated by paulleclerc on 6/8/20 10:42 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -23,6 +23,14 @@ public class UserRepository {
 
     public void setUserAvatar(Uri avatarUri) {
         storage.saveUserAvatar(avatarUri, firestore::setNewUserAvatar);
+    }
+
+    public void getUsername(FirestoreRepository.GetUsernameCompletion completion) {
+        firestore.getUsername(completion);
+    }
+
+    public void setUsername(String username) {
+        firestore.setUsername(username);
     }
 
     public interface GetUserAvatarCompletion {

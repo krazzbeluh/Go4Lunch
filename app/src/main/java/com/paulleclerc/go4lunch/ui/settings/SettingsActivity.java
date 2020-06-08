@@ -2,7 +2,7 @@
  * SettingsActivity.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/8/20 10:22 AM.
+ *   Updated by paulleclerc on 6/8/20 10:42 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -12,6 +12,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.paulleclerc.go4lunch.R;
 
 import butterknife.BindView;
@@ -37,6 +39,9 @@ public class SettingsActivity extends AppCompatActivity {
     ConstraintLayout avatarLayout;
     @BindView(R.id.settings_avatar_image)
     ImageView avatarImage;
+    @BindView(R.id.settings_username_input)
+    TextInputEditText usernameInput;
+
     private SettingsViewModel viewModel;
 
     @Override
@@ -49,6 +54,7 @@ public class SettingsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         viewModel.getAvatar().observe(this, avatarImage::setImageBitmap);
+        viewModel.getUsername().observe(this, usernameInput::setText);
     }
 
     @AfterPermissionGranted(GET_STORAGE_PERMS)
@@ -76,7 +82,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     @OnClick(R.id.settings_validate_changes)
     public void validateChanges() {
-        viewModel.validateChanges();
+        Editable username = usernameInput.getText();
+        viewModel.validateChanges(username == null ? null : username.toString());
     }
 
     @Override

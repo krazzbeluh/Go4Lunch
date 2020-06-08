@@ -2,7 +2,7 @@
  * FirestoreRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/5/20 11:24 PM.
+ *   Updated by paulleclerc on 6/8/20 10:42 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -18,6 +18,7 @@ public class FirestoreRepository {
     private static final String TAG = FirestoreRepository.class.getSimpleName();
     private static final String KEY_USER_COLLECTION = "User";
     private static final String KEY_AVATAR_NAME = "avatarName";
+    private static final String KEY_USERNAME = "username";
 
     private final FirStorageRepository storage = new FirStorageRepository();
     private final AuthRepository auth = new AuthRepository();
@@ -50,7 +51,26 @@ public class FirestoreRepository {
                 .addOnFailureListener(e -> Log.e(TAG, "setNewUserAvatar: ", e));
     }
 
+    void getUsername(GetUsernameCompletion completion) {
+        db.collection(KEY_USER_COLLECTION)
+                .document(auth.getUid())
+                .get()
+                .addOnSuccessListener(documentSnapshot -> completion.onComplete(documentSnapshot.getString(KEY_USERNAME)))
+                .addOnFailureListener(e -> Log.e(TAG, "onFailure: ", e));
+    }
+
+    void setUsername(String username) {
+        db.collection(KEY_USER_COLLECTION)
+                .document(auth.getUid())
+                .update(KEY_USERNAME, username)
+                .addOnFailureListener(e -> Log.e(TAG, "setUsername: ", e));
+    }
+
     interface GetAvatarUrlCompletion {
         void onAvatarChange(String avatarUrl);
+    }
+
+    public interface GetUsernameCompletion {
+        void onComplete(String username);
     }
 }
