@@ -2,7 +2,7 @@
  * MapFragment.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/8/20 2:52 PM.
+ *   Updated by paulleclerc on 6/8/20 4:11 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -21,6 +21,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,6 +38,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.model.Place;
 import com.paulleclerc.go4lunch.R;
 import com.paulleclerc.go4lunch.model.Restaurant;
+import com.paulleclerc.go4lunch.model.Workmate;
 import com.paulleclerc.go4lunch.ui.main.ShowDetailListener;
 import com.paulleclerc.go4lunch.ui.main.fragments.DisplayRestaurantsInterface;
 
@@ -227,6 +230,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
     @Override
     public void addPlace(Place place) {
-        // TODO
+        if (place.getLatLng() != null) {
+            LiveData<List<Workmate>> workmatesList = viewModel.getInterestedWorkmates(place.getId());
+            workmatesList.observe(this, new Observer<List<Workmate>>() {
+                @Override
+                public void onChanged(List<Workmate> workmates) {
+                    Restaurant restaurant = new Restaurant(place.getId(), place.getName(), place.getAddress(), null, place.getRating(), place.getLatLng(), place.isOpen(), workmates);
+                    List<Restaurant> restaurants = viewModel.getPlaces().getValue();
+                    if (restaurants == null) restaurants = new ArrayList<>();
+                    restaurants.add(restaurant);
+                    viewModel.setPlaces(restaurants);
+                    if (workmates != null) workmatesList.removeObserver(this);
+                }
+            });
+        }
     }
 }

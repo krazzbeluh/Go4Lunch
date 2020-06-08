@@ -2,7 +2,7 @@
  * RestaurantListFragment.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/8/20 2:52 PM.
+ *   Updated by paulleclerc on 6/8/20 4:11 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -158,8 +158,6 @@ public class RestaurantListFragment extends Fragment implements LocationListener
                     if (workmates != null) workmatesList.removeObserver(this);
                 }
             });
-
-
         }
     }
 }
