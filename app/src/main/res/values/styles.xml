@@ -2,7 +2,7 @@
   ~ styles.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/5/20 9:49 AM.
+  ~   Updated by paulleclerc on 6/8/20 2:52 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -28,6 +28,7 @@
 
     <style name="AppTheme.ToolbarStyle">
         <item name="android:textColorPrimary">@color/dark_white</item>
+        <item name="drawableTint">@color/dark_white</item>
     </style>
 
 </resources>

@@ -2,15 +2,13 @@
  * PlacesRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/2/20 5:34 PM.
+ *   Updated by paulleclerc on 6/9/20 2:11 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
 package com.paulleclerc.go4lunch.repository;
 
 import android.util.Log;
-
-import androidx.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,8 +18,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.paulleclerc.go4lunch.closures.FetchPlacesCompletion;
 import com.paulleclerc.go4lunch.model.Restaurant;
 import com.paulleclerc.go4lunch.model.Workmate;
-import com.paulleclerc.go4lunch.model.restaurant_response.Result;
 import com.paulleclerc.go4lunch.network.PlaceClient;
+import com.paulleclerc.go4lunch.network.restaurant_response.Result;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +31,9 @@ public class PlacesRepository {
     private static final Map<LatLng, List<Restaurant>> placesCache = new HashMap<>();
 
     private static final String TAG = PlacesRepository.class.getSimpleName();
+    private static final String KEY_INTERESTS_COLLECTION = "Interests";
+    private static final String KEY_USER_ID = "userID";
+    private static final String KEY_PLACE_ID = "placeID";
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
     private final WorkmatesRepository workmatesRepository;
@@ -57,23 +58,6 @@ public class PlacesRepository {
                 List<Restaurant> restaurantList = new ArrayList<>();
                 List<String> restaurantIds = new ArrayList<>();
                 for (Result result : results) {
-
-                    Double rating = result.getRating();
-                    Restaurant.Rate rate;
-                    if (rating == null) {
-                        rate = Restaurant.Rate.UNKNOWN;
-                    } else {
-                        rating = result.getRating() / 5 * 3;
-
-                        if (rating < 1) {
-                            rate = Restaurant.Rate.BAD;
-                        } else if (rating < 2) {
-                            rate = Restaurant.Rate.MEDIUM;
-                        } else {
-                            rate = Restaurant.Rate.GOOD;
-                        }
-                    }
-
                     LatLng restaurantLocation = new LatLng(result.getGeometry().getLocation().getLat(), result.getGeometry().getLocation().getLng());
 
                     String photoReference;
@@ -88,7 +72,7 @@ public class PlacesRepository {
                     else isOpened = result.getOpeningHours().getOpenNow();
 
                     restaurantIds.add(result.getPlaceId());
-                    restaurantList.add(new Restaurant(result.getPlaceId(), result.getName(), result.getVicinity(), photoReference, rate, restaurantLocation, getDistance(userPosition, restaurantLocation), isOpened, null));
+                    restaurantList.add(new Restaurant(result.getPlaceId(), result.getName(), result.getVicinity(), photoReference, result.getRating(), restaurantLocation, isOpened, null));
                 }
 
                 fetchInterestedWorkmates(restaurantIds, interestedWorkmates -> {
@@ -103,7 +87,7 @@ public class PlacesRepository {
         }
     }
 
-    private void fetchInterestedWorkmates(List<String> placeIDs, FetchInterestedWorkmatesCompletion completion) {
+    private void fetchInterestedWorkmates(List<String> placeIDs, FetchInterestedWorkmatesForPlacesCompletion completion) {
         workmatesRepository.fetchWorkmates((success, workmates) -> {
             if (success) {
                 List<String> workmatesIDs = new ArrayList<>();
@@ -112,8 +96,8 @@ public class PlacesRepository {
                     workmatesIDs.add(workmate.uid);
                 }
 
-                db.collection("Interests")
-                        .whereIn("userID", workmatesIDs)
+                db.collection(KEY_INTERESTS_COLLECTION)
+                        .whereIn(KEY_USER_ID, workmatesIDs)
                         .get()
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
@@ -128,8 +112,8 @@ public class PlacesRepository {
                                 }
 
                                 for (DocumentSnapshot documentSnapshot : documentSnapshots) {
-                                    String placeID = documentSnapshot.getString("placeID");
-                                    String userID = documentSnapshot.getString("userID");
+                                    String placeID = documentSnapshot.getString(KEY_PLACE_ID);
+                                    String userID = documentSnapshot.getString(KEY_USER_ID);
 
                                     if (placeID != null && userID != null && placeIDs.contains(placeID)) {
                                         Workmate workmate = null;
@@ -158,26 +142,44 @@ public class PlacesRepository {
         });
     }
 
-    public void fetchDetail(Restaurant restaurant, FetchDetailsCompletion completion) {
-        client.fetchDetails(restaurant, details -> completion.onComplete(new Restaurant.RestaurantDetails(details.getFormattedPhoneNumber(), details.getWebsite())));
+    public void fetchInterestedWorkmates(String placeID, FetchInterestedWorkmatesForPlaceCompletion completion) {
+        workmatesRepository.fetchWorkmates((success, workmates) -> {
+            if (success) {
+                List<String> workmatesIDs = new ArrayList<>();
+                for (Workmate workmate : workmates) {
+                    workmatesIDs.add(workmate.uid);
+                }
+
+                db.collection(KEY_INTERESTS_COLLECTION)
+                        .whereIn(KEY_USER_ID, workmatesIDs)
+                        .whereEqualTo(KEY_PLACE_ID, placeID)
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            QuerySnapshot results = task.getResult();
+                            if (task.isSuccessful() && results != null) {
+                                List<Workmate> workmatesList = new ArrayList<>();
+                                for (DocumentSnapshot document : results.getDocuments()) {
+                                    for (Workmate workmate : workmates) {
+                                        if (workmate.uid.equals(document.getString(KEY_USER_ID))) {
+                                            workmatesList.add(workmate);
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                completion.onComplete(workmatesList);
+                            } else {
+                                Log.e(TAG, "fetchInterestedWorkmates: ", task.getException());
+                            }
+                        });
+            } else {
+                completion.onComplete(null);
+            }
+        });
     }
 
-    private Integer getDistance(@Nullable LatLng StartP, LatLng EndP) {
-        if (StartP == null) return null;
-        int Radius = 6371;// radius of earth in Km (Type1, Type2) -> TypeR in {}
-        double lat1 = StartP.latitude;
-        double lat2 = EndP.latitude;
-        double lon1 = StartP.longitude;
-        double lon2 = EndP.longitude;
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-                + Math.cos(Math.toRadians(lat1))
-                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
-                * Math.sin(dLon / 2);
-        double c = 2 * Math.asin(Math.sqrt(a));
-
-        return (int) (Radius * c * 1000);
+    public void fetchDetail(Restaurant restaurant, FetchDetailsCompletion completion) {
+        client.fetchDetails(restaurant, details -> completion.onComplete(new Restaurant.RestaurantDetails(details.getFormattedPhoneNumber(), details.getWebsite())));
     }
 
     public void getIsLiked(String id, LikeRestaurantCompletion completion) {
@@ -240,8 +242,12 @@ public class PlacesRepository {
                 });
     }
 
-    private interface FetchInterestedWorkmatesCompletion {
+    private interface FetchInterestedWorkmatesForPlacesCompletion {
         void onComplete(Map<String, List<Workmate>> results);
+    }
+
+    public interface FetchInterestedWorkmatesForPlaceCompletion {
+        void onComplete(List<Workmate> workmates);
     }
 
     public interface FetchDetailsCompletion {

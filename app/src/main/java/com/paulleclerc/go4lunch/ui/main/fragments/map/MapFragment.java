@@ -2,7 +2,7 @@
  * MapFragment.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/8/20 10:44 AM.
+ *   Updated by paulleclerc on 6/8/20 4:54 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -10,6 +10,7 @@ package com.paulleclerc.go4lunch.ui.main.fragments.map;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -21,6 +22,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,12 +36,18 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.model.Place;
 import com.paulleclerc.go4lunch.R;
 import com.paulleclerc.go4lunch.model.Restaurant;
+import com.paulleclerc.go4lunch.model.Workmate;
 import com.paulleclerc.go4lunch.ui.main.ShowDetailListener;
+import com.paulleclerc.go4lunch.ui.main.fragments.DisplayRestaurantsInterface;
+import com.paulleclerc.go4lunch.ui.restaurant_detail.RestaurantDetailActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,7 +60,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  * Use the {@link MapFragment#getInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapFragment extends Fragment implements OnMapReadyCallback, LocationListener {
+public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, LocationListener, DisplayRestaurantsInterface {
     private static final String PERM = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final int GET_LOCATION_PERMS = 100;
     private static final long MIN_TIME = 400;
@@ -164,12 +173,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         }
     }
 
+    private Map<Marker, Restaurant> markerRestaurantAssociation = new HashMap<>();
+
     @Override
     @AfterPermissionGranted(GET_LOCATION_PERMS)
     public void onMapReady(GoogleMap googleMap) {
         if (EasyPermissions.hasPermissions(requireContext(), PERM)) {
             map = googleMap;
             map.setMyLocationEnabled(true);
+            map.setOnInfoWindowClickListener(this);
 
             map.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.google_map_style));
             mapView.onResume();
@@ -186,12 +198,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
         for (Restaurant restaurant : restaurants) {
             LatLng location = restaurant.getLocation();
-            MarkerOptions marker = new MarkerOptions()
+            Boolean isOpened = restaurant.isOpened;
+            MarkerOptions markerOptions = new MarkerOptions()
                     .position(new LatLng(location.latitude, location.longitude))
                     .icon(BitmapDescriptorFactory.fromResource((restaurant.getInterestedWorkmates().size() == 0) ? R.drawable.marker_restaurant_orange : R.drawable.marker_restaurant_green))
-                    .title(restaurant.name);
-            markers.add(map.addMarker(marker));
+                    .title(restaurant.name)
+                    .snippet(isOpened != null ? isOpened ? getString(R.string.restaurant_opened) : getString(R.string.restaurant_closed) : null);
+            Marker marker = map.addMarker(markerOptions);
+            markers.add(marker);
+            markerRestaurantAssociation.put(marker, restaurant);
         }
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Intent intent = new Intent(getContext(), RestaurantDetailActivity.class);
+        intent.putExtra(RestaurantDetailActivity.KEY_RESTAURANT_EXTRA_SERIALIZABLE, markerRestaurantAssociation.get(marker));
+        startActivity(intent);
     }
 
     private void moveCamera() {
@@ -221,5 +244,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+
+    @Override
+    public void addPlace(Place place) {
+        if (place.getLatLng() != null) {
+            LiveData<List<Workmate>> workmatesList = viewModel.getInterestedWorkmates(place.getId());
+            workmatesList.observe(this, new Observer<List<Workmate>>() {
+                @Override
+                public void onChanged(List<Workmate> workmates) {
+                    Restaurant restaurant = new Restaurant(place.getId(), place.getName(), place.getAddress(), null, place.getRating(), place.getLatLng(), place.isOpen(), workmates);
+                    List<Restaurant> restaurants = viewModel.getPlaces().getValue();
+                    if (restaurants == null) restaurants = new ArrayList<>();
+                    restaurants.add(restaurant);
+                    viewModel.setPlaces(restaurants);
+                    if (workmates != null) workmatesList.removeObserver(this);
+                }
+            });
+        }
     }
 }
