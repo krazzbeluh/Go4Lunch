@@ -2,7 +2,7 @@
  * PlaceClient.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Updated by paulleclerc on 6/9/20 2:11 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -12,9 +12,9 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.paulleclerc.go4lunch.model.Restaurant;
-import com.paulleclerc.go4lunch.model.restaurant_response.RestaurantSearchResponse;
-import com.paulleclerc.go4lunch.model.restaurant_response.Result;
 import com.paulleclerc.go4lunch.network.restaurant_detail_response.RestaurantDetailResponse;
+import com.paulleclerc.go4lunch.network.restaurant_response.RestaurantSearchResponse;
+import com.paulleclerc.go4lunch.network.restaurant_response.Result;
 
 import java.util.List;
 

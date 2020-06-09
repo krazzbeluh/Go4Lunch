@@ -2,7 +2,7 @@
  * PlacesRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/8/20 2:52 PM.
+ *   Updated by paulleclerc on 6/9/20 2:11 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -18,8 +18,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.paulleclerc.go4lunch.closures.FetchPlacesCompletion;
 import com.paulleclerc.go4lunch.model.Restaurant;
 import com.paulleclerc.go4lunch.model.Workmate;
-import com.paulleclerc.go4lunch.model.restaurant_response.Result;
 import com.paulleclerc.go4lunch.network.PlaceClient;
+import com.paulleclerc.go4lunch.network.restaurant_response.Result;
 
 import java.util.ArrayList;
 import java.util.HashMap;
