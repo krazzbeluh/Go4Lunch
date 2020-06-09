@@ -2,7 +2,7 @@
  * build.gradle
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/8/20 2:52 PM.
+ *   Updated by paulleclerc on 6/9/20 3:25 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -66,6 +66,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.2.2'
     implementation 'androidx.preference:preference:1.1.1'
     testImplementation 'junit:junit:4.13'
+    testImplementation "org.mockito:mockito-core:2.28.2"
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
