@@ -2,7 +2,7 @@
   ~ activity_restaurant_detail.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/2/20 5:34 PM.
+  ~   Updated by paulleclerc on 6/15/20 2:38 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -43,53 +43,69 @@
             android:layout_marginEnd="8dp"
             app:backgroundTint="@color/dark_white" android:tint="@color/colorPrimary"/>
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@+id/app_bar"
-            app:layout_constraintStart_toStartOf="parent"
-            android:background="@color/colorPrimary" android:id="@+id/constraintLayout2">
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar">
 
         <TextView
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent"
-                android:id="@+id/restaurant_detail_title" app:layout_constraintTop_toTopOf="parent"
-                android:textColor="@color/dark_white" android:textSize="24sp"
-                app:layout_constraintEnd_toStartOf="@+id/imageView4" android:layout_margin="8dp"/>
+            android:id="@+id/restaurant_detail_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/dark_white"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
-                android:layout_width="0dp"
-                android:layout_height="0dp" app:srcCompat="@drawable/star" android:id="@+id/imageView4"
-                app:layout_constraintDimensionRatio="1"
-                app:layout_constraintTop_toTopOf="@+id/restaurant_detail_title"
-                app:layout_constraintBottom_toBottomOf="@+id/restaurant_detail_title"
-                app:layout_constraintStart_toEndOf="@+id/restaurant_detail_title" android:layout_marginStart="4dp"
-                android:contentDescription="@string/restaurant_rate_1"/>
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:contentDescription="@string/restaurant_rate_1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toStartOf="@+id/restaurant_detail_address"
+            app:layout_constraintTop_toBottomOf="@+id/restaurant_detail_address"
+            app:srcCompat="@drawable/star" />
+
         <ImageView
-                android:layout_width="0dp"
-                android:layout_height="0dp" app:srcCompat="@drawable/star" android:id="@+id/imageView5"
-                app:layout_constraintDimensionRatio="1"
-                app:layout_constraintTop_toTopOf="@+id/restaurant_detail_title"
-                app:layout_constraintBottom_toBottomOf="@+id/restaurant_detail_title"
-                app:layout_constraintVertical_bias="0.0" app:layout_constraintStart_toEndOf="@+id/imageView4"
-                android:layout_marginStart="4dp" android:contentDescription="@string/restaurant_rate_2"/>
+            android:id="@+id/imageView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/restaurant_rate_2"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toEndOf="@+id/imageView4"
+            app:srcCompat="@drawable/star" />
+
         <ImageView
-                android:layout_width="0dp"
-                android:layout_height="0dp" app:srcCompat="@drawable/star" android:id="@+id/imageView6"
-                app:layout_constraintDimensionRatio="1"
-                app:layout_constraintTop_toTopOf="@+id/restaurant_detail_title"
-                app:layout_constraintBottom_toBottomOf="@+id/restaurant_detail_title"
-                app:layout_constraintVertical_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/imageView5" android:layout_marginStart="4dp"
-                android:contentDescription="@string/restaurant_rate_3"/>
+            android:id="@+id/imageView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/restaurant_rate_3"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toEndOf="@+id/imageView5"
+            app:srcCompat="@drawable/star" />
+
         <TextView
-                android:text=""
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" android:id="@+id/restaurant_detail_address"
-                app:layout_constraintTop_toBottomOf="@+id/restaurant_detail_title"
-                android:textColor="@color/dark_white"
-                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="8dp" app:layout_constraintStart_toStartOf="parent"
-        />
+            android:id="@+id/restaurant_detail_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/dark_white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/restaurant_detail_title" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <LinearLayout
             android:orientation="horizontal"

@@ -2,7 +2,7 @@
   ~ activity_chat.xml
   ~   Go4Lunch
   ~
-  ~   Created by paulleclerc on 5/29/20 3:25 PM.
+  ~   Updated by paulleclerc on 6/15/20 2:38 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/chat_workmate_avatar"
             android:layout_width="40dp"
             android:layout_height="0dp"
