@@ -2,7 +2,7 @@
  * build.gradle
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/9/20 3:25 PM.
+ *   Updated by paulleclerc on 6/15/20 2:38 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -74,6 +74,7 @@ dependencies {
     implementation 'pub.devrel:easypermissions:3.0.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     //noinspection AnnotationProcessorOnCompilePath
     implementation 'com.jakewharton:butterknife:10.2.1'

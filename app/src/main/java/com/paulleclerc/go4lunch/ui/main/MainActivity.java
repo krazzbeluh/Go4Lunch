@@ -2,7 +2,7 @@
  * MainActivity.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/8/20 4:54 PM.
+ *   Updated by paulleclerc on 6/15/20 3:22 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -57,6 +57,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     BottomNavigationView bottomNavigationView;
     @BindView(R.id.main_nav_view)
     NavigationView navigationView;
+
+    MenuItem searchMenuItem;
+
     private MainViewModel viewModel;
     private Fragment currentFragment;
 
@@ -92,11 +95,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
             case R.id.main_bottom_navigation_map:
                 openFragment(MapFragment.getInstance(this));
+                if (searchMenuItem != null) searchMenuItem.setVisible(true);
                 return true;
             case R.id.main_bottom_navigation_list:
                 openFragment(RestaurantListFragment.getInstance(this));
+                if (searchMenuItem != null) searchMenuItem.setVisible(true);
                 return true;
             case R.id.main_bottom_navigation_workmates:
+                if (searchMenuItem != null) searchMenuItem.setVisible(false);
                 openFragment(WorkmatesFragment.getInstance());
                 return true;
             case R.id.lateral_menu_lunch:
@@ -151,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        searchMenuItem = menu.findItem(R.id.menu_search);
         return super.onCreateOptionsMenu(menu);
     }
 
