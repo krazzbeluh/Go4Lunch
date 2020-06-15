@@ -2,7 +2,7 @@
  * PlacesRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/9/20 2:11 PM.
+ *   Updated by paulleclerc on 6/15/20 6:10 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -178,8 +178,11 @@ public class PlacesRepository {
         });
     }
 
-    public void fetchDetail(Restaurant restaurant, FetchDetailsCompletion completion) {
-        client.fetchDetails(restaurant, details -> completion.onComplete(new Restaurant.RestaurantDetails(details.getFormattedPhoneNumber(), details.getWebsite())));
+    public void fetchDetail(String placeId, FetchDetailsCompletion completion) {
+        client.fetchDetails(placeId, details -> this.fetchInterestedWorkmates(placeId, workmates -> {
+            Restaurant restaurant = new Restaurant(placeId, details, workmates);
+            completion.onComplete(restaurant);
+        }));
     }
 
     public void getIsLiked(String id, LikeRestaurantCompletion completion) {
@@ -251,7 +254,7 @@ public class PlacesRepository {
     }
 
     public interface FetchDetailsCompletion {
-        void onComplete(Restaurant.RestaurantDetails details);
+        void onComplete(Restaurant restaurant);
     }
 
     public interface LikeRestaurantCompletion {

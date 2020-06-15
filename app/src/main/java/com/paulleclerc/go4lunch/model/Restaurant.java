@@ -2,7 +2,7 @@
  * Restaurant.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/8/20 2:52 PM.
+ *   Updated by paulleclerc on 6/15/20 6:10 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.paulleclerc.go4lunch.BuildConfig;
+import com.paulleclerc.go4lunch.network.restaurant_detail_response.Result;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,6 +39,23 @@ public class Restaurant implements Serializable {
         this.lng = location.longitude;
         this.rate = getRateFromPlaceRating(rate);
         this.isOpened = isOpened;
+
+        if (interestedWorkmates != null) this.interestedWorkmates = interestedWorkmates;
+        else this.interestedWorkmates = new ArrayList<>();
+    }
+
+    public Restaurant(String placeId, Result result, @Nullable List<Workmate> interestedWorkmates) {
+        this.id = placeId;
+        this.name = result.getName();
+        this.address = result.getVicinity();
+        if (result.getPhotos() == null) photoReference = null;
+        else photoReference = result.getPhotos().get(0).getPhotoReference();
+        this.lat = result.getGeometry().getLocation().getLat();
+        this.lng = result.getGeometry().getLocation().getLng();
+        this.rate = getRateFromPlaceRating(result.getRating());
+        this.isOpened = result.getOpeningHours().getOpenNow();
+
+        this.details = new RestaurantDetails(result.getFormattedPhoneNumber(), result.getWebsite());
 
         if (interestedWorkmates != null) this.interestedWorkmates = interestedWorkmates;
         else this.interestedWorkmates = new ArrayList<>();
@@ -112,7 +130,7 @@ public class Restaurant implements Serializable {
         return (int) (Radius * c * 1000);
     }
 
-    public static class RestaurantDetails {
+    public static class RestaurantDetails implements Serializable {
         private final String phone;
         private final String website;
 

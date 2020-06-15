@@ -2,7 +2,7 @@
  * RestaurantDetailViewModel.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/2/20 5:34 PM.
+ *   Updated by paulleclerc on 6/15/20 6:10 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -29,7 +29,7 @@ public class RestaurantDetailViewModel extends AndroidViewModel {
     private final MutableLiveData<Boolean> isLiked = new MutableLiveData<>();
 
     LiveData<Restaurant.RestaurantDetails> getPlaceDetail(Restaurant restaurant) {
-        placesRepository.fetchDetail(restaurant, placeDetail::setValue);
+        placesRepository.fetchDetail(restaurant.id, restaurantWithDetail -> this.placeDetail.setValue(restaurantWithDetail.getDetails()));
 
         return placeDetail;
     }

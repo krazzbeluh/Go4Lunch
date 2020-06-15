@@ -2,7 +2,7 @@
  * MainActivity.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/15/20 3:22 PM.
+ *   Updated by paulleclerc on 6/15/20 6:10 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -12,7 +12,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +25,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.TypeFilter;
@@ -58,6 +61,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @BindView(R.id.main_nav_view)
     NavigationView navigationView;
 
+    TextView usernameTextView;
+    TextView userEmailTextView;
+    ImageView userAvatar;
+
     MenuItem searchMenuItem;
 
     private MainViewModel viewModel;
@@ -88,6 +95,23 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         navigationView.setNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.main_bottom_navigation_map);
+
+        View headerLayout = navigationView.getHeaderView(0);
+        userAvatar = headerLayout.findViewById(R.id.main_menu_user_avatar);
+        userEmailTextView = headerLayout.findViewById(R.id.nav_view_user_email_textview);
+        usernameTextView = headerLayout.findViewById(R.id.nav_view_username_textview);
+
+        viewModel.getUserEmail().observe(this, userEmailTextView::setText);
+        viewModel.getUsername().observe(this, usernameTextView::setText);
+        viewModel.getUserAvatar().observe(this, avatarUrl -> Glide.with(this)
+                .load(avatarUrl)
+                .placeholder(R.drawable.workmate)
+                .into(userAvatar));
+
+        viewModel.getChosenRestaurant().observe(this, restaurant -> {
+            MenuItem menuItem = navigationView.getMenu().findItem(R.id.lateral_menu_lunch);
+            menuItem.setVisible(restaurant != null);
+        });
     }
 
     @Override
@@ -106,7 +130,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 openFragment(WorkmatesFragment.getInstance());
                 return true;
             case R.id.lateral_menu_lunch:
-                Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
+                Restaurant restaurant = viewModel.getChosenRestaurant().getValue();
+                if (restaurant != null) {
+                    Intent intent = new Intent(this, RestaurantDetailActivity.class);
+                    intent.putExtra(RestaurantDetailActivity.KEY_RESTAURANT_EXTRA_SERIALIZABLE, restaurant);
+                    startActivity(intent);
+                }
                 return false;
             case R.id.lateral_menu_settings:
                 Intent intent = new Intent(this, SettingsActivity.class);

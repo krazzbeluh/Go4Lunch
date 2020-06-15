@@ -2,7 +2,7 @@
  * AuthRepositoryTest.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/9/20 3:25 PM.
+ *   Updated by paulleclerc on 6/15/20 6:10 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -73,10 +73,5 @@ public class AuthRepositoryTest {
         when(auth.getCurrentUser()).thenReturn(user);
 
         assertEquals(authRepository.getUid(), result);
-    }
-
-    @Test
-    public void testFirebaseSignInWithCredentialShouldCallCompletionLambda() {
-        when(auth.signInWithCredential(credential)).thenReturn(task);
     }
 }
