@@ -2,7 +2,7 @@
   ~ strings.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/16/20 11:58 AM.
+  ~   Updated by paulleclerc on 6/16/20 2:43 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -63,4 +63,5 @@
     <string name="impossible_operation">An error occurred whil performing this operation, retry later !</string>
     <string name="error">Error</string>
     <string name="ok">OK</string>
+    <string name="default_notification_channel_id" translatable="false">5ee8bce0326ca</string>
 </resources>
