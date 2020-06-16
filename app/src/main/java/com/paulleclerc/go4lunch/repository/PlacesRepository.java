@@ -2,7 +2,7 @@
  * PlacesRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/15/20 6:10 PM.
+ *   Updated by paulleclerc on 6/16/20 11:15 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -31,9 +31,9 @@ public class PlacesRepository {
     private static final Map<LatLng, List<Restaurant>> placesCache = new HashMap<>();
 
     private static final String TAG = PlacesRepository.class.getSimpleName();
-    private static final String KEY_INTERESTS_COLLECTION = "Interests";
+    private static final String KEY_USER_COLLECTION = "User";
     private static final String KEY_USER_ID = "userID";
-    private static final String KEY_PLACE_ID = "placeID";
+    private static final String KEY_PLACE_ID = "chosenPlaceId";
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
     private final WorkmatesRepository workmatesRepository;
@@ -96,7 +96,7 @@ public class PlacesRepository {
                     workmatesIDs.add(workmate.uid);
                 }
 
-                db.collection(KEY_INTERESTS_COLLECTION)
+                db.collection(KEY_USER_COLLECTION)
                         .whereIn(KEY_USER_ID, workmatesIDs)
                         .get()
                         .addOnCompleteListener(task -> {
@@ -150,7 +150,7 @@ public class PlacesRepository {
                     workmatesIDs.add(workmate.uid);
                 }
 
-                db.collection(KEY_INTERESTS_COLLECTION)
+                db.collection(KEY_USER_COLLECTION)
                         .whereIn(KEY_USER_ID, workmatesIDs)
                         .whereEqualTo(KEY_PLACE_ID, placeID)
                         .get()
