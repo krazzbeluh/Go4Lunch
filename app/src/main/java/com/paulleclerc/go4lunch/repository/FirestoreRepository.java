@@ -2,7 +2,7 @@
  * FirestoreRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/15/20 6:10 PM.
+ *   Updated by paulleclerc on 6/16/20 11:58 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -80,6 +80,16 @@ public class FirestoreRepository {
                 });
     }
 
+    void setChosenPlaceId(String placeId, SetChosenPlaceIdCompletion completion) {
+        db.collection(KEY_USER_COLLECTION)
+                .document(auth.getUid())
+                .update(KEY_CHOSEN_PLACE_ID, placeId)
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "setChosenPlaceId: ", e);
+                    completion.onFailure();
+                });
+    }
+
     interface GetAvatarUrlCompletion {
         void onAvatarChange(String avatarUrl);
     }
@@ -90,5 +100,9 @@ public class FirestoreRepository {
 
     public interface GetPlaceIdCompletion {
         void onComplete(String placeId);
+    }
+
+    public interface SetChosenPlaceIdCompletion {
+        void onFailure();
     }
 }

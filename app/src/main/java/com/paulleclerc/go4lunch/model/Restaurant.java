@@ -2,7 +2,7 @@
  * Restaurant.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/15/20 6:10 PM.
+ *   Updated by paulleclerc on 6/16/20 11:58 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.paulleclerc.go4lunch.BuildConfig;
+import com.paulleclerc.go4lunch.network.restaurant_detail_response.OpeningHours;
 import com.paulleclerc.go4lunch.network.restaurant_detail_response.Result;
 
 import java.io.Serializable;
@@ -53,7 +54,9 @@ public class Restaurant implements Serializable {
         this.lat = result.getGeometry().getLocation().getLat();
         this.lng = result.getGeometry().getLocation().getLng();
         this.rate = getRateFromPlaceRating(result.getRating());
-        this.isOpened = result.getOpeningHours().getOpenNow();
+
+        OpeningHours openingHours = result.getOpeningHours();
+        this.isOpened = openingHours != null ? openingHours.getOpenNow() : null;
 
         this.details = new RestaurantDetails(result.getFormattedPhoneNumber(), result.getWebsite());
 

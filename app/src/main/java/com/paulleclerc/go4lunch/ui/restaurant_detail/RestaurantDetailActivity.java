@@ -2,7 +2,7 @@
  * RestaurantDetailActivity.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/8/20 4:54 PM.
+ *   Updated by paulleclerc on 6/16/20 11:58 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,11 +24,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.paulleclerc.go4lunch.R;
 import com.paulleclerc.go4lunch.model.Restaurant;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
     private static final String TAG = RestaurantDetailActivity.class.getSimpleName();
@@ -45,6 +48,8 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     TextView addressTextView;
     @BindView(R.id.restaurant_detail_background)
     ImageView backgroundImageView;
+    @BindView(R.id.restaurant_detail_choose_restaurant_button)
+    FloatingActionButton chooseRestaurantButton;
 
     @BindView(R.id.restaurant_detail_call_layout)
     LinearLayout callLayout;
@@ -96,6 +101,20 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         titleTextView.setText(restaurant.name);
         addressTextView.setText(restaurant.address);
 
+        viewModel.getAlertMessage().observe(this, message -> new AlertDialog.Builder(this)
+                .setTitle(R.string.error)
+                .setMessage(message)
+                .setNeutralButton(R.string.ok, (dialog, which) -> {
+                })
+                .show());
+
+        viewModel.getChosenRestaurantId().observe(this, restaurantId -> {
+            if (restaurantId.equals(restaurant.id)) {
+                chooseRestaurantButton.setImageResource(R.drawable.check_circle);
+            } else {
+                chooseRestaurantButton.setImageResource(R.drawable.add_circle);
+            }
+        });
 
         Glide.with(this)
                 .load(restaurant.getPhotoUrl())
@@ -115,6 +134,11 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         });
 
         likeLayout.setOnClickListener(v -> viewModel.switchLike(restaurant));
+    }
+
+    @OnClick(R.id.restaurant_detail_choose_restaurant_button)
+    public void chooseRestaurant() {
+        viewModel.chooseRestaurant(restaurant);
     }
 
     private void setDetails(Restaurant.RestaurantDetails details) {
