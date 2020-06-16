@@ -2,7 +2,7 @@
   ~ strings.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/8/20 2:52 PM.
+  ~   Updated by paulleclerc on 6/16/20 11:58 AM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -34,7 +34,7 @@
     <string name="website">Site web</string>
     <string name="like_restaurant">Pictogramme \"J\'aime\"</string>
     <string name="website_picture">Pictogramme \"Site web\"</string>
-    <string name="workmate_is_joining">%1$s est intéressé !</string>
+    <string name="workmate_is_joining">%1$s a choisi ce restaurant !</string>
     <string name="me">Moi</string>
     <string name="chat_message_placeholder">Votre message…</string>
     <string name="send_picture">Pictogramme \"envoyer\"</string>
@@ -51,4 +51,7 @@
     <string name="allow_daily_noon_notification">Autoriser les notifications quotidiennes</string>
     <string name="permission_storage_message">Go4Lunch a besoin d\'accéder à votre disque.</string>
     <string name="search">Rechercher</string>
+    <string name="impossible_operation">Une erreur est survenue, réessayez plus tard !</string>
+    <string name="error">Erreur</string>
+    <string name="ok">OK</string>
 </resources>

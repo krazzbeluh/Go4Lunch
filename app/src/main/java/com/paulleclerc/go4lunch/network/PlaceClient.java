@@ -2,7 +2,7 @@
  * PlaceClient.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/9/20 2:11 PM.
+ *   Updated by paulleclerc on 6/15/20 6:10 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -11,7 +11,6 @@ package com.paulleclerc.go4lunch.network;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.paulleclerc.go4lunch.model.Restaurant;
 import com.paulleclerc.go4lunch.network.restaurant_detail_response.RestaurantDetailResponse;
 import com.paulleclerc.go4lunch.network.restaurant_response.RestaurantSearchResponse;
 import com.paulleclerc.go4lunch.network.restaurant_response.Result;
@@ -56,8 +55,8 @@ public class PlaceClient {
         });
     }
 
-    public void fetchDetails(Restaurant restaurant, FetchDetailsCompletion completion) {
-        Call<RestaurantDetailResponse> call = service.getPlaceDetail(restaurant.id);
+    public void fetchDetails(String placeId, FetchDetailsCompletion completion) {
+        Call<RestaurantDetailResponse> call = service.getPlaceDetail(placeId);
         call.enqueue(new Callback<RestaurantDetailResponse>() {
             @Override
             @EverythingIsNonNull

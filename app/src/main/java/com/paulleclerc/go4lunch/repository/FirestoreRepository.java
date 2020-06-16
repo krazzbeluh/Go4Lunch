@@ -2,7 +2,7 @@
  * FirestoreRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/8/20 10:44 AM.
+ *   Updated by paulleclerc on 6/16/20 11:58 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -19,6 +19,7 @@ public class FirestoreRepository {
     private static final String KEY_USER_COLLECTION = "User";
     private static final String KEY_AVATAR_NAME = "avatarName";
     private static final String KEY_USERNAME = "username";
+    private static final String KEY_CHOSEN_PLACE_ID = "chosenPlaceId";
 
     private final FirStorageRepository storage = new FirStorageRepository();
     private final AuthRepository auth = new AuthRepository();
@@ -66,11 +67,42 @@ public class FirestoreRepository {
                 .addOnFailureListener(e -> Log.e(TAG, "setUsername: ", e));
     }
 
+    void getChosenPlaceId(GetPlaceIdCompletion completion) {
+        db.collection(KEY_USER_COLLECTION)
+                .document(auth.getUid())
+                .addSnapshotListener((documentSnapshot, e) -> {
+                    if (e == null && documentSnapshot != null) {
+                        completion.onComplete(documentSnapshot.getString(KEY_CHOSEN_PLACE_ID));
+                    } else {
+                        completion.onComplete(null);
+                        Log.e(TAG, "getChosenPlaceId: ", e);
+                    }
+                });
+    }
+
+    void setChosenPlaceId(String placeId, SetChosenPlaceIdCompletion completion) {
+        db.collection(KEY_USER_COLLECTION)
+                .document(auth.getUid())
+                .update(KEY_CHOSEN_PLACE_ID, placeId)
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "setChosenPlaceId: ", e);
+                    completion.onFailure();
+                });
+    }
+
     interface GetAvatarUrlCompletion {
         void onAvatarChange(String avatarUrl);
     }
 
     public interface GetUsernameCompletion {
         void onComplete(String username);
+    }
+
+    public interface GetPlaceIdCompletion {
+        void onComplete(String placeId);
+    }
+
+    public interface SetChosenPlaceIdCompletion {
+        void onFailure();
     }
 }

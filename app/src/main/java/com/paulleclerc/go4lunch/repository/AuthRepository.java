@@ -2,7 +2,7 @@
  * AuthRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/9/20 3:25 PM.
+ *   Updated by paulleclerc on 6/15/20 6:10 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -42,5 +42,11 @@ public class AuthRepository {
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) return null;
         return user.getUid();
+    }
+
+    public String getEmail() {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user != null) return user.getEmail();
+        else return null;
     }
 }

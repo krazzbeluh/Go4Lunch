@@ -2,7 +2,7 @@
  * PlaceService.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/9/20 2:11 PM.
+ *   Updated by paulleclerc on 6/15/20 6:10 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -20,6 +20,6 @@ public interface PlaceService {
     @GET("maps/api/place/nearbysearch/json?key=" + BuildConfig.GOOGLE_MAPS_AND_PLACES_KEY + "&rankby=distance&type=restaurant")
     Call<RestaurantSearchResponse> getNearbyRestaurants(@Query("location") String location);
 
-    @GET("maps/api/place/details/json?key=" + BuildConfig.GOOGLE_MAPS_AND_PLACES_KEY + "&fields=formatted_phone_number,website")
+    @GET("maps/api/place/details/json?key=" + BuildConfig.GOOGLE_MAPS_AND_PLACES_KEY + "&fields=formatted_phone_number,website,name,vicinity,photos,rating,geometry/location,opening_hours")
     Call<RestaurantDetailResponse> getPlaceDetail(@Query("place_id") String placeID);
 }

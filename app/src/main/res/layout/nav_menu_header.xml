@@ -2,7 +2,7 @@
   ~ nav_menu_header.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/15/20 2:38 PM.
+  ~   Updated by paulleclerc on 6/15/20 6:10 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -32,7 +32,7 @@
         app:srcCompat="@drawable/background" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/main_menu_user_avatar"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -52,13 +52,13 @@
         android:textColor="@color/dark_white"
         android:textSize="36sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/imageView3"
+        app:layout_constraintBottom_toTopOf="@+id/main_menu_user_avatar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/nav_view_username_textview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -70,18 +70,19 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="@+id/imageView3" />
+        app:layout_constraintTop_toTopOf="@+id/main_menu_user_avatar" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/nav_view_user_email_textview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:textColor="@color/dark_white"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintStart_toEndOf="@+id/main_menu_user_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/nav_view_username_textview" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
