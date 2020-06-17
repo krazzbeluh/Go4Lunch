@@ -2,7 +2,7 @@
  * UserRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/17/20 3:34 PM.
+ *   Updated by paulleclerc on 6/17/20 4:36 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -33,12 +33,20 @@ public class UserRepository {
         storage.saveUserAvatar(avatarUri, firestore::setNewUserAvatar);
     }
 
+    public void setAllowNotifications(boolean allowNotifications) {
+        firestore.setAllowNotifications(allowNotifications);
+    }
+
     public void getUsername(FirestoreRepository.GetUsernameCompletion completion) {
         firestore.getUsername(completion);
     }
 
     public void getChosenPlaceId(GetChosenPlaceIdCompletion completion) {
         firestore.getChosenPlaceId(completion::onComplete);
+    }
+
+    public void getAllowNotifications(GetAllowNotificationsCompletion completion) {
+        firestore.getAllowNotifications(completion::onComplete);
     }
 
     public void getChosenRestaurant(GetChosenRestaurantCompletion completion) {
@@ -83,6 +91,10 @@ public class UserRepository {
 
     public interface GetChosenPlaceIdCompletion {
         void onComplete(String placeId);
+    }
+
+    public interface GetAllowNotificationsCompletion {
+        void onComplete(Boolean allowNotifications);
     }
 
     public interface SetChosenPlaceIdCompletion {

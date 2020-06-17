@@ -2,7 +2,7 @@
  * SettingsViewModel.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/8/20 10:44 AM.
+ *   Updated by paulleclerc on 6/17/20 4:36 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -41,6 +41,7 @@ public class SettingsViewModel extends AndroidViewModel {
     private MutableLiveData<Bitmap> avatar = new MutableLiveData<>();
     private Bitmap avatarFromLibrary = null;
     private MutableLiveData<String> username = new MutableLiveData<>();
+    private MutableLiveData<Boolean> allowNotifications = new MutableLiveData<>();
 
     public SettingsViewModel(@NonNull Application application) {
         super(application);
@@ -59,7 +60,12 @@ public class SettingsViewModel extends AndroidViewModel {
         return username;
     }
 
-    public void validateChanges(String username) {
+    public LiveData<Boolean> getAllowNotifications() {
+        user.getAllowNotifications(allowNotifications::setValue);
+        return allowNotifications;
+    }
+
+    public void validateChanges(String username, boolean allowNotifications) {
         Bitmap avatar = this.avatar.getValue();
 
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -73,6 +79,11 @@ public class SettingsViewModel extends AndroidViewModel {
 
         if (username != null && !username.equals(this.username.getValue())) {
             user.setUsername(username);
+        }
+
+        Boolean areNotificationsAllowed = this.allowNotifications.getValue();
+        if (areNotificationsAllowed != null && allowNotifications != areNotificationsAllowed) {
+            user.setAllowNotifications(allowNotifications);
         }
     }
 

@@ -2,7 +2,7 @@
   ~ activity_settings.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/17/20 3:34 PM.
+  ~   Updated by paulleclerc on 6/17/20 4:36 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -128,6 +128,7 @@
                     android:id="@+id/settings_allow_daily_checkbox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:text="@string/allow_daily_noon_notification"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"

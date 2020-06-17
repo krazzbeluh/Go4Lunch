@@ -2,7 +2,7 @@
  * FirestoreRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/17/20 3:34 PM.
+ *   Updated by paulleclerc on 6/17/20 4:36 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -10,6 +10,7 @@ package com.paulleclerc.go4lunch.repository;
 
 import android.util.Log;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -21,6 +22,7 @@ public class FirestoreRepository {
     private static final String KEY_USERNAME = "username";
     private static final String KEY_CHOSEN_PLACE_ID = "chosenPlaceId";
     private static final String KEY_FCM_TOKEN = "fcmToken";
+    private static final String KEY_ALLOW_NOTIFICATIONS = "allowNotifications";
 
     private final FirStorageRepository storage = new FirStorageRepository();
     private final AuthRepository auth = new AuthRepository();
@@ -68,6 +70,13 @@ public class FirestoreRepository {
                 .addOnFailureListener(e -> Log.e(TAG, "setUsername: ", e));
     }
 
+    void setAllowNotifications(boolean allowNotifications) {
+        db.collection(KEY_USER_COLLECTION)
+                .document(auth.getUid())
+                .update(KEY_ALLOW_NOTIFICATIONS, allowNotifications)
+                .addOnFailureListener(e -> Log.e(TAG, "setAllowNotifications: ", e));
+    }
+
     void getChosenPlaceId(GetPlaceIdCompletion completion) {
         db.collection(KEY_USER_COLLECTION)
                 .document(auth.getUid())
@@ -77,6 +86,21 @@ public class FirestoreRepository {
                     } else {
                         completion.onComplete(null);
                         Log.e(TAG, "getChosenPlaceId: ", e);
+                    }
+                });
+    }
+
+    void getAllowNotifications(GetAllowNotificationsCompletion completion) {
+        db.collection(KEY_USER_COLLECTION)
+                .document(auth.getUid())
+                .get()
+                .addOnCompleteListener(documentSnapshot -> {
+                    DocumentSnapshot result = documentSnapshot.getResult();
+                    if (documentSnapshot.isSuccessful() && result != null) {
+                        completion.onComplete(result.getBoolean(KEY_ALLOW_NOTIFICATIONS));
+                    } else {
+                        completion.onComplete(null);
+                        Log.e(TAG, "getAllowNotifications: ", documentSnapshot.getException());
                     }
                 });
     }
@@ -107,6 +131,10 @@ public class FirestoreRepository {
 
     public interface GetPlaceIdCompletion {
         void onComplete(String placeId);
+    }
+
+    public interface GetAllowNotificationsCompletion {
+        void onComplete(Boolean allowNotifications);
     }
 
     public interface SetChosenPlaceIdCompletion {

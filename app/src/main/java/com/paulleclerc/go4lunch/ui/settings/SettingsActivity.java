@@ -2,7 +2,7 @@
  * SettingsActivity.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/8/20 10:44 AM.
+ *   Updated by paulleclerc on 6/17/20 4:36 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,8 @@ public class SettingsActivity extends AppCompatActivity {
     ImageView avatarImage;
     @BindView(R.id.settings_username_input)
     TextInputEditText usernameInput;
+    @BindView(R.id.settings_allow_daily_checkbox)
+    CheckBox allowNotificationsCheckBox;
 
     private SettingsViewModel viewModel;
 
@@ -55,6 +58,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         viewModel.getAvatar().observe(this, avatarImage::setImageBitmap);
         viewModel.getUsername().observe(this, usernameInput::setText);
+        viewModel.getAllowNotifications().observe(this, allowNotifications -> allowNotificationsCheckBox.setChecked(allowNotifications));
     }
 
     @AfterPermissionGranted(GET_STORAGE_PERMS)
@@ -83,7 +87,7 @@ public class SettingsActivity extends AppCompatActivity {
     @OnClick(R.id.settings_validate_changes)
     public void validateChanges() {
         Editable username = usernameInput.getText();
-        viewModel.validateChanges(username == null ? null : username.toString());
+        viewModel.validateChanges(username == null ? null : username.toString(), allowNotificationsCheckBox.isChecked());
     }
 
     @Override
