@@ -2,7 +2,7 @@
   ~ colors.xml
   ~   Go4Lunch
   ~
-  ~   Created by paulleclerc on 5/27/20 5:13 PM.
+  ~   Updated by paulleclerc on 6/17/20 10:09 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -14,4 +14,5 @@
     <color name="restaurant_closed">#C62828</color>
     <color name="dark_white">#fdfdfd</color>
     <color name="gray_out">#A5A5A5</color>
+    <color name="chat_sender">#A1CBEC</color>
 </resources>

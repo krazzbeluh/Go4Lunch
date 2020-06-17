@@ -2,7 +2,7 @@
   ~ activity_chat.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/15/20 2:59 PM.
+  ~   Updated by paulleclerc on 6/17/20 10:09 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -71,7 +71,7 @@
         app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        tools:listitem="@layout/chat_recyclerview_row" />
+        tools:listitem="@layout/chat_recyclerview_row_gray" />
 
     <EditText
         android:id="@+id/chat_message_edittext"

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ chat_bubble_gray.xml
+  ~   Go4Lunch
+  ~
+  ~   Updated by paulleclerc on 6/17/20 10:09 PM.
+  ~   Copyright © 2020 Paul Leclerc. All rights reserved.
+  -->
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#D8D8D8" />
+    <corners android:radius="10dp" />
+    <padding
+        android:bottom="0dp"
+        android:left="0dp"
+        android:right="0dp"
+        android:top="0dp" />
+</shape>
