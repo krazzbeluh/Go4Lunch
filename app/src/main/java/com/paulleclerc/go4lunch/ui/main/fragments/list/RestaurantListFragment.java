@@ -2,7 +2,7 @@
  * RestaurantListFragment.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/17/20 3:34 PM.
+ *   Updated by paulleclerc on 6/17/20 5:33 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -31,7 +31,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.model.Place;
 import com.paulleclerc.go4lunch.R;
 import com.paulleclerc.go4lunch.model.Restaurant;
-import com.paulleclerc.go4lunch.model.Workmate;
 import com.paulleclerc.go4lunch.ui.main.ShowDetailListener;
 import com.paulleclerc.go4lunch.ui.main.fragments.DisplayRestaurantsInterface;
 
@@ -148,15 +147,16 @@ public class RestaurantListFragment extends Fragment implements LocationListener
     @Override
     public void addPlace(Place place) {
         if (place.getLatLng() != null) {
-            LiveData<List<Workmate>> workmatesList = viewModel.getInterestedWorkmates(place.getId());
-            workmatesList.observe(this, new Observer<List<Workmate>>() {
+            LiveData<Restaurant> restaurantDetails = viewModel.getPlaceDetail(place.getId());
+            restaurantDetails.observe(this, new Observer<Restaurant>() {
                 @Override
-                public void onChanged(List<Workmate> workmates) {
-                    Restaurant restaurant = new Restaurant(place.getId(), place.getName(), place.getAddress(), null, place.getRating(), place.getLatLng(), place.isOpen(), workmates);
-                    List<Restaurant> restaurants = adapter.getPlaces();
-                    restaurants.add(restaurant);
-                    adapter.setPlaces(restaurants);
-                    if (workmates != null) workmatesList.removeObserver(this);
+                public void onChanged(Restaurant restaurant) {
+                    if (restaurant != null) {
+                        restaurantDetails.removeObserver(this);
+                        List<Restaurant> restaurants = adapter.getPlaces();
+                        restaurants.add(restaurant);
+                        adapter.setPlaces(restaurants);
+                    }
                 }
             });
         }
