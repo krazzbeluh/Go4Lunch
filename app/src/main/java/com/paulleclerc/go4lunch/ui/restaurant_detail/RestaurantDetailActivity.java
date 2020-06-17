@@ -2,7 +2,7 @@
  * RestaurantDetailActivity.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/16/20 11:58 AM.
+ *   Updated by paulleclerc on 6/17/20 3:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -109,10 +109,12 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                 .show());
 
         viewModel.getChosenRestaurantId().observe(this, restaurantId -> {
-            if (restaurantId.equals(restaurant.id)) {
-                chooseRestaurantButton.setImageResource(R.drawable.check_circle);
-            } else {
-                chooseRestaurantButton.setImageResource(R.drawable.add_circle);
+            if (restaurantId != null) {
+                if (restaurantId.equals(restaurant.id)) {
+                    chooseRestaurantButton.setImageResource(R.drawable.check_circle);
+                } else {
+                    chooseRestaurantButton.setImageResource(R.drawable.add_circle);
+                }
             }
         });
 

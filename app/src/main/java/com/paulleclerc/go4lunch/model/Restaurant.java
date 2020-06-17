@@ -2,7 +2,7 @@
  * Restaurant.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/16/20 11:58 AM.
+ *   Updated by paulleclerc on 6/17/20 3:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -92,7 +92,8 @@ public class Restaurant implements Serializable {
     }
 
     public void setInterestedWorkmates(List<Workmate> workmates) {
-        interestedWorkmates = workmates;
+        if (workmates != null) interestedWorkmates = workmates;
+        else interestedWorkmates = new ArrayList<>();
     }
 
     public List<Workmate> getInterestedWorkmates() {

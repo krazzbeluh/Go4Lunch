@@ -2,7 +2,7 @@
   ~ AndroidManifest.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/15/20 2:59 PM.
+  ~   Updated by paulleclerc on 6/16/20 2:43 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -38,6 +38,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- NOTIFICATION SERVICE -->
+        <service
+            android:name=".notifications.NotificationsService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

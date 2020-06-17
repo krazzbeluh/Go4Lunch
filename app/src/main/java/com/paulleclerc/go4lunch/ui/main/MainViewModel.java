@@ -2,7 +2,7 @@
  * MainViewModel.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/15/20 6:10 PM.
+ *   Updated by paulleclerc on 6/17/20 3:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -31,6 +31,7 @@ public class MainViewModel extends AndroidViewModel {
 
     public MainViewModel(@NonNull Application application) {
         super(application);
+        userRepository.setFCMToken();
     }
 
     public LiveData<Boolean> isUserSignedIn() {
