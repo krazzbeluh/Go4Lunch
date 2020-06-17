@@ -2,7 +2,7 @@
  * MapFragment.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/17/20 3:34 PM.
+ *   Updated by paulleclerc on 6/17/20 3:57 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -11,7 +11,6 @@ package com.paulleclerc.go4lunch.ui.main.fragments.map;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -43,7 +42,6 @@ import com.paulleclerc.go4lunch.model.Restaurant;
 import com.paulleclerc.go4lunch.model.Workmate;
 import com.paulleclerc.go4lunch.ui.main.ShowDetailListener;
 import com.paulleclerc.go4lunch.ui.main.fragments.DisplayRestaurantsInterface;
-import com.paulleclerc.go4lunch.ui.restaurant_detail.RestaurantDetailActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -215,9 +213,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        Intent intent = new Intent(getContext(), RestaurantDetailActivity.class);
-        intent.putExtra(RestaurantDetailActivity.KEY_RESTAURANT_EXTRA_SERIALIZABLE, markerRestaurantAssociation.get(marker));
-        startActivity(intent);
+        showDetailListener.showDetail(markerRestaurantAssociation.get(marker));
     }
 
     private void moveCamera() {
