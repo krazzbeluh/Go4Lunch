@@ -2,7 +2,7 @@
  * WorkmatesFragment.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Updated by paulleclerc on 6/17/20 3:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -50,7 +50,6 @@ public class WorkmatesFragment extends Fragment {
      *
      * @return A new instance of fragment WorkmatesFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static WorkmatesFragment getInstance() {
         return new WorkmatesFragment();
     }

@@ -2,7 +2,7 @@
   ~ activity_settings.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/15/20 2:38 PM.
+  ~   Updated by paulleclerc on 6/17/20 3:34 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -125,16 +125,6 @@
                 android:padding="8dp">
 
                 <CheckBox
-                    android:id="@+id/settings_allow_chat_checkbox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/allow_chat_notifications"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <CheckBox
                     android:id="@+id/settings_allow_daily_checkbox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -142,7 +132,7 @@
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/settings_allow_chat_checkbox" />
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>

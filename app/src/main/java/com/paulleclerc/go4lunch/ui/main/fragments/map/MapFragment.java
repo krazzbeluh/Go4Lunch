@@ -2,13 +2,14 @@
  * MapFragment.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/8/20 4:54 PM.
+ *   Updated by paulleclerc on 6/17/20 3:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
 package com.paulleclerc.go4lunch.ui.main.fragments.map;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -162,6 +163,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
+    @SuppressLint("MissingPermission")
     @AfterPermissionGranted(GET_LOCATION_PERMS)
     private void requiresAccessLocationPermission() {
         if (EasyPermissions.hasPermissions(requireContext(), PERM)) {
@@ -175,6 +177,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     private Map<Marker, Restaurant> markerRestaurantAssociation = new HashMap<>();
 
+    @SuppressLint("MissingPermission")
     @Override
     @AfterPermissionGranted(GET_LOCATION_PERMS)
     public void onMapReady(GoogleMap googleMap) {

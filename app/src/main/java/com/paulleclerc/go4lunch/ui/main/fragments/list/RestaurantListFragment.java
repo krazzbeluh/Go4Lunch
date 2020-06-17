@@ -2,13 +2,14 @@
  * RestaurantListFragment.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/8/20 4:11 PM.
+ *   Updated by paulleclerc on 6/17/20 3:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
 package com.paulleclerc.go4lunch.ui.main.fragments.list;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
@@ -72,7 +73,6 @@ public class RestaurantListFragment extends Fragment implements LocationListener
      *
      * @return A new instance of fragment RestaurantListFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static RestaurantListFragment getInstance(ShowDetailListener showDetailListener) {
         return new RestaurantListFragment(showDetailListener);
     }
@@ -133,6 +133,7 @@ public class RestaurantListFragment extends Fragment implements LocationListener
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
+    @SuppressLint("MissingPermission")
     @AfterPermissionGranted(GET_LOCATION_PERMS)
     private void requiresAccessLocationPermission() {
         if (EasyPermissions.hasPermissions(requireContext(), PERM)) {

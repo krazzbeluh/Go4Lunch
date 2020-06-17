@@ -2,7 +2,7 @@
  * FirestoreRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/16/20 11:58 AM.
+ *   Updated by paulleclerc on 6/17/20 3:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -20,6 +20,7 @@ public class FirestoreRepository {
     private static final String KEY_AVATAR_NAME = "avatarName";
     private static final String KEY_USERNAME = "username";
     private static final String KEY_CHOSEN_PLACE_ID = "chosenPlaceId";
+    private static final String KEY_FCM_TOKEN = "fcmToken";
 
     private final FirStorageRepository storage = new FirStorageRepository();
     private final AuthRepository auth = new AuthRepository();
@@ -88,6 +89,12 @@ public class FirestoreRepository {
                     Log.e(TAG, "setChosenPlaceId: ", e);
                     completion.onFailure();
                 });
+    }
+
+    void setFCMToken(String token) {
+        db.collection(KEY_USER_COLLECTION)
+                .document(auth.getUid())
+                .update(KEY_FCM_TOKEN, token);
     }
 
     interface GetAvatarUrlCompletion {

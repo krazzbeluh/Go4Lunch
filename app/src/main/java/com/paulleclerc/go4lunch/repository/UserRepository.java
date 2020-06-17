@@ -2,17 +2,22 @@
  * UserRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/16/20 11:58 AM.
+ *   Updated by paulleclerc on 6/17/20 3:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
 package com.paulleclerc.go4lunch.repository;
 
 import android.net.Uri;
+import android.util.Log;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.paulleclerc.go4lunch.model.Restaurant;
 
 public class UserRepository {
+    private static final String TAG = UserRepository.class.getSimpleName();
+
     private final AuthRepository auth = new AuthRepository();
     private final FirestoreRepository firestore = new FirestoreRepository();
     private final FirStorageRepository storage = new FirStorageRepository();
@@ -45,6 +50,23 @@ public class UserRepository {
 
     public void setChosenRestaurant(String restaurantId, SetChosenPlaceIdCompletion completion) {
         firestore.setChosenPlaceId(restaurantId, completion::onFailure);
+    }
+
+    public void setFCMToken() {
+        FirebaseInstanceId
+                .getInstance()
+                .getInstanceId()
+                .addOnCompleteListener(task -> {
+                    InstanceIdResult result = task.getResult();
+
+                    if (!task.isSuccessful() || result == null) {
+                        Log.w(TAG, "setFCMToken: ", task.getException());
+                        return;
+                    }
+
+                    String token = result.getToken();
+                    firestore.setFCMToken(token);
+                });
     }
 
     public void setUsername(String username) {
