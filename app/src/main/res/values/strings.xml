@@ -2,7 +2,7 @@
   ~ strings.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/16/20 2:43 PM.
+  ~   Updated by paulleclerc on 6/18/20 12:31 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -64,4 +64,5 @@
     <string name="error">Error</string>
     <string name="ok">OK</string>
     <string name="default_notification_channel_id" translatable="false">5ee8bce0326ca</string>
+    <string name="user_has_decided">%1$s lunch at %2$s!</string>
 </resources>

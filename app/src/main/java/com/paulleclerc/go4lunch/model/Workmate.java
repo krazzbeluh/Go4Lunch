@@ -2,7 +2,7 @@
  * Workmate.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/29/20 3:25 PM.
+ *   Updated by paulleclerc on 6/18/20 12:31 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -15,16 +15,22 @@ public class Workmate implements Serializable {
     public final String username;
     public final String avatarUri;
     private final String documentID;
+    private final String chosenRestaurantName;
 
-    public Workmate(String uid, String username, String avatarUri, String documentID) {
+    public Workmate(String uid, String username, String avatarUri, String documentID, String chosenRestaurantName) {
         this.uid = uid;
         this.username = username;
         this.avatarUri = avatarUri;
         this.documentID = documentID;
+        this.chosenRestaurantName = chosenRestaurantName;
     }
 
     public String getDocumentID() {
         return documentID;
+    }
+
+    public String getChosenRestaurantName() {
+        return chosenRestaurantName;
     }
 }
 

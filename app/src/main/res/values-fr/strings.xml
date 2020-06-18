@@ -2,7 +2,7 @@
   ~ strings.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/16/20 11:58 AM.
+  ~   Updated by paulleclerc on 6/18/20 12:31 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -54,4 +54,5 @@
     <string name="impossible_operation">Une erreur est survenue, réessayez plus tard !</string>
     <string name="error">Erreur</string>
     <string name="ok">OK</string>
+    <string name="user_has_decided">%1$s déjeune à %2$s</string>
 </resources>

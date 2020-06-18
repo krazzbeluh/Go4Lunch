@@ -2,12 +2,13 @@
  * WorkmatesListAdapter.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Updated by paulleclerc on 6/18/20 12:31 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
 package com.paulleclerc.go4lunch.ui.main.fragments.workmates;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,7 +77,14 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
             this.workmate = workmate;
 
             Glide.with(itemView).load(workmate.avatarUri).placeholder(R.drawable.workmate).into(workmateAvatar);
-            workmateStatus.setText(itemView.getContext().getString(R.string.user_has_not_decided, workmate.username));
+
+            if (workmate.getChosenRestaurantName() == null)
+                workmateStatus.setText(itemView.getContext().getString(R.string.user_has_not_decided, workmate.username));
+            else {
+                workmateStatus.setText(itemView.getContext().getString(R.string.user_has_decided, workmate.username, workmate.getChosenRestaurantName()));
+                workmateStatus.setTextColor(Color.BLACK);
+                workmateStatus.setTypeface(null);
+            }
         }
     }
 

@@ -2,7 +2,7 @@
  * PlacesRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/16/20 11:15 AM.
+ *   Updated by paulleclerc on 6/18/20 12:31 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -29,6 +29,7 @@ import java.util.Objects;
 
 public class PlacesRepository {
     private static final Map<LatLng, List<Restaurant>> placesCache = new HashMap<>();
+    private static final Map<String, String> namesCache = new HashMap<>();
 
     private static final String TAG = PlacesRepository.class.getSimpleName();
     private static final String KEY_USER_COLLECTION = "User";
@@ -71,8 +72,11 @@ public class PlacesRepository {
                     if (result.getOpeningHours() == null) isOpened = null;
                     else isOpened = result.getOpeningHours().getOpenNow();
 
+                    Restaurant restaurant = new Restaurant(result.getPlaceId(), result.getName(), result.getVicinity(), photoReference, result.getRating(), restaurantLocation, isOpened, null);
+
+                    namesCache.put(restaurant.id, restaurant.name);
                     restaurantIds.add(result.getPlaceId());
-                    restaurantList.add(new Restaurant(result.getPlaceId(), result.getName(), result.getVicinity(), photoReference, result.getRating(), restaurantLocation, isOpened, null));
+                    restaurantList.add(restaurant);
                 }
 
                 fetchInterestedWorkmates(restaurantIds, interestedWorkmates -> {
@@ -179,10 +183,26 @@ public class PlacesRepository {
     }
 
     public void fetchDetail(String placeId, FetchDetailsCompletion completion) {
+        if (placeId == null) completion.onComplete(null);
         client.fetchDetails(placeId, details -> this.fetchInterestedWorkmates(placeId, workmates -> {
             Restaurant restaurant = new Restaurant(placeId, details, workmates);
+            namesCache.put(restaurant.id, restaurant.name);
             completion.onComplete(restaurant);
         }));
+    }
+
+    public void getName(String placeId, GetNameCompletion completion) {
+        if (placeId == null) completion.onComplete(null);
+        String name = namesCache.get(placeId);
+        if (name == null) {
+            client.fetchDetails(placeId, details -> {
+                String placeName = details.getName();
+                namesCache.put(placeId, placeName);
+                completion.onComplete(placeName);
+            });
+        } else {
+            completion.onComplete(name);
+        }
     }
 
     public void getIsLiked(String id, LikeRestaurantCompletion completion) {
@@ -259,5 +279,9 @@ public class PlacesRepository {
 
     public interface LikeRestaurantCompletion {
         void onComplete(boolean success, Boolean isLiked);
+    }
+
+    public interface GetNameCompletion {
+        void onComplete(String name);
     }
 }
