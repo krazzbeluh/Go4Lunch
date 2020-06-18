@@ -2,7 +2,7 @@
  * FirStorageRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/18/20 3:55 PM.
+ *   Updated by paulleclerc on 6/18/20 4:15 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -11,6 +11,7 @@ package com.paulleclerc.go4lunch.repository;
 import android.net.Uri;
 import android.util.Log;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.paulleclerc.go4lunch.closures.GetUserAvatarUriCompletion;
@@ -21,19 +22,32 @@ public class FirStorageRepository {
     private static final String KEY_AVATAR_DIRECTORY = "Avatar";
     private static final String TAG = FirStorageRepository.class.getSimpleName();
 
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private final FirebaseStorage storage;
+
+    FirStorageRepository() {
+        storage = FirebaseStorage.getInstance();
+    }
+
+    public FirStorageRepository(FirebaseStorage storage) {
+        this.storage = storage;
+    }
 
     void getUserAvatar(String fileName, GetUserAvatarUriCompletion completion) {
         if (fileName == null) completion.onComplete(true, null);
         else {
             storage.getReference().child(KEY_AVATAR_DIRECTORY).child(fileName).getDownloadUrl().addOnCompleteListener((task) -> {
-                if (task.isSuccessful()) {
-                    completion.onComplete(true, task.getResult());
-                } else {
-                    Log.e(TAG, "getUserAvatar: ", task.getException());
-                    completion.onComplete(false, null);
-                }
+                Uri uri = getUriFromTask(task);
+                completion.onComplete(uri != null, uri);
             });
+        }
+    }
+
+    public Uri getUriFromTask(Task<Uri> task) {
+        if (task.isSuccessful()) {
+            return task.getResult();
+        } else {
+            Log.e(TAG, "getUserAvatar: ", task.getException());
+            return null;
         }
     }
 
