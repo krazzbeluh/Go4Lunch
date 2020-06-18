@@ -2,13 +2,15 @@
  * AuthRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/15/20 6:10 PM.
+ *   Updated by paulleclerc on 6/18/20 1:56 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
 package com.paulleclerc.go4lunch.repository;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.paulleclerc.go4lunch.closures.FirebaseSignInWithCredentialClosure;
@@ -26,7 +28,11 @@ public class AuthRepository {
     }
 
     public void firebaseSignInWithCredential(AuthCredential googleAuthCredential, FirebaseSignInWithCredentialClosure completion) {
-        auth.signInWithCredential(googleAuthCredential).addOnCompleteListener(authTask -> completion.onComplete(authTask.isSuccessful() && checkUserSignedIn() ? LoginState.SIGNED_IN : LoginState.FAILED));
+        auth.signInWithCredential(googleAuthCredential).addOnCompleteListener(authTask -> completion.onComplete(getState(authTask)));
+    }
+
+    public LoginState getState(Task<AuthResult> authTask) {
+        return authTask.isSuccessful() && checkUserSignedIn() ? LoginState.SIGNED_IN : LoginState.FAILED;
     }
 
     public boolean signOut() {
