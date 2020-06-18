@@ -2,7 +2,7 @@
  * WorkmatesRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/18/20 12:31 PM.
+ *   Updated by paulleclerc on 6/18/20 12:47 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -78,7 +78,7 @@ public class WorkmatesRepository {
                             String chosenRestaurantId = userDocument.getString("chosenPlaceId");
 
                             new PlacesRepository().getName(chosenRestaurantId, name -> storage.getUserAvatar(avatarFileName, (success, uri) -> {
-                                workmates.add(new Workmate(userID, username, (uri != null) ? uri.toString() : null, documentIds.get(userID), name));
+                                workmates.add(new Workmate(userID, username, (uri != null) ? uri.toString() : null, documentIds.get(userID), chosenRestaurantId, name));
                                 if (responses.incrementAndGet() == documents.size())
                                     completion.onComplete(true, workmates);
                             }));

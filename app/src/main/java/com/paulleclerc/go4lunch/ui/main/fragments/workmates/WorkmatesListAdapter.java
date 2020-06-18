@@ -2,7 +2,7 @@
  * WorkmatesListAdapter.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/18/20 12:31 PM.
+ *   Updated by paulleclerc on 6/18/20 12:47 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -57,8 +57,14 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
         return workmates.size();
     }
 
-    static class WorkmatesViewHolder extends RecyclerView.ViewHolder {
+    interface OnClickOnItem {
+        void onClick(Workmate workmate);
 
+        void displayRestaurant(String placeId);
+    }
+
+    static class WorkmatesViewHolder extends RecyclerView.ViewHolder {
+        private OnClickOnItem onClickListener;
         private Workmate workmate;
 
         @BindView(R.id.workmate_status)
@@ -70,6 +76,7 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
             super(itemView);
 
             ButterKnife.bind(this, itemView);
+            this.onClickListener = onClickListener;
             itemView.setOnClickListener(v -> onClickListener.onClick(workmate));
         }
 
@@ -84,11 +91,8 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
                 workmateStatus.setText(itemView.getContext().getString(R.string.user_has_decided, workmate.username, workmate.getChosenRestaurantName()));
                 workmateStatus.setTextColor(Color.BLACK);
                 workmateStatus.setTypeface(null);
+                workmateStatus.setOnClickListener(v -> onClickListener.displayRestaurant(workmate.getChosenRestaurantId()));
             }
         }
-    }
-
-    interface OnClickOnItem {
-        void onClick(Workmate workmate);
     }
 }

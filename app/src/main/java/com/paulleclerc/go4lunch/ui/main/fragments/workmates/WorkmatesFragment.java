@@ -2,7 +2,7 @@
  * WorkmatesFragment.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/17/20 3:34 PM.
+ *   Updated by paulleclerc on 6/18/20 12:47 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -20,7 +20,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.paulleclerc.go4lunch.R;
+import com.paulleclerc.go4lunch.model.Workmate;
 import com.paulleclerc.go4lunch.ui.chat.ChatActivity;
+import com.paulleclerc.go4lunch.ui.restaurant_detail.RestaurantDetailActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +33,7 @@ import butterknife.ButterKnife;
  * Use the {@link WorkmatesFragment#getInstance} factory method to
  * create an instance of this fragment.
  */
-public class WorkmatesFragment extends Fragment {
+public class WorkmatesFragment extends Fragment implements WorkmatesListAdapter.OnClickOnItem {
 
     private WorkmatesViewModel viewModel;
     private LinearLayoutManager linearLayoutManager;
@@ -69,11 +71,7 @@ public class WorkmatesFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new WorkmatesListAdapter(workmate -> {
-            Intent intent = new Intent(getActivity(), ChatActivity.class);
-            intent.putExtra(getString(R.string.workmate_serializable_key), workmate);
-            startActivity(intent);
-        });
+        adapter = new WorkmatesListAdapter(this);
         viewModel = new ViewModelProvider(this).get(WorkmatesViewModel.class);
 
         viewModel.fetchWorkmates();
@@ -85,5 +83,21 @@ public class WorkmatesFragment extends Fragment {
 
         recyclerView.setAdapter(adapter);
         return view;
+    }
+
+    @Override
+    public void onClick(Workmate workmate) {
+        Intent intent = new Intent(getActivity(), ChatActivity.class);
+        intent.putExtra(getString(R.string.workmate_serializable_key), workmate);
+        startActivity(intent);
+    }
+
+    @Override
+    public void displayRestaurant(String id) {
+        viewModel.fetchRestaurant(id).observe(this, restaurant -> {
+            Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
+            intent.putExtra(RestaurantDetailActivity.KEY_RESTAURANT_EXTRA_SERIALIZABLE, restaurant);
+            startActivity(intent);
+        });
     }
 }
