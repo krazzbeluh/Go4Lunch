@@ -2,7 +2,7 @@
  * FirestoreRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/17/20 4:36 PM.
+ *   Updated by paulleclerc on 6/18/20 3:55 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -10,42 +10,50 @@ package com.paulleclerc.go4lunch.repository;
 
 import android.util.Log;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 public class FirestoreRepository {
     private static final String TAG = FirestoreRepository.class.getSimpleName();
     private static final String KEY_USER_COLLECTION = "User";
-    private static final String KEY_AVATAR_NAME = "avatarName";
-    private static final String KEY_USERNAME = "username";
-    private static final String KEY_CHOSEN_PLACE_ID = "chosenPlaceId";
+    public static final String KEY_AVATAR_NAME = "avatarName";
+    public static final String KEY_USERNAME = "username";
+    public static final String KEY_CHOSEN_PLACE_ID = "chosenPlaceId";
     private static final String KEY_FCM_TOKEN = "fcmToken";
-    private static final String KEY_ALLOW_NOTIFICATIONS = "allowNotifications";
+    public static final String KEY_ALLOW_NOTIFICATIONS = "allowNotifications";
 
-    private final FirStorageRepository storage = new FirStorageRepository();
-    private final AuthRepository auth = new AuthRepository();
+    private final FirStorageRepository storage;
+    private final AuthRepository auth;
 
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseFirestore db;
+
+    FirestoreRepository() {
+        db = FirebaseFirestore.getInstance();
+        auth = new AuthRepository();
+        storage = new FirStorageRepository();
+    }
+
+    public FirestoreRepository(FirebaseFirestore db, AuthRepository auth, FirStorageRepository storage) {
+        this.db = db;
+        this.auth = auth;
+        this.storage = storage;
+    }
 
     void getUserAvatarUrl(String userId, GetAvatarUrlCompletion completion) {
-        AtomicReference<String> oldName = new AtomicReference<>();
-        db.collection(KEY_USER_COLLECTION).document(userId).addSnapshotListener((documentSnapshot, e) -> {
-            if (e != null || documentSnapshot == null) {
-                Log.e(TAG, "getUserAvatarUrl: ", e);
-            } else {
-                String name = documentSnapshot.getString(KEY_AVATAR_NAME);
-                if (name == null || !name.equals(oldName.get())) {
-                    oldName.set(name);
+        db.collection(KEY_USER_COLLECTION).document(userId).addSnapshotListener((documentSnapshot, e) -> storage.getUserAvatar(getAvatarUri(documentSnapshot, e), (success, uri) -> {
+            if (uri != null) completion.onAvatarChange(uri.toString());
+        }));
+    }
 
-                    storage.getUserAvatar(name, (success, uri) -> {
-                        if (uri != null) completion.onAvatarChange(uri.toString());
-                    });
-                }
-            }
-        });
+    public String getAvatarUri(DocumentSnapshot documentSnapshot, Throwable e) {
+        if (e != null || documentSnapshot == null) {
+            Log.e(TAG, "getUserAvatarUrl: ", e);
+            return null;
+        } else {
+            return documentSnapshot.getString(KEY_AVATAR_NAME);
+        }
     }
 
     void setNewUserAvatar(String avatarFileName) {
@@ -57,10 +65,18 @@ public class FirestoreRepository {
 
     void getUsername(GetUsernameCompletion completion) {
         db.collection(KEY_USER_COLLECTION)
-                .document(auth.getUid())
-                .get()
-                .addOnSuccessListener(documentSnapshot -> completion.onComplete(documentSnapshot.getString(KEY_USERNAME)))
-                .addOnFailureListener(e -> Log.e(TAG, "onFailure: ", e));
+                .document(auth.getUid()).get()
+                .addOnCompleteListener(task -> completion.onComplete(getUsernameFromResult(task)));
+    }
+
+    public String getUsernameFromResult(Task<DocumentSnapshot> task) {
+        DocumentSnapshot documentSnapshot = task.getResult();
+        if (task.isSuccessful() && documentSnapshot != null) {
+            return documentSnapshot.getString(KEY_USERNAME);
+        } else {
+            Log.e(TAG, "getUsernameFromResult: ", task.getException());
+            return null;
+        }
     }
 
     void setUsername(String username) {
@@ -71,38 +87,39 @@ public class FirestoreRepository {
     }
 
     void setAllowNotifications(boolean allowNotifications) {
-        db.collection(KEY_USER_COLLECTION)
-                .document(auth.getUid())
+        db.collection(KEY_USER_COLLECTION).document(auth.getUid())
                 .update(KEY_ALLOW_NOTIFICATIONS, allowNotifications)
                 .addOnFailureListener(e -> Log.e(TAG, "setAllowNotifications: ", e));
     }
 
     void getChosenPlaceId(GetPlaceIdCompletion completion) {
-        db.collection(KEY_USER_COLLECTION)
-                .document(auth.getUid())
-                .addSnapshotListener((documentSnapshot, e) -> {
-                    if (e == null && documentSnapshot != null) {
-                        completion.onComplete(documentSnapshot.getString(KEY_CHOSEN_PLACE_ID));
-                    } else {
-                        completion.onComplete(null);
-                        Log.e(TAG, "getChosenPlaceId: ", e);
-                    }
-                });
+        db.collection(KEY_USER_COLLECTION).document(auth.getUid())
+                .addSnapshotListener((documentSnapshot, e) -> completion.onComplete(getPlaceId(documentSnapshot, e)));
+    }
+
+    public String getPlaceId(DocumentSnapshot documentSnapshot, Throwable e) {
+        if (e == null && documentSnapshot != null) {
+            return documentSnapshot.getString(KEY_CHOSEN_PLACE_ID);
+        } else {
+            Log.e(TAG, "getChosenPlaceId: ", e);
+            return null;
+        }
     }
 
     void getAllowNotifications(GetAllowNotificationsCompletion completion) {
-        db.collection(KEY_USER_COLLECTION)
-                .document(auth.getUid())
-                .get()
-                .addOnCompleteListener(documentSnapshot -> {
-                    DocumentSnapshot result = documentSnapshot.getResult();
-                    if (documentSnapshot.isSuccessful() && result != null) {
-                        completion.onComplete(result.getBoolean(KEY_ALLOW_NOTIFICATIONS));
-                    } else {
-                        completion.onComplete(null);
-                        Log.e(TAG, "getAllowNotifications: ", documentSnapshot.getException());
-                    }
-                });
+        db.collection(KEY_USER_COLLECTION).document(auth.getUid()).get()
+                .addOnCompleteListener(documentSnapshot -> completion.onComplete(getAreNotificationsAllowed(documentSnapshot)));
+    }
+
+    public Boolean getAreNotificationsAllowed(Task<DocumentSnapshot> task) {
+        DocumentSnapshot documentSnapshot = task.getResult();
+        if (task.isSuccessful() && documentSnapshot != null) {
+            Boolean allowNotifications = documentSnapshot.getBoolean(KEY_ALLOW_NOTIFICATIONS);
+            return allowNotifications == null ? true : allowNotifications;
+        } else {
+            Log.e(TAG, "getAllowNotifications: ", task.getException());
+            return null;
+        }
     }
 
     void setChosenPlaceId(String placeId, SetChosenPlaceIdCompletion completion) {

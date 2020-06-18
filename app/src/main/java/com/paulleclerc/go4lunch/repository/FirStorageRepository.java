@@ -2,7 +2,7 @@
  * FirStorageRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/8/20 10:44 AM.
+ *   Updated by paulleclerc on 6/18/20 3:55 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -17,7 +17,7 @@ import com.paulleclerc.go4lunch.closures.GetUserAvatarUriCompletion;
 
 import java.util.UUID;
 
-class FirStorageRepository {
+public class FirStorageRepository {
     private static final String KEY_AVATAR_DIRECTORY = "Avatar";
     private static final String TAG = FirStorageRepository.class.getSimpleName();
 
