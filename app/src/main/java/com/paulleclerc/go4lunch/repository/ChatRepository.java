@@ -2,7 +2,7 @@
  * ChatRepository.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/29/20 3:25 PM.
+ *   Updated by paulleclerc on 6/18/20 3:07 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.paulleclerc.go4lunch.model.ChatMessage;
 import com.paulleclerc.go4lunch.model.Workmate;
 
@@ -23,24 +24,27 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 public class ChatRepository {
     private static final String TAG = ChatRepository.class.getSimpleName();
-    private static final String WORKMATES_ARRAY_KEY = "WorkmatesArray";
-    private static final String CHAT_KEY = "Chat";
+    public static final String WORKMATES_ARRAY_KEY = "WorkmatesArray";
+    public static final String CHAT_KEY = "Chat";
     private static final String MESSAGE_KEY = "message";
     private static final String SENDER_KEY = "sender";
     private static final String DATE_KEY = "date";
 
-    private final Locale locale;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private final FirebaseFirestore db;
+    private final FirebaseAuth auth;
 
-    public ChatRepository(Locale locale) {
-        this.locale = locale;
+    public ChatRepository() {
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+    }
+
+    public ChatRepository(FirebaseFirestore db, FirebaseAuth auth) {
+        this.db = db;
+        this.auth = auth;
     }
 
     public void fetchMessages(Workmate workmate, OnChatUpdateListener listener) {
@@ -53,33 +57,33 @@ public class ChatRepository {
                 .document(workmate.getDocumentID())
                 .collection(CHAT_KEY)
                 .whereGreaterThan("date", lastMonth)
-                .addSnapshotListener((querySnapshot, e) -> {
-                    if (querySnapshot == null || e != null) {
-                        Log.e(TAG, "fetchMessages: ", e);
-                        return;
-                    }
+                .addSnapshotListener((querySnapshot, e) -> listener.onUpdate(getChatMessages(querySnapshot, e)));
+    }
 
-                    List<ChatMessage> chatMessages = new ArrayList<>();
-                    for (DocumentSnapshot document : querySnapshot.getDocuments()) {
-                        String message = document.getString("message");
-                        String sender = document.getString("sender");
-                        Timestamp date = (Timestamp) document.get("date");
+    public List<ChatMessage> getChatMessages(QuerySnapshot querySnapshot, Exception e) {
+        if (querySnapshot == null || e != null) {
+            Log.e(TAG, "fetchMessages: ", e);
+            return null;
+        }
 
-                        if (message != null && sender != null && date != null) {
-                            chatMessages.add(new ChatMessage(message, sender, date.toDate()));
-                        }
-                    }
+        List<ChatMessage> chatMessages = new ArrayList<>();
+        for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+            String message = document.getString("message");
+            String sender = document.getString("sender");
+            Timestamp date = (Timestamp) document.get("date");
 
-                    listener.onUpdate(chatMessages);
-                });
+            if (message != null && sender != null && date != null) {
+                chatMessages.add(new ChatMessage(message, sender, date.toDate()));
+            }
+        }
+
+        return chatMessages;
     }
 
     public void sendChatMessage(Workmate workmate, String message) {
-        String userID = Objects.requireNonNull(auth.getCurrentUser()).getUid();
-
         Map<String, Object> formattedMessage = new HashMap<>();
         formattedMessage.put(MESSAGE_KEY, message);
-        formattedMessage.put(SENDER_KEY, userID);
+        formattedMessage.put(SENDER_KEY, auth.getUid());
         formattedMessage.put(DATE_KEY, FieldValue.serverTimestamp());
 
         db.collection(WORKMATES_ARRAY_KEY)
