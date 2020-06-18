@@ -2,7 +2,7 @@
  * ChatActivity.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/29/20 3:25 PM.
+ *   Updated by paulleclerc on 6/18/20 11:33 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -62,7 +62,7 @@ public class ChatActivity extends AppCompatActivity {
         username.setText(workmate.username);
 
         linearLayoutManager = new LinearLayoutManager(this);
-        adapter = new ChatRecyclerViewAdapter(workmate);
+        adapter = new ChatRecyclerViewAdapter(workmate, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(linearLayoutManager);
 

@@ -2,7 +2,7 @@
   ~ chat_recyclerview_row_gray.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/17/20 10:09 PM.
+  ~   Updated by paulleclerc on 6/18/20 11:33 AM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -19,8 +19,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/chat_bubble_gray"
         android:padding="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/chat_row_guideline"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/chat_row_guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/chat_row_guideline_left"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -42,13 +42,21 @@
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/chat_row_guideline"
+        android:id="@+id/chat_row_guideline_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.75" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/chat_row_guideline_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
