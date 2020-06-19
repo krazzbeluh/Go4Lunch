@@ -2,7 +2,7 @@
  * RestaurantDetailViewModel.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/16/20 11:58 AM.
+ *   Updated by paulleclerc on 6/19/20 2:49 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -45,8 +45,8 @@ public class RestaurantDetailViewModel extends AndroidViewModel {
 
     LiveData<Boolean> getIsLiked(Restaurant restaurant) {
         if (isLiked.getValue() == null)
-            placesRepository.getIsLiked(restaurant.id, (success, isLiked) -> {
-                if (success && isLiked != null) this.isLiked.setValue(isLiked);
+            placesRepository.getIsLiked(restaurant.id, isLiked -> {
+                if (isLiked != null) this.isLiked.setValue(isLiked);
             });
         return isLiked;
     }
@@ -65,12 +65,12 @@ public class RestaurantDetailViewModel extends AndroidViewModel {
         if (isLiked == null) return;
 
         if (!isLiked) {
-            placesRepository.likePlace(restaurant.id, (success, isLiked1) -> {
-                if (success && isLiked1 != null) this.isLiked.setValue(isLiked1);
+            placesRepository.likePlace(restaurant.id, isLiked1 -> {
+                if (isLiked1 != null) this.isLiked.setValue(isLiked1);
             });
         } else {
-            placesRepository.dislikePlace(restaurant.id, (success, isLiked1) -> {
-                if (success && isLiked1 != null) this.isLiked.setValue(isLiked1);
+            placesRepository.dislikePlace(restaurant.id, isLiked1 -> {
+                if (isLiked1 != null) this.isLiked.setValue(isLiked1);
             });
         }
     }
