@@ -2,11 +2,11 @@
  * PlacesRepositoryTest.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/19/20 2:49 PM.
+ *   Updated by paulleclerc on 6/19/20 4:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
-package com.paulleclerc.go4lunch;
+package com.paulleclerc.go4lunch.repository;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
@@ -22,8 +22,6 @@ import com.paulleclerc.go4lunch.network.restaurant_response.Location;
 import com.paulleclerc.go4lunch.network.restaurant_response.OpeningHours;
 import com.paulleclerc.go4lunch.network.restaurant_response.Photo;
 import com.paulleclerc.go4lunch.network.restaurant_response.Result;
-import com.paulleclerc.go4lunch.repository.PlacesRepository;
-import com.paulleclerc.go4lunch.repository.WorkmatesRepository;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -2,17 +2,16 @@
  * FirStorageRepositoryTest.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/18/20 4:15 PM.
+ *   Updated by paulleclerc on 6/19/20 4:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
-package com.paulleclerc.go4lunch;
+package com.paulleclerc.go4lunch.repository;
 
 import android.net.Uri;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
-import com.paulleclerc.go4lunch.repository.FirStorageRepository;
 
 import org.junit.Before;
 import org.junit.Test;

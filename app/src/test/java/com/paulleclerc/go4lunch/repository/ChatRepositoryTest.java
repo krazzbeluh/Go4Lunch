@@ -2,11 +2,11 @@
  * ChatRepositoryTest.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/18/20 3:07 PM.
+ *   Updated by paulleclerc on 6/19/20 4:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
-package com.paulleclerc.go4lunch;
+package com.paulleclerc.go4lunch.repository;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,7 +14,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.paulleclerc.go4lunch.repository.ChatRepository;
 
 import org.junit.Before;
 import org.junit.Test;

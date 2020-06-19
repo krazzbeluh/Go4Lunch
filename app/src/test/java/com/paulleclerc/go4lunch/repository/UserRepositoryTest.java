@@ -2,19 +2,14 @@
  * UserRepositoryTest.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/19/20 3:36 PM.
+ *   Updated by paulleclerc on 6/19/20 4:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
-package com.paulleclerc.go4lunch;
+package com.paulleclerc.go4lunch.repository;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.InstanceIdResult;
-import com.paulleclerc.go4lunch.repository.AuthRepository;
-import com.paulleclerc.go4lunch.repository.FirStorageRepository;
-import com.paulleclerc.go4lunch.repository.FirestoreRepository;
-import com.paulleclerc.go4lunch.repository.PlacesRepository;
-import com.paulleclerc.go4lunch.repository.UserRepository;
 
 import org.junit.Before;
 import org.junit.Test;

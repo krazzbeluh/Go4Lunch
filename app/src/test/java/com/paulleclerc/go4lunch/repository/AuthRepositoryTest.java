@@ -2,11 +2,11 @@
  * AuthRepositoryTest.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/18/20 1:56 PM.
+ *   Updated by paulleclerc on 6/19/20 4:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
-package com.paulleclerc.go4lunch;
+package com.paulleclerc.go4lunch.repository;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -14,7 +14,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.paulleclerc.go4lunch.enums.LoginState;
-import com.paulleclerc.go4lunch.repository.AuthRepository;
 
 import org.junit.Before;
 import org.junit.Test;

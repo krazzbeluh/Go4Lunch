@@ -2,18 +2,15 @@
  * FirestoreRepositoryTest.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/18/20 3:55 PM.
+ *   Updated by paulleclerc on 6/19/20 4:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
-package com.paulleclerc.go4lunch;
+package com.paulleclerc.go4lunch.repository;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.paulleclerc.go4lunch.repository.AuthRepository;
-import com.paulleclerc.go4lunch.repository.FirStorageRepository;
-import com.paulleclerc.go4lunch.repository.FirestoreRepository;
 
 import org.junit.Before;
 import org.junit.Test;
