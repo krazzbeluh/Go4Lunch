@@ -2,7 +2,7 @@
  * PlaceClient.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/15/20 6:10 PM.
+ *   Updated by paulleclerc on 6/19/20 5:36 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -41,9 +41,8 @@ public class PlaceClient {
             @Override
             @EverythingIsNonNull
             public void onResponse(Call<RestaurantSearchResponse> call, Response<RestaurantSearchResponse> response) {
-                assert response.body() != null;
-
-                completion.onComplete(response.body().getResults());
+                if (response.body() != null) completion.onComplete(response.body().getResults());
+                else completion.onComplete(null);
             }
 
             @Override
@@ -56,14 +55,12 @@ public class PlaceClient {
     }
 
     public void fetchDetails(String placeId, FetchDetailsCompletion completion) {
-        Call<RestaurantDetailResponse> call = service.getPlaceDetail(placeId);
-        call.enqueue(new Callback<RestaurantDetailResponse>() {
+        service.getPlaceDetail(placeId).enqueue(new Callback<RestaurantDetailResponse>() {
             @Override
             @EverythingIsNonNull
             public void onResponse(Call<RestaurantDetailResponse> call, Response<RestaurantDetailResponse> response) {
-                assert response.body() != null;
-
-                completion.onComplete(response.body().getResult());
+                if (response.body() != null) completion.onComplete(response.body().getResult());
+                else completion.onComplete(null);
             }
 
             @Override
