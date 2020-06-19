@@ -2,7 +2,7 @@
  * FirestoreRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/18/20 3:55 PM.
+ *   Updated by paulleclerc on 6/19/20 3:36 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -29,7 +29,7 @@ public class FirestoreRepository {
 
     private final FirebaseFirestore db;
 
-    FirestoreRepository() {
+    public FirestoreRepository() {
         db = FirebaseFirestore.getInstance();
         auth = new AuthRepository();
         storage = new FirStorageRepository();
@@ -56,14 +56,14 @@ public class FirestoreRepository {
         }
     }
 
-    void setNewUserAvatar(String avatarFileName) {
+    public void setNewUserAvatar(String avatarFileName) {
         db.collection(KEY_USER_COLLECTION)
                 .document(auth.getUid())
                 .update(KEY_AVATAR_NAME, avatarFileName)
                 .addOnFailureListener(e -> Log.e(TAG, "setNewUserAvatar: ", e));
     }
 
-    void getUsername(GetUsernameCompletion completion) {
+    public void getUsername(GetUsernameCompletion completion) {
         db.collection(KEY_USER_COLLECTION)
                 .document(auth.getUid()).get()
                 .addOnCompleteListener(task -> completion.onComplete(getUsernameFromResult(task)));
@@ -79,20 +79,20 @@ public class FirestoreRepository {
         }
     }
 
-    void setUsername(String username) {
+    public void setUsername(String username) {
         db.collection(KEY_USER_COLLECTION)
                 .document(auth.getUid())
                 .update(KEY_USERNAME, username)
                 .addOnFailureListener(e -> Log.e(TAG, "setUsername: ", e));
     }
 
-    void setAllowNotifications(boolean allowNotifications) {
+    public void setAllowNotifications(boolean allowNotifications) {
         db.collection(KEY_USER_COLLECTION).document(auth.getUid())
                 .update(KEY_ALLOW_NOTIFICATIONS, allowNotifications)
                 .addOnFailureListener(e -> Log.e(TAG, "setAllowNotifications: ", e));
     }
 
-    void getChosenPlaceId(GetPlaceIdCompletion completion) {
+    public void getChosenPlaceId(GetPlaceIdCompletion completion) {
         db.collection(KEY_USER_COLLECTION).document(auth.getUid())
                 .addSnapshotListener((documentSnapshot, e) -> completion.onComplete(getPlaceId(documentSnapshot, e)));
     }
@@ -106,7 +106,7 @@ public class FirestoreRepository {
         }
     }
 
-    void getAllowNotifications(GetAllowNotificationsCompletion completion) {
+    public void getAllowNotifications(GetAllowNotificationsCompletion completion) {
         db.collection(KEY_USER_COLLECTION).document(auth.getUid()).get()
                 .addOnCompleteListener(documentSnapshot -> completion.onComplete(getAreNotificationsAllowed(documentSnapshot)));
     }
@@ -122,7 +122,7 @@ public class FirestoreRepository {
         }
     }
 
-    void setChosenPlaceId(String placeId, SetChosenPlaceIdCompletion completion) {
+    public void setChosenPlaceId(String placeId, SetChosenPlaceIdCompletion completion) {
         db.collection(KEY_USER_COLLECTION)
                 .document(auth.getUid())
                 .update(KEY_CHOSEN_PLACE_ID, placeId)

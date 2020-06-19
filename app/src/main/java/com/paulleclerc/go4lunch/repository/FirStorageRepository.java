@@ -2,7 +2,7 @@
  * FirStorageRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/18/20 4:15 PM.
+ *   Updated by paulleclerc on 6/19/20 3:36 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -24,7 +24,7 @@ public class FirStorageRepository {
 
     private final FirebaseStorage storage;
 
-    FirStorageRepository() {
+    public FirStorageRepository() {
         storage = FirebaseStorage.getInstance();
     }
 
@@ -51,7 +51,7 @@ public class FirStorageRepository {
         }
     }
 
-    void saveUserAvatar(Uri avatarUri, SaveUserAvatar completion) {
+    public void saveUserAvatar(Uri avatarUri, SaveUserAvatar completion) {
         String fileName = UUID.randomUUID().toString() + ".jpeg";
         StorageReference directory = storage.getReference().child(KEY_AVATAR_DIRECTORY);
         StorageReference fileRef = directory.child(fileName);

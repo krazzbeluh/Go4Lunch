@@ -2,15 +2,15 @@
  * UserRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/17/20 4:36 PM.
+ *   Updated by paulleclerc on 6/19/20 3:36 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
 package com.paulleclerc.go4lunch.repository;
 
-import android.net.Uri;
 import android.util.Log;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.paulleclerc.go4lunch.model.Restaurant;
@@ -18,67 +18,51 @@ import com.paulleclerc.go4lunch.model.Restaurant;
 public class UserRepository {
     private static final String TAG = UserRepository.class.getSimpleName();
 
-    private final AuthRepository auth = new AuthRepository();
-    private final FirestoreRepository firestore = new FirestoreRepository();
-    private final FirStorageRepository storage = new FirStorageRepository();
-    private final PlacesRepository placesRepository = new PlacesRepository();
+    private final AuthRepository auth;
+    private final FirestoreRepository firestore;
+    private final FirStorageRepository storage;
+    private final PlacesRepository placesRepository;
+
+    public UserRepository() {
+        auth = new AuthRepository();
+        firestore = new FirestoreRepository();
+        storage = new FirStorageRepository();
+        placesRepository = new PlacesRepository();
+    }
+
+    public UserRepository(AuthRepository auth, FirestoreRepository firestore, FirStorageRepository storage, PlacesRepository placesRepository) {
+        this.auth = auth;
+        this.firestore = firestore;
+        this.storage = storage;
+        this.placesRepository = placesRepository;
+    }
 
     public void getUserAvatar(GetUserAvatarCompletion completion) {
         String uid = auth.getUid();
-        assert uid != null;
-        firestore.getUserAvatarUrl(uid, completion::onComplete);
-    }
-
-    public void setUserAvatar(Uri avatarUri) {
-        storage.saveUserAvatar(avatarUri, firestore::setNewUserAvatar);
-    }
-
-    public void setAllowNotifications(boolean allowNotifications) {
-        firestore.setAllowNotifications(allowNotifications);
-    }
-
-    public void getUsername(FirestoreRepository.GetUsernameCompletion completion) {
-        firestore.getUsername(completion);
-    }
-
-    public void getChosenPlaceId(GetChosenPlaceIdCompletion completion) {
-        firestore.getChosenPlaceId(completion::onComplete);
-    }
-
-    public void getAllowNotifications(GetAllowNotificationsCompletion completion) {
-        firestore.getAllowNotifications(completion::onComplete);
+        if (uid != null) firestore.getUserAvatarUrl(uid, completion::onComplete);
     }
 
     public void getChosenRestaurant(GetChosenRestaurantCompletion completion) {
-        getChosenPlaceId(placeId -> {
+        firestore.getChosenPlaceId(placeId -> {
             if (placeId == null) completion.onComplete(null);
             else placesRepository.fetchDetail(placeId, completion::onComplete);
         });
     }
 
-    public void setChosenRestaurant(String restaurantId, SetChosenPlaceIdCompletion completion) {
-        firestore.setChosenPlaceId(restaurantId, completion::onFailure);
-    }
-
     public void setFCMToken() {
-        FirebaseInstanceId
-                .getInstance()
-                .getInstanceId()
-                .addOnCompleteListener(task -> {
-                    InstanceIdResult result = task.getResult();
-
-                    if (!task.isSuccessful() || result == null) {
-                        Log.w(TAG, "setFCMToken: ", task.getException());
-                        return;
-                    }
-
-                    String token = result.getToken();
-                    firestore.setFCMToken(token);
-                });
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(task -> firestore.setFCMToken(getToken(task)));
     }
 
-    public void setUsername(String username) {
-        firestore.setUsername(username);
+    public String getToken(Task<InstanceIdResult> task) {
+        InstanceIdResult result = task.getResult();
+
+        if (!task.isSuccessful() || result == null) {
+            Log.e(TAG, "setFCMToken: ", task.getException());
+            return null;
+        }
+
+        return result.getToken();
     }
 
     public interface GetUserAvatarCompletion {
@@ -87,17 +71,5 @@ public class UserRepository {
 
     public interface GetChosenRestaurantCompletion {
         void onComplete(Restaurant restaurant);
-    }
-
-    public interface GetChosenPlaceIdCompletion {
-        void onComplete(String placeId);
-    }
-
-    public interface GetAllowNotificationsCompletion {
-        void onComplete(Boolean allowNotifications);
-    }
-
-    public interface SetChosenPlaceIdCompletion {
-        void onFailure();
     }
 }

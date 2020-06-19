@@ -2,7 +2,7 @@
  * SettingsViewModel.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/17/20 4:36 PM.
+ *   Updated by paulleclerc on 6/19/20 3:36 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -24,6 +24,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.paulleclerc.go4lunch.repository.AvatarRepository;
+import com.paulleclerc.go4lunch.repository.FirStorageRepository;
+import com.paulleclerc.go4lunch.repository.FirestoreRepository;
 import com.paulleclerc.go4lunch.repository.UserRepository;
 
 import java.io.ByteArrayOutputStream;
@@ -36,6 +38,8 @@ import java.util.UUID;
 
 public class SettingsViewModel extends AndroidViewModel {
     private UserRepository user = new UserRepository();
+    private FirStorageRepository storage = new FirStorageRepository();
+    private FirestoreRepository firestore = new FirestoreRepository();
     private AvatarRepository avatarRepository = new AvatarRepository();
 
     private MutableLiveData<Bitmap> avatar = new MutableLiveData<>();
@@ -56,12 +60,12 @@ public class SettingsViewModel extends AndroidViewModel {
     }
 
     public LiveData<String> getUsername() {
-        user.getUsername(this.username::setValue);
+        firestore.getUsername(this.username::setValue);
         return username;
     }
 
     public LiveData<Boolean> getAllowNotifications() {
-        user.getAllowNotifications(allowNotifications::setValue);
+        firestore.getAllowNotifications(allowNotifications::setValue);
         return allowNotifications;
     }
 
@@ -74,16 +78,16 @@ public class SettingsViewModel extends AndroidViewModel {
             String path = MediaStore.Images.Media.insertImage(getApplication().getContentResolver(),
                     avatar, UUID.randomUUID().toString(), null);
 
-            user.setUserAvatar(Uri.parse(path));
+            storage.saveUserAvatar(Uri.parse(path), firestore::setNewUserAvatar);
         }
 
         if (username != null && !username.equals(this.username.getValue())) {
-            user.setUsername(username);
+            firestore.setUsername(username);
         }
 
         Boolean areNotificationsAllowed = this.allowNotifications.getValue();
         if (areNotificationsAllowed != null && allowNotifications != areNotificationsAllowed) {
-            user.setAllowNotifications(allowNotifications);
+            firestore.setAllowNotifications(allowNotifications);
         }
     }
 

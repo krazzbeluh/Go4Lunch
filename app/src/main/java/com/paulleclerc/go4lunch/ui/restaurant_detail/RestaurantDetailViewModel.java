@@ -2,7 +2,7 @@
  * RestaurantDetailViewModel.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/19/20 2:49 PM.
+ *   Updated by paulleclerc on 6/19/20 3:36 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -17,6 +17,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.paulleclerc.go4lunch.R;
 import com.paulleclerc.go4lunch.model.Restaurant;
+import com.paulleclerc.go4lunch.repository.FirestoreRepository;
 import com.paulleclerc.go4lunch.repository.PlacesRepository;
 import com.paulleclerc.go4lunch.repository.UserRepository;
 
@@ -27,6 +28,7 @@ public class RestaurantDetailViewModel extends AndroidViewModel {
 
     private final PlacesRepository placesRepository = new PlacesRepository();
     private final UserRepository userRepository = new UserRepository();
+    private final FirestoreRepository firestore = new FirestoreRepository();
 
     private final MutableLiveData<Restaurant.RestaurantDetails> placeDetail = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isLiked = new MutableLiveData<>();
@@ -52,12 +54,12 @@ public class RestaurantDetailViewModel extends AndroidViewModel {
     }
 
     LiveData<String> getChosenRestaurantId() {
-        userRepository.getChosenPlaceId(chosenRestaurantId::setValue);
+        firestore.getChosenPlaceId(chosenRestaurantId::setValue);
         return chosenRestaurantId;
     }
 
     void chooseRestaurant(Restaurant restaurant) {
-        userRepository.setChosenRestaurant(restaurant.id, () -> this.alertMessage.setValue(getApplication().getApplicationContext().getString(R.string.impossible_operation)));
+        firestore.setChosenPlaceId(restaurant.id, () -> this.alertMessage.setValue(getApplication().getApplicationContext().getString(R.string.impossible_operation)));
     }
 
     void switchLike(Restaurant restaurant) {

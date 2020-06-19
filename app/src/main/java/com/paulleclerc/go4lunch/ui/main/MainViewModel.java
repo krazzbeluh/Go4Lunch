@@ -2,7 +2,7 @@
  * MainViewModel.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/17/20 3:34 PM.
+ *   Updated by paulleclerc on 6/19/20 3:36 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -17,11 +17,13 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.paulleclerc.go4lunch.model.Restaurant;
 import com.paulleclerc.go4lunch.repository.AuthRepository;
+import com.paulleclerc.go4lunch.repository.FirestoreRepository;
 import com.paulleclerc.go4lunch.repository.UserRepository;
 
 public class MainViewModel extends AndroidViewModel {
     private final AuthRepository authService = new AuthRepository();
-    public final UserRepository userRepository = new UserRepository();
+    private final UserRepository userRepository = new UserRepository();
+    private final FirestoreRepository firestore = new FirestoreRepository();
 
     private final MutableLiveData<Boolean> isUserSignedIn = new MutableLiveData<>();
     private final MutableLiveData<String> userAvatarUrl = new MutableLiveData<>();
@@ -50,7 +52,7 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public LiveData<String> getUsername() {
-        userRepository.getUsername(username::setValue);
+        firestore.getUsername(username::setValue);
         return username;
     }
 
