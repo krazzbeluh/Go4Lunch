@@ -2,7 +2,7 @@
  * PlacesRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/19/20 4:34 PM.
+ *   Updated by paulleclerc on 6/24/20 9:42 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -16,7 +16,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.paulleclerc.go4lunch.closures.FetchPlacesCompletion;
 import com.paulleclerc.go4lunch.model.Restaurant;
 import com.paulleclerc.go4lunch.model.Workmate;
 import com.paulleclerc.go4lunch.network.PlaceClient;
@@ -314,5 +313,9 @@ public class PlacesRepository {
 
     public interface GetNameCompletion {
         void onComplete(String name);
+    }
+
+    public interface FetchPlacesCompletion {
+        void onComplete(List<Restaurant> restaurants);
     }
 }

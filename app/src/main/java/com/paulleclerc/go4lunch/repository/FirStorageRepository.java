@@ -2,7 +2,7 @@
  * FirStorageRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/19/20 3:36 PM.
+ *   Updated by paulleclerc on 6/24/20 9:42 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -14,7 +14,6 @@ import android.util.Log;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.paulleclerc.go4lunch.closures.GetUserAvatarUriCompletion;
 
 import java.util.UUID;
 
@@ -61,5 +60,9 @@ public class FirStorageRepository {
 
     public interface SaveUserAvatar {
         void onComplete(String fileName);
+    }
+
+    public interface GetUserAvatarUriCompletion {
+        void onComplete(boolean success, Uri uri);
     }
 }

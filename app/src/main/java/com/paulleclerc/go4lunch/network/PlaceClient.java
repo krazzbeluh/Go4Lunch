@@ -2,7 +2,7 @@
  * PlaceClient.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/19/20 5:36 PM.
+ *   Updated by paulleclerc on 6/24/20 9:42 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -17,6 +17,7 @@ import com.paulleclerc.go4lunch.network.restaurant_response.Result;
 
 import java.util.List;
 
+import okhttp3.HttpUrl;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,7 +27,7 @@ import retrofit2.internal.EverythingIsNonNull;
 
 public class PlaceClient {
     private static final String TAG = PlaceClient.class.getSimpleName();
-    private static final String BASE_URL = "https://maps.googleapis.com/";
+    private static final HttpUrl BASE_URL = HttpUrl.get("https://maps.googleapis.com/");
 
     private final Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(BASE_URL)

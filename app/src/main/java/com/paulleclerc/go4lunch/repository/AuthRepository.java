@@ -2,7 +2,7 @@
  * AuthRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/18/20 1:56 PM.
+ *   Updated by paulleclerc on 6/24/20 9:42 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -13,7 +13,6 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.paulleclerc.go4lunch.closures.FirebaseSignInWithCredentialClosure;
 import com.paulleclerc.go4lunch.enums.LoginState;
 
 public class AuthRepository {
@@ -27,7 +26,8 @@ public class AuthRepository {
         this.auth = auth;
     }
 
-    public void firebaseSignInWithCredential(AuthCredential googleAuthCredential, FirebaseSignInWithCredentialClosure completion) {
+    public void firebaseSignInWithCredential(AuthCredential googleAuthCredential,
+                                             FirebaseSignInWithCredentialCompletion completion) {
         auth.signInWithCredential(googleAuthCredential).addOnCompleteListener(authTask -> completion.onComplete(getState(authTask)));
     }
 
@@ -54,5 +54,9 @@ public class AuthRepository {
         FirebaseUser user = auth.getCurrentUser();
         if (user != null) return user.getEmail();
         else return null;
+    }
+
+    public interface FirebaseSignInWithCredentialCompletion {
+        void onComplete(LoginState loginState);
     }
 }
