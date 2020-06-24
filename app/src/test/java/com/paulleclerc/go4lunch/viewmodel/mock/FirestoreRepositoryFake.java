@@ -2,7 +2,7 @@
  * FirestoreRepositoryFake.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/24/20 4:06 PM.
+ *   Updated by paulleclerc on 6/24/20 4:55 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -15,10 +15,15 @@ import java.util.List;
 
 public class FirestoreRepositoryFake extends FirestoreRepository {
     List<String> stringQueue = new ArrayList<>();
+    List<Boolean> booleansQueue = new ArrayList<>();
     boolean shouldFail = false;
 
     public FirestoreRepositoryFake() {
         super(null, null, null);
+    }
+
+    public void addBooleanToQueue(Boolean bool) {
+        booleansQueue.add(bool);
     }
 
     public void addStringToQueue(String string) {
@@ -42,5 +47,10 @@ public class FirestoreRepositoryFake extends FirestoreRepository {
     @Override
     public void setChosenPlaceId(String placeId, SetChosenPlaceIdCompletion completion) {
         if (shouldFail) completion.onFailure();
+    }
+
+    @Override
+    public void getAllowNotifications(GetAllowNotificationsCompletion completion) {
+        completion.onComplete(booleansQueue.remove(0));
     }
 }

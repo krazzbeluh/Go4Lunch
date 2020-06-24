@@ -2,7 +2,7 @@
  * SettingsViewModel.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/19/20 3:36 PM.
+ *   Updated by paulleclerc on 6/24/20 4:55 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -37,10 +37,10 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class SettingsViewModel extends AndroidViewModel {
-    private UserRepository user = new UserRepository();
-    private FirStorageRepository storage = new FirStorageRepository();
-    private FirestoreRepository firestore = new FirestoreRepository();
-    private AvatarRepository avatarRepository = new AvatarRepository();
+    private final UserRepository user;
+    private final FirStorageRepository storage;
+    private final FirestoreRepository firestore;
+    private final AvatarRepository avatarRepository;
 
     private MutableLiveData<Bitmap> avatar = new MutableLiveData<>();
     private Bitmap avatarFromLibrary = null;
@@ -49,12 +49,28 @@ public class SettingsViewModel extends AndroidViewModel {
 
     public SettingsViewModel(@NonNull Application application) {
         super(application);
+        user = new UserRepository();
+        storage = new FirStorageRepository();
+        firestore = new FirestoreRepository();
+        avatarRepository = new AvatarRepository();
+    }
+
+    public SettingsViewModel(@NonNull Application application, UserRepository userRepository,
+                             FirStorageRepository storage,
+                             FirestoreRepository firestoreRepository,
+                             AvatarRepository avatarRepository) {
+        super(application);
+        this.user = userRepository;
+        this.storage = storage;
+        this.firestore = firestoreRepository;
+        this.avatarRepository = avatarRepository;
     }
 
     public LiveData<Bitmap> getAvatar() {
         user.getUserAvatar(avatarUrl -> {
             if (avatar.getValue() == null)
-                avatarRepository.getAvatarFromUrl(avatarUrl, getApplication(), this.avatar::setValue);
+                avatarRepository.getAvatarFromUrl(avatarUrl, getApplication(),
+                        this.avatar::setValue);
         });
         return avatar;
     }
