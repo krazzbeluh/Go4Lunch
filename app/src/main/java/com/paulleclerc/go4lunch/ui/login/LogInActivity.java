@@ -2,7 +2,7 @@
  * LogInActivity.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Updated by paulleclerc on 6/24/20 2:48 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -29,7 +29,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.paulleclerc.go4lunch.R;
-import com.paulleclerc.go4lunch.enums.LoginState;
 import com.paulleclerc.go4lunch.ui.main.MainActivity;
 
 import butterknife.BindView;
@@ -120,11 +119,10 @@ public class LogInActivity extends AppCompatActivity implements LoginListener {
     }
 
     private void observeIsUserAuthenticated() {
-        viewModel.isUserAuthenticated.observe(this, isAuthenticated -> {
+        viewModel.getIsUserAuthenticated().observe(this, isAuthenticated -> {
             switch (isAuthenticated) {
                 case FAILED:
                     showSnackBar(R.string.authentication_failed);
-                    viewModel.isUserAuthenticated.setValue(LoginState.NONE);
                     break;
                 case SIGNED_IN:
                     launchNextActivity();

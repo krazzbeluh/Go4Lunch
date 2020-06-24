@@ -2,7 +2,7 @@
  * WorkmatesRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/24/20 10:55 AM.
+ *   Updated by paulleclerc on 6/24/20 2:48 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -55,7 +55,8 @@ public class WorkmatesRepository {
                 .get()
                 .addOnCompleteListener(task -> {
                     List<DocumentSnapshot> documents = getDocumentsFromTask(task);
-                    if (documents != null) getWorkmatesInfos(documents, completion::onComplete);
+                    if (documents != null && !documents.isEmpty())
+                        getWorkmatesInfos(documents, completion::onComplete);
                     else completion.onComplete(null);
                 });
     }
