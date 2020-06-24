@@ -2,7 +2,7 @@
  * WorkmatesRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/19/20 4:34 PM.
+ *   Updated by paulleclerc on 6/24/20 10:55 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -42,7 +42,8 @@ public class WorkmatesRepository {
         this.storage = new FirStorageRepository();
     }
 
-    WorkmatesRepository(FirebaseFirestore db, AuthRepository auth, FirStorageRepository storage) {
+    public WorkmatesRepository(FirebaseFirestore db, AuthRepository auth,
+                               FirStorageRepository storage) {
         this.db = db;
         this.auth = auth;
         this.storage = storage;
