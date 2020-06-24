@@ -2,7 +2,7 @@
  * ChatViewModel.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/18/20 3:07 PM.
+ *   Updated by paulleclerc on 6/24/20 11:14 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -21,20 +21,28 @@ import com.paulleclerc.go4lunch.repository.ChatRepository;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class ChatViewModel extends AndroidViewModel {
-    private ChatRepository chatService = new ChatRepository();
+    private final ChatRepository chatService;
     private MutableLiveData<List<ChatMessage>> chatMessages = new MutableLiveData<>();
 
     public ChatViewModel(@NonNull Application application) {
         super(application);
+        this.chatService = new ChatRepository();
     }
 
-    LiveData<List<ChatMessage>> fetchMessages(Workmate workmate) {
+    public ChatViewModel(@Nonnull Application application, ChatRepository chatRepository) {
+        super(application);
+        this.chatService = chatRepository;
+    }
+
+    public LiveData<List<ChatMessage>> fetchMessages(Workmate workmate) {
         chatService.fetchMessages(workmate, messages -> this.chatMessages.setValue(messages));
         return chatMessages;
     }
 
-    void sendMessage(Workmate workmate, String message) {
+    public void sendMessage(Workmate workmate, String message) {
         chatService.sendChatMessage(workmate, message);
     }
 }
