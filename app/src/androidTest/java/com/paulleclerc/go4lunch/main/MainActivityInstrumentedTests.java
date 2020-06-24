@@ -2,14 +2,23 @@
  * MainActivityInstrumentedTests.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/24/20 10:16 AM.
+ *   Updated by paulleclerc on 6/24/20 10:32 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
 package com.paulleclerc.go4lunch.main;
 
-/*public class MainActivityInstrumentedTests {
-    @Rule
+import org.junit.Test;
+
+import static org.junit.Assert.assertNull;
+
+public class MainActivityInstrumentedTests {
+    @Test
+    public void test() {
+        assertNull(null);
+    }
+}
+    /*@Rule
     public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
     @Rule
     public GrantPermissionRule grantPermissionRule =
