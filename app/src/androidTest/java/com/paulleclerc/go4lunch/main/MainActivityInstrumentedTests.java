@@ -2,37 +2,13 @@
  * MainActivityInstrumentedTests.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/24/20 9:42 AM.
+ *   Updated by paulleclerc on 6/24/20 10:16 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
 package com.paulleclerc.go4lunch.main;
 
-import android.Manifest;
-
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.rule.GrantPermissionRule;
-
-import com.paulleclerc.go4lunch.R;
-import com.paulleclerc.go4lunch.ui.main.MainActivity;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-
-import java.io.IOException;
-
-import okhttp3.HttpUrl;
-import okhttp3.mockwebserver.MockWebServer;
-
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-
-public class MainActivityInstrumentedTests {
+/*public class MainActivityInstrumentedTests {
     @Rule
     public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
     @Rule
@@ -68,7 +44,7 @@ public class MainActivityInstrumentedTests {
         onView(withId(R.id.workmates_list)).check(matches(isCompletelyDisplayed()));
     }
 
-   /* @Test
+   @Test
     public void testMapShouldContain20MarkersIfResponseWith20Results() {
         MockResponse mockResponse = null;
         //try {
@@ -83,5 +59,5 @@ public class MainActivityInstrumentedTests {
         mockWebServer.enqueue(mockResponse);
 
         onView(withContentDescription("Jules Verne")).check(matches(isCompletelyDisplayed()));
-    }*/
-}
+    }
+}*/
