@@ -2,7 +2,7 @@
  * PlacesRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/24/20 9:42 AM.
+ *   Updated by paulleclerc on 6/26/20 10:42 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -58,7 +58,7 @@ public class PlacesRepository {
 
     public void fetchPlaces(LatLng userPosition, FetchPlacesCompletion completion) {
         List<Restaurant> restaurants = placesCache.get(userPosition);
-        if (restaurants != null) {
+        if (restaurants != null && restaurants.size() != 0) {
             completion.onComplete(restaurants);
         } else {
             client.fetchRestaurants(userPosition, results -> {
@@ -66,7 +66,8 @@ public class PlacesRepository {
                 List<String> restaurantIds = getRestaurantIdsFromRestaurants(restaurantList);
 
                 fetchInterestedWorkmates(restaurantIds, interestedWorkmates -> {
-                    List<Restaurant> restaurantsList = integrateInterestedWorkmates(restaurantList, interestedWorkmates);
+                    List<Restaurant> restaurantsList =
+                            integrateInterestedWorkmates(restaurantList, interestedWorkmates);
 
                     placesCache.put(userPosition, restaurantsList);
                     completion.onComplete(restaurantsList);

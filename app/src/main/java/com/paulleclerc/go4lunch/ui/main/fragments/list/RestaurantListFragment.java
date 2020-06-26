@@ -2,7 +2,7 @@
  * RestaurantListFragment.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/17/20 5:33 PM.
+ *   Updated by paulleclerc on 6/26/20 10:42 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -61,6 +62,8 @@ public class RestaurantListFragment extends Fragment implements LocationListener
 
     @BindView(R.id.restaurant_recyclerview)
     RecyclerView recyclerView;
+    @BindView(R.id.restaurant_list_progressBar)
+    ProgressBar progressBar;
 
     private RestaurantListFragment(ShowDetailListener showDetailListener) {
         this.showDetailListener = showDetailListener;
@@ -93,7 +96,10 @@ public class RestaurantListFragment extends Fragment implements LocationListener
         recyclerView.setLayoutManager(linearLayoutManager);
         adapter = new RestaurantListAdapter(showDetailListener);
         viewModel = new ViewModelProvider(this).get(RestaurantListViewModel.class);
-        viewModel.getPlaces().observe(getViewLifecycleOwner(), adapter::setPlaces);
+        viewModel.getPlaces().observe(getViewLifecycleOwner(), places -> {
+            adapter.setPlaces(places);
+            progressBar.setVisibility(View.GONE);
+        });
 
         recyclerView.setAdapter(adapter);
 

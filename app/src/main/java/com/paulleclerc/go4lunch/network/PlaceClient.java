@@ -2,7 +2,7 @@
  * PlaceClient.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/24/20 9:42 AM.
+ *   Updated by paulleclerc on 6/26/20 10:42 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -17,7 +17,6 @@ import com.paulleclerc.go4lunch.network.restaurant_response.Result;
 
 import java.util.List;
 
-import okhttp3.HttpUrl;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,21 +26,27 @@ import retrofit2.internal.EverythingIsNonNull;
 
 public class PlaceClient {
     private static final String TAG = PlaceClient.class.getSimpleName();
-    private static final HttpUrl BASE_URL = HttpUrl.get("https://maps.googleapis.com/");
-
+    private static String BASE_URL = "https://maps.googleapis.com/";
     private final Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .client(OkHttpProvider.getOkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
+
+    public static void setBaseUrl(String baseUrl) {
+        BASE_URL = baseUrl;
+    }
 
     private final PlaceService service = retrofit.create(PlaceService.class);
 
     public void fetchRestaurants(LatLng location, FetchRestaurantsCompletion completion) {
-        Call<RestaurantSearchResponse> call = service.getNearbyRestaurants(location.latitude + "," + location.longitude);
+        Call<RestaurantSearchResponse> call = service.getNearbyRestaurants(location.latitude + ","
+                + location.longitude);
         call.enqueue(new Callback<RestaurantSearchResponse>() {
             @Override
             @EverythingIsNonNull
-            public void onResponse(Call<RestaurantSearchResponse> call, Response<RestaurantSearchResponse> response) {
+            public void onResponse(Call<RestaurantSearchResponse> call,
+                                   Response<RestaurantSearchResponse> response) {
                 if (response.body() != null) completion.onComplete(response.body().getResults());
                 else completion.onComplete(null);
             }

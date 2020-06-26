@@ -2,39 +2,36 @@
  * MainActivityInstrumentedTests.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/24/20 10:32 AM.
+ *   Updated by paulleclerc on 6/26/20 10:42 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
 package com.paulleclerc.go4lunch.main;
 
+import android.Manifest;
+
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.rule.GrantPermissionRule;
+
+import com.paulleclerc.go4lunch.R;
+import com.paulleclerc.go4lunch.ui.main.MainActivity;
+
+import org.junit.Rule;
 import org.junit.Test;
 
-import static org.junit.Assert.assertNull;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 public class MainActivityInstrumentedTests {
-    @Test
-    public void test() {
-        assertNull(null);
-    }
-}
-    /*@Rule
-    public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
+    @Rule
+    public ActivityTestRule<MainActivity> activityRule =
+            new ActivityTestRule<>(MainActivity.class);
     @Rule
     public GrantPermissionRule grantPermissionRule =
             GrantPermissionRule.grant(Manifest.permission.ACCESS_FINE_LOCATION);
-    private MockWebServer mockWebServer = new MockWebServer();
-
-    @Before
-    public void setUp() throws IOException {
-        HttpUrl baseUrl = mockWebServer.url("https://maps.googleapis.com/");
-        mockWebServer.start();
-    }
-
-    @After
-    public void tearDown() throws IOException {
-        mockWebServer.shutdown();
-    }
 
     @Test
     public void testOpenedFragmentIsMap() {
@@ -52,21 +49,4 @@ public class MainActivityInstrumentedTests {
         onView(withId(R.id.main_bottom_navigation_workmates)).perform(click());
         onView(withId(R.id.workmates_list)).check(matches(isCompletelyDisplayed()));
     }
-
-   @Test
-    public void testMapShouldContain20MarkersIfResponseWith20Results() {
-        MockResponse mockResponse = null;
-        //try {
-            mockResponse = new MockResponse()
-                    .setResponseCode(HttpURLConnection.HTTP_OK)
-                    .setBody("{}");
-            // FileUtils.readTestResourceFile("placesNearbySearchOK.json")
-        //} catch (IOException e) {
-            //e.printStackTrace();
-            //fail();
-        //}
-        mockWebServer.enqueue(mockResponse);
-
-        onView(withContentDescription("Jules Verne")).check(matches(isCompletelyDisplayed()));
-    }
-}*/
+}
