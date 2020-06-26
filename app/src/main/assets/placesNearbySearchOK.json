@@ -1,0 +1,59 @@
+{
+  "html_attributions": [],
+  "next_page_token": "",
+  "results": [
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 48.8581346,
+          "lng": 2.2945077
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 48.8594727302915,
+            "lng": 2.295836080291501
+          },
+          "southwest": {
+            "lat": 48.8567747697085,
+            "lng": 2.293138119708498
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
+      "id": "afaa21ac554f359005b7c564e68a08901a5d4535",
+      "name": "Jules Verne",
+      "opening_hours": {
+        "open_now": false
+      },
+      "photos": [
+        {
+          "height": 809,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/103553920573835766235\">Le Jules Verne</a>"
+          ],
+          "photo_reference": "CmRaAAAAKsORY_fNOvemaNZzVeKdE5iE1xnsjj-eHdLKrPgwadZ5LoF8M6izrlAW3LnwD6WPeyfNWdbMAebGrAw_dM0rMiHYmlvNRXyVsjHR9_GVOM09-CjCjUrJGCWKdQPoRNreEhAo5VtKiqTB_zbkJZlRMpfAGhTaG4h5yJ6WtMtP5yKS28b7RdrCrQ",
+          "width": 1080
+        }
+      ],
+      "place_id": "ChIJl_7p8uFv5kcRj5ZGEf31ILM",
+      "plus_code": {
+        "compound_code": "V75V+7R Paris, France",
+        "global_code": "8FW4V75V+7R"
+      },
+      "price_level": 4,
+      "rating": 4.1,
+      "reference": "ChIJl_7p8uFv5kcRj5ZGEf31ILM",
+      "scope": "GOOGLE",
+      "types": [
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 922,
+      "vicinity": "Avenue Gustave Eiffel, Paris"
+    }
+  ],
+  "status": "OK"
+}

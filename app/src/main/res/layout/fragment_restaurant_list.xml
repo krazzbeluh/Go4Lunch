@@ -2,21 +2,31 @@
   ~ fragment_restaurant_list.xml
   ~   Go4Lunch
   ~
-  ~   Created by paulleclerc on 5/27/20 5:13 PM.
+  ~   Updated by paulleclerc on 6/26/20 10:42 AM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".ui.main.fragments.list.RestaurantListFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.fragments.list.RestaurantListFragment">
 
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/restaurant_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"
-            tools:listitem="@layout/restaurant_recyclerview_row"/>
+        android:id="@+id/restaurant_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        tools:listitem="@layout/restaurant_recyclerview_row">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <ProgressBar
+        android:id="@+id/restaurant_list_progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
 </FrameLayout>

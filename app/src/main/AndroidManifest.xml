@@ -2,11 +2,12 @@
   ~ AndroidManifest.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/16/20 2:43 PM.
+  ~   Updated by paulleclerc on 6/26/20 10:42 AM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.paulleclerc.go4lunch">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -20,7 +21,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:ignore="AllowBackup"
+        tools:targetApi="m">
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:label="@string/title_activity_settings" />

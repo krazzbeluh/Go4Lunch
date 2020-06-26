@@ -2,7 +2,7 @@
  * WorkmatesViewModel.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/18/20 12:47 PM.
+ *   Updated by paulleclerc on 6/24/20 10:55 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -22,27 +22,39 @@ import com.paulleclerc.go4lunch.repository.WorkmatesRepository;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class WorkmatesViewModel extends AndroidViewModel {
-    private final WorkmatesRepository workmatesRepository = new WorkmatesRepository();
-    private final PlacesRepository placesRepository = new PlacesRepository();
+    private final WorkmatesRepository workmatesRepository;
+    private final PlacesRepository placesRepository;
 
     private final MutableLiveData<List<Workmate>> workmates = new MutableLiveData<>();
 
     public WorkmatesViewModel(@NonNull Application application) {
         super(application);
+        this.workmatesRepository = new WorkmatesRepository();
+        this.placesRepository = new PlacesRepository();
+    }
+
+    public WorkmatesViewModel(@Nonnull Application application,
+                              WorkmatesRepository workmatesRepository,
+                              PlacesRepository placesRepository) {
+        super(application);
+        this.workmatesRepository = workmatesRepository;
+        this.placesRepository = placesRepository;
     }
 
     public LiveData<List<Workmate>> getWorkmates() {
         return workmates;
     }
 
-    void fetchWorkmates() {
-        workmatesRepository.fetchWorkmates((success, workmates) -> {
-            if (success) this.workmates.setValue(workmates);
+    public void fetchWorkmates() {
+        workmatesRepository.fetchWorkmates(workmates -> {
+            if (workmates != null) this.workmates.setValue(workmates);
         });
     }
 
-    LiveData<Restaurant> fetchRestaurant(String id) {
+    public LiveData<Restaurant> fetchRestaurant(String id) {
         MutableLiveData<Restaurant> restaurantLiveData = new MutableLiveData<>();
         placesRepository.fetchDetail(id, restaurantLiveData::setValue);
         return restaurantLiveData;

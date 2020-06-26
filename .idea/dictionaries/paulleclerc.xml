@@ -5,6 +5,7 @@
       <w>firestore</w>
       <w>infos</w>
       <w>leclerc</w>
+      <w>okhttp</w>
     </words>
   </dictionary>
 </component>
