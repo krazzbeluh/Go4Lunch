@@ -2,16 +2,14 @@
   ~ strings.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/18/20 12:31 PM.
+  ~   Updated by paulleclerc on 6/29/20 3:34 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Go4Lunch</string>
-    <string name="facebook_application_id" translatable="false">2642016929378782</string>
-    <string name="facebook_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">
-        fb2642016929378782
-    </string>
+    <string name="facebook_application_id" translatable="false">588339575210555</string>
+    <string name="facebook_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">fb588339575210555</string>
     <string name="background_content_description">Background</string>
     <string name="authentication_failed">Authentication Failed.</string>
     <string name="sign_in_with_facebook">Sign in with Facebook</string>

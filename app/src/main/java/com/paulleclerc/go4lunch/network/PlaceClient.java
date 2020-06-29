@@ -2,7 +2,7 @@
  * PlaceClient.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/26/20 10:42 AM.
+ *   Updated by paulleclerc on 6/29/20 3:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -29,13 +29,8 @@ public class PlaceClient {
     private static String BASE_URL = "https://maps.googleapis.com/";
     private final Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(OkHttpProvider.getOkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
-
-    public static void setBaseUrl(String baseUrl) {
-        BASE_URL = baseUrl;
-    }
 
     private final PlaceService service = retrofit.create(PlaceService.class);
 

@@ -2,7 +2,7 @@
  * WorkmatesRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/24/20 2:48 PM.
+ *   Updated by paulleclerc on 6/29/20 3:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -86,18 +86,28 @@ public class WorkmatesRepository {
 
                 AtomicInteger responses = new AtomicInteger();
                 for (DocumentSnapshot userDocument : UserDocuments) {
-                    String userID = userDocument.getString("userID");
+                    String userID = userDocument.getId();
                     String username = userDocument.getString("username");
                     String avatarFileName = userDocument.getString("avatarName");
                     String chosenRestaurantId = userDocument.getString("chosenPlaceId");
 
-                    if (chosenRestaurantId != null) {
-                        new PlacesRepository().getName(chosenRestaurantId, name -> storage.getUserAvatar(avatarFileName, (success, uri) -> {
-                            workmates.add(new Workmate(userID, username, (uri != null) ? uri.toString() : null, documentIds.get(userID), chosenRestaurantId, name));
+                    storage.getUserAvatar(avatarFileName, ((success, uri) -> {
+                        if (chosenRestaurantId != null) {
+                            new PlacesRepository().getName(chosenRestaurantId, name -> {
+                                workmates.add(new Workmate(userID, username, (uri != null) ?
+                                        uri.toString() : null, documentIds.get(userID),
+                                        chosenRestaurantId, name));
+                                if (responses.incrementAndGet() == documents.size())
+                                    completion.onComplete(workmates);
+                            });
+                        } else {
+                            workmates.add(new Workmate(userID, username, (uri != null) ?
+                                    uri.toString() : null, documentIds.get(userID),
+                                    chosenRestaurantId, null));
                             if (responses.incrementAndGet() == documents.size())
                                 completion.onComplete(workmates);
-                        }));
-                    } else completion.onComplete(null);
+                        }
+                    }));
                 }
             }
         });

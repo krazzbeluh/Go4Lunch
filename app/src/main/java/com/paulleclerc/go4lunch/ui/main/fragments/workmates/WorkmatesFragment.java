@@ -2,7 +2,7 @@
  * WorkmatesFragment.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/18/20 12:47 PM.
+ *   Updated by paulleclerc on 6/29/20 3:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -70,7 +70,8 @@ public class WorkmatesFragment extends Fragment implements WorkmatesListAdapter.
         View view = inflater.inflate(R.layout.fragment_workmates, container, false);
         ButterKnife.bind(this, view);
 
-        recyclerView.setLayoutManager(linearLayoutManager);
+        if (recyclerView.getLayoutManager() == null)
+            recyclerView.setLayoutManager(linearLayoutManager);
         adapter = new WorkmatesListAdapter(this);
         viewModel = new ViewModelProvider(this).get(WorkmatesViewModel.class);
 

@@ -2,7 +2,7 @@
   ~ activity_login.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/5/20 9:49 AM.
+  ~   Updated by paulleclerc on 6/29/20 3:34 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -46,13 +46,12 @@
                 android:layout_marginStart="24dp" android:layout_marginEnd="24dp">
 
             <com.shobhitpuri.custombuttons.GoogleSignInButton
-                    android:id="@+id/sign_in_with_google_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:text="@string/sign_in_with_google"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:onClick="signInWithGoogle"/>
+                android:id="@+id/sign_in_with_google_button"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="@string/sign_in_with_google"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
             <com.facebook.login.widget.LoginButton
                     android:id="@+id/sign_in_with_facebook_button"
                     android:layout_width="match_parent"

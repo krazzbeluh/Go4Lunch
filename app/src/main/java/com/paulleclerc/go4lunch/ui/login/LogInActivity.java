@@ -2,7 +2,7 @@
  * LogInActivity.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/24/20 2:48 PM.
+ *   Updated by paulleclerc on 6/29/20 3:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -33,6 +33,7 @@ import com.paulleclerc.go4lunch.ui.main.MainActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class LogInActivity extends AppCompatActivity implements LoginListener {
     private final int RC_SIGN_IN = 1;
@@ -65,16 +66,18 @@ public class LogInActivity extends AppCompatActivity implements LoginListener {
 
     private void configureSignInWithGoogle() {
         // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
+        GoogleSignInOptions gso =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(getString(R.string.default_web_client_id))
+                        .requestEmail()
+                        .build();
 
         // Build a GoogleSignInClient with the options specified by gso.
         googleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
-    public void signInWithGoogle(View v) {
+    @OnClick(R.id.sign_in_with_google_button)
+    public void signInWithGoogle() {
         Intent signInIntent = googleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }

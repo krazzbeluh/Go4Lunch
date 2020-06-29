@@ -2,7 +2,7 @@
   ~ AndroidManifest.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/26/20 10:42 AM.
+  ~   Updated by paulleclerc on 6/29/20 3:34 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -11,6 +11,7 @@
     package="com.paulleclerc.go4lunch">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -22,7 +23,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup"
         tools:targetApi="m">
         <activity
