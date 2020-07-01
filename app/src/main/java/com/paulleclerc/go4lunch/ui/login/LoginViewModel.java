@@ -2,7 +2,7 @@
  * LoginViewModel.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Updated by paulleclerc on 6/24/20 2:48 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -11,6 +11,7 @@ package com.paulleclerc.go4lunch.ui.login;
 import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.facebook.FacebookCallback;
@@ -22,34 +23,42 @@ import com.paulleclerc.go4lunch.enums.LoginState;
 import com.paulleclerc.go4lunch.repository.AuthRepository;
 
 public class LoginViewModel extends AndroidViewModel {
-    private static final String TAG = LoginViewModel.class.getSimpleName();
-
     private final AuthRepository authRepository;
-    MutableLiveData<LoginState> isUserAuthenticated = new MutableLiveData<>();
+    private final MutableLiveData<LoginState> isUserAuthenticated = new MutableLiveData<>();
 
     public LoginViewModel(Application application) {
         super(application);
         authRepository = new AuthRepository();
     }
 
-    void checkUserSignedIn() {
-        isUserAuthenticated.setValue(authRepository.checkUserSignedIn() ? LoginState.SIGNED_IN : LoginState.NONE);
+    public LoginViewModel(Application application, AuthRepository authRepository) {
+        super(application);
+        this.authRepository = authRepository;
     }
 
-    void signInWithCredential(AuthCredential credential) {
-        authRepository.firebaseSignInWithCredential(credential, loginState -> isUserAuthenticated.setValue(loginState));
+    public LiveData<LoginState> getIsUserAuthenticated() {
+        return isUserAuthenticated;
     }
 
-    FacebookCallback<LoginResult> createFacebookLoginCallback() {
+    public void checkUserSignedIn() {
+        isUserAuthenticated.setValue(authRepository.checkUserSignedIn() ? LoginState.SIGNED_IN :
+                LoginState.NONE);
+    }
+
+    public void signInWithCredential(AuthCredential credential) {
+        authRepository.firebaseSignInWithCredential(credential, isUserAuthenticated::setValue);
+    }
+
+    public FacebookCallback<LoginResult> createFacebookLoginCallback() {
         return new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                AuthCredential credential = FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
-                signInWithCredential(credential);
+                signInWithCredential(FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken()));
             }
 
             @Override
-            public void onCancel() {}
+            public void onCancel() {
+            }
 
             @Override
             public void onError(FacebookException error) {

@@ -2,7 +2,7 @@
   ~ colors.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/17/20 10:09 PM.
+  ~   Updated by paulleclerc on 7/1/20 7:18 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
@@ -15,4 +15,6 @@
     <color name="dark_white">#fdfdfd</color>
     <color name="gray_out">#A5A5A5</color>
     <color name="chat_sender">#A1CBEC</color>
+    <color name="chat_sender_name">#2196F3</color>
+    <color name="chat_bubble_gray">#D8D8D8</color>
 </resources>

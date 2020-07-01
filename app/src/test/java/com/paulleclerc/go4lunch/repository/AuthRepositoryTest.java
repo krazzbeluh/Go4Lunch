@@ -2,18 +2,18 @@
  * AuthRepositoryTest.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/15/20 6:10 PM.
+ *   Updated by paulleclerc on 6/19/20 4:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
-package com.paulleclerc.go4lunch;
+package com.paulleclerc.go4lunch.repository;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.paulleclerc.go4lunch.repository.AuthRepository;
+import com.paulleclerc.go4lunch.enums.LoginState;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -73,5 +73,40 @@ public class AuthRepositoryTest {
         when(auth.getCurrentUser()).thenReturn(user);
 
         assertEquals(authRepository.getUid(), result);
+    }
+
+    @Test
+    public void testGetEmailShouldReturnNullIfUserNotSignedIn() {
+        when(auth.getCurrentUser()).thenReturn(null);
+        assertNull(authRepository.getEmail());
+    }
+
+    @Test
+    public void testGetEmailShouldReturnStringIfUserSignedIn() {
+        String email = "test@go4lunch.fr";
+
+        when(auth.getCurrentUser()).thenReturn(user);
+        when(user.getEmail()).thenReturn(email);
+        assertEquals(authRepository.getEmail(), email);
+    }
+
+    @Test
+    public void testGetStateShouldReturnSignedInIfSuccessAndUserSignedIn() {
+        when(task.isSuccessful()).thenReturn(true);
+        when(auth.getCurrentUser()).thenReturn(user);
+        assertEquals(authRepository.getState(task), LoginState.SIGNED_IN);
+    }
+
+    @Test
+    public void testGetStateShouldReturnFailedIfFailureAndUserSignedIn() {
+        when(task.isSuccessful()).thenReturn(false);
+        assertEquals(authRepository.getState(task), LoginState.FAILED);
+    }
+
+    @Test
+    public void testGetStateShouldReturnSignedInIfSuccessAndUserNotSignedIn() {
+        when(task.isSuccessful()).thenReturn(true);
+        when(auth.getCurrentUser()).thenReturn(null);
+        assertEquals(authRepository.getState(task), LoginState.FAILED);
     }
 }

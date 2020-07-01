@@ -2,7 +2,7 @@
  * LogInActivity.java
  *   Go4Lunch
  *
- *   Created by paulleclerc on 5/27/20 5:13 PM.
+ *   Updated by paulleclerc on 6/29/20 3:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -29,11 +29,11 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.paulleclerc.go4lunch.R;
-import com.paulleclerc.go4lunch.enums.LoginState;
 import com.paulleclerc.go4lunch.ui.main.MainActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class LogInActivity extends AppCompatActivity implements LoginListener {
     private final int RC_SIGN_IN = 1;
@@ -66,16 +66,18 @@ public class LogInActivity extends AppCompatActivity implements LoginListener {
 
     private void configureSignInWithGoogle() {
         // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
+        GoogleSignInOptions gso =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(getString(R.string.default_web_client_id))
+                        .requestEmail()
+                        .build();
 
         // Build a GoogleSignInClient with the options specified by gso.
         googleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
-    public void signInWithGoogle(View v) {
+    @OnClick(R.id.sign_in_with_google_button)
+    public void signInWithGoogle() {
         Intent signInIntent = googleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -120,11 +122,10 @@ public class LogInActivity extends AppCompatActivity implements LoginListener {
     }
 
     private void observeIsUserAuthenticated() {
-        viewModel.isUserAuthenticated.observe(this, isAuthenticated -> {
+        viewModel.getIsUserAuthenticated().observe(this, isAuthenticated -> {
             switch (isAuthenticated) {
                 case FAILED:
                     showSnackBar(R.string.authentication_failed);
-                    viewModel.isUserAuthenticated.setValue(LoginState.NONE);
                     break;
                 case SIGNED_IN:
                     launchNextActivity();

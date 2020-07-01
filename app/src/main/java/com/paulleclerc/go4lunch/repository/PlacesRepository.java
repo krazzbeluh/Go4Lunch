@@ -2,7 +2,7 @@
  * PlacesRepository.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/18/20 12:31 PM.
+ *   Updated by paulleclerc on 6/26/20 10:42 AM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -11,11 +11,11 @@ package com.paulleclerc.go4lunch.repository;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.paulleclerc.go4lunch.closures.FetchPlacesCompletion;
 import com.paulleclerc.go4lunch.model.Restaurant;
 import com.paulleclerc.go4lunch.model.Workmate;
 import com.paulleclerc.go4lunch.network.PlaceClient;
@@ -27,163 +27,194 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 public class PlacesRepository {
     private static final Map<LatLng, List<Restaurant>> placesCache = new HashMap<>();
     private static final Map<String, String> namesCache = new HashMap<>();
 
     private static final String TAG = PlacesRepository.class.getSimpleName();
     private static final String KEY_USER_COLLECTION = "User";
-    private static final String KEY_USER_ID = "userID";
-    private static final String KEY_PLACE_ID = "chosenPlaceId";
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private final FirebaseAuth auth = FirebaseAuth.getInstance();
+    public static final String KEY_USER_ID = "userID";
+    public static final String KEY_PLACE_ID = "chosenPlaceId";
+    private final FirebaseFirestore db;
+    private final FirebaseAuth auth;
     private final WorkmatesRepository workmatesRepository;
     private final PlaceClient client;
 
-    public PlacesRepository(WorkmatesRepository workmatesRepository, PlaceClient client) {
+    public PlacesRepository(FirebaseFirestore db, FirebaseAuth auth, WorkmatesRepository workmatesRepository, PlaceClient client) {
         this.workmatesRepository = workmatesRepository;
         this.client = client;
+        this.db = db;
+        this.auth = auth;
     }
 
     public PlacesRepository() {
         this.workmatesRepository = new WorkmatesRepository();
         this.client = new PlaceClient();
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
     }
 
     public void fetchPlaces(LatLng userPosition, FetchPlacesCompletion completion) {
         List<Restaurant> restaurants = placesCache.get(userPosition);
-        if (restaurants != null) {
+        if (restaurants != null && restaurants.size() != 0) {
             completion.onComplete(restaurants);
         } else {
             client.fetchRestaurants(userPosition, results -> {
-                List<Restaurant> restaurantList = new ArrayList<>();
-                List<String> restaurantIds = new ArrayList<>();
-                for (Result result : results) {
-                    LatLng restaurantLocation = new LatLng(result.getGeometry().getLocation().getLat(), result.getGeometry().getLocation().getLng());
-
-                    String photoReference;
-                    if (result.getPhotos() == null) {
-                        photoReference = null;
-                    } else {
-                        photoReference = result.getPhotos().get(0).getPhotoReference();
-                    }
-
-                    Boolean isOpened;
-                    if (result.getOpeningHours() == null) isOpened = null;
-                    else isOpened = result.getOpeningHours().getOpenNow();
-
-                    Restaurant restaurant = new Restaurant(result.getPlaceId(), result.getName(), result.getVicinity(), photoReference, result.getRating(), restaurantLocation, isOpened, null);
-
-                    namesCache.put(restaurant.id, restaurant.name);
-                    restaurantIds.add(result.getPlaceId());
-                    restaurantList.add(restaurant);
-                }
+                List<Restaurant> restaurantList = getRestaurantsFromResults(results);
+                List<String> restaurantIds = getRestaurantIdsFromRestaurants(restaurantList);
 
                 fetchInterestedWorkmates(restaurantIds, interestedWorkmates -> {
-                    for (Restaurant restaurant: restaurantList) {
-                        restaurant.setInterestedWorkmates(interestedWorkmates.get(restaurant.id));
-                    }
+                    List<Restaurant> restaurantsList =
+                            integrateInterestedWorkmates(restaurantList, interestedWorkmates);
 
-                    placesCache.put(userPosition, restaurantList);
-                    completion.onComplete(restaurantList);
+                    placesCache.put(userPosition, restaurantsList);
+                    completion.onComplete(restaurantsList);
                 });
             });
         }
     }
 
+    public List<Restaurant> getRestaurantsFromResults(List<Result> results) {
+        List<Restaurant> restaurantList = new ArrayList<>();
+        if (results == null) return restaurantList;
+        for (Result result : results) {
+            LatLng restaurantLocation = new LatLng(result.getGeometry().getLocation().getLat(), result.getGeometry().getLocation().getLng());
+
+            String photoReference;
+            if (result.getPhotos() == null) {
+                photoReference = null;
+            } else {
+                photoReference = result.getPhotos().get(0).getPhotoReference();
+            }
+
+            Boolean isOpened;
+            if (result.getOpeningHours() == null) isOpened = null;
+            else isOpened = result.getOpeningHours().getOpenNow();
+
+            Restaurant restaurant = new Restaurant(result.getPlaceId(), result.getName(), result.getVicinity(), photoReference, result.getRating(), restaurantLocation, isOpened, null);
+
+            namesCache.put(restaurant.id, restaurant.name);
+            restaurantList.add(restaurant);
+        }
+
+        return restaurantList;
+    }
+
+    public List<String> getRestaurantIdsFromRestaurants(List<Restaurant> restaurants) {
+        List<String> restaurantIds = new ArrayList<>();
+        if (restaurants == null) return restaurantIds;
+
+        for (Restaurant restaurant : restaurants) {
+            restaurantIds.add(restaurant.id);
+        }
+
+        return restaurantIds;
+    }
+
+    public List<Restaurant> integrateInterestedWorkmates(List<Restaurant> restaurants, Map<String, List<Workmate>> interestedWorkmates) {
+        for (Restaurant restaurant : restaurants) {
+            restaurant.setInterestedWorkmates(interestedWorkmates.get(restaurant.id));
+        }
+        return restaurants;
+    }
+
     private void fetchInterestedWorkmates(List<String> placeIDs, FetchInterestedWorkmatesForPlacesCompletion completion) {
-        workmatesRepository.fetchWorkmates((success, workmates) -> {
-            if (success) {
-                List<String> workmatesIDs = new ArrayList<>();
-
-                for (Workmate workmate : workmates) {
-                    workmatesIDs.add(workmate.uid);
-                }
-
+        workmatesRepository.fetchWorkmates(workmates -> {
+            if (workmates != null) {
                 db.collection(KEY_USER_COLLECTION)
-                        .whereIn(KEY_USER_ID, workmatesIDs)
+                        .whereIn(KEY_USER_ID, getWorkmatesIds(workmates))
                         .get()
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                QuerySnapshot snapshot = task.getResult();
-                                assert snapshot != null;
-                                List<DocumentSnapshot> documentSnapshots = snapshot.getDocuments();
-
-                                // Map<PlaceID, List<WorkmateID>>
-                                Map<String, List<Workmate>> results = new HashMap<>();
-                                for (String placeID : placeIDs) {
-                                    results.put(placeID, new ArrayList<>());
-                                }
-
-                                for (DocumentSnapshot documentSnapshot : documentSnapshots) {
-                                    String placeID = documentSnapshot.getString(KEY_PLACE_ID);
-                                    String userID = documentSnapshot.getString(KEY_USER_ID);
-
-                                    if (placeID != null && userID != null && placeIDs.contains(placeID)) {
-                                        Workmate workmate = null;
-                                        for (Workmate mate : workmates) {
-                                            if (mate.uid.equals(userID)) {
-                                                workmate = mate;
-                                                break;
-                                            }
-                                        }
-
-                                        if (workmate != null)
-                                            Objects.requireNonNull(results.get(placeID))
-                                                    .add(workmate);
-                                    }
-                                }
-
-                                completion.onComplete(results);
-                            } else {
-                                Log.e(TAG, "fetchInterestedWorkmates: ", task.getException());
-                                completion.onComplete(new HashMap<>());
-                            }
-                        });
+                        .addOnCompleteListener(task -> completion.onComplete(getInterestedWorkmates(task, placeIDs, workmates)));
             } else {
                 completion.onComplete(new HashMap<>());
             }
         });
     }
 
-    public void fetchInterestedWorkmates(String placeID, FetchInterestedWorkmatesForPlaceCompletion completion) {
-        workmatesRepository.fetchWorkmates((success, workmates) -> {
-            if (success) {
-                List<String> workmatesIDs = new ArrayList<>();
-                for (Workmate workmate : workmates) {
-                    workmatesIDs.add(workmate.uid);
-                }
+    public List<String> getWorkmatesIds(List<Workmate> workmates) {
+        List<String> workmatesIDs = new ArrayList<>();
 
+        for (Workmate workmate : workmates) {
+            workmatesIDs.add(workmate.uid);
+        }
+
+        return workmatesIDs;
+    }
+
+    public Map<String, List<Workmate>> getInterestedWorkmates(Task<QuerySnapshot> task, List<String> placeIDs, List<Workmate> workmates) {
+        QuerySnapshot snapshot = task.getResult();
+        if (task.isSuccessful() && snapshot != null) {
+            List<DocumentSnapshot> documentSnapshots = snapshot.getDocuments();
+
+            // Map<PlaceID, List<WorkmateID>>
+            Map<String, List<Workmate>> results = new HashMap<>();
+            for (String placeID : placeIDs) {
+                results.put(placeID, new ArrayList<>());
+            }
+
+            for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+                String placeID = documentSnapshot.getString(KEY_PLACE_ID);
+                String userID = documentSnapshot.getString(KEY_USER_ID);
+
+                if (placeID != null && userID != null && placeIDs.contains(placeID)) {
+                    Workmate workmate = null;
+                    for (Workmate mate : workmates) {
+                        if (mate.uid.equals(userID)) {
+                            workmate = mate;
+                            break;
+                        }
+                    }
+
+                    if (workmate != null)
+                        Objects.requireNonNull(results.get(placeID))
+                                .add(workmate);
+                }
+            }
+
+            return results;
+        } else {
+            Log.e(TAG, "fetchInterestedWorkmates: ", task.getException());
+            return new HashMap<>();
+        }
+    }
+
+    void fetchInterestedWorkmates(String placeID, FetchInterestedWorkmatesForPlaceCompletion completion) {
+        workmatesRepository.fetchWorkmates(workmates -> {
+            if (workmates != null) {
                 db.collection(KEY_USER_COLLECTION)
-                        .whereIn(KEY_USER_ID, workmatesIDs)
+                        .whereIn(KEY_USER_ID, getWorkmatesIds(workmates))
                         .whereEqualTo(KEY_PLACE_ID, placeID)
                         .get()
-                        .addOnCompleteListener(task -> {
-                            QuerySnapshot results = task.getResult();
-                            if (task.isSuccessful() && results != null) {
-                                List<Workmate> workmatesList = new ArrayList<>();
-                                for (DocumentSnapshot document : results.getDocuments()) {
-                                    for (Workmate workmate : workmates) {
-                                        if (workmate.uid.equals(document.getString(KEY_USER_ID))) {
-                                            workmatesList.add(workmate);
-                                            break;
-                                        }
-                                    }
-                                }
-
-                                completion.onComplete(workmatesList);
-                            } else {
-                                Log.e(TAG, "fetchInterestedWorkmates: ", task.getException());
-                            }
-                        });
+                        .addOnCompleteListener(task -> completion.onComplete(getInterestedWorkmatesFromTask(task, workmates)));
             } else {
                 completion.onComplete(null);
             }
         });
     }
 
-    public void fetchDetail(String placeId, FetchDetailsCompletion completion) {
-        if (placeId == null) completion.onComplete(null);
+    public List<Workmate> getInterestedWorkmatesFromTask(Task<QuerySnapshot> task, @Nonnull List<Workmate> workmates) {
+        QuerySnapshot results = task.getResult();
+        if (task.isSuccessful() && results != null) {
+            List<Workmate> workmatesList = new ArrayList<>();
+            for (DocumentSnapshot document : results.getDocuments()) {
+                for (Workmate workmate : workmates) {
+                    if (workmate.uid.equals(document.getString(KEY_USER_ID))) {
+                        workmatesList.add(workmate);
+                        break;
+                    }
+                }
+            }
+
+            return workmatesList;
+        } else {
+            Log.e(TAG, "fetchInterestedWorkmates: ", task.getException());
+            return null;
+        }
+    }
+
+    public void fetchDetail(@Nonnull String placeId, FetchDetailsCompletion completion) {
         client.fetchDetails(placeId, details -> this.fetchInterestedWorkmates(placeId, workmates -> {
             Restaurant restaurant = new Restaurant(placeId, details, workmates);
             namesCache.put(restaurant.id, restaurant.name);
@@ -191,8 +222,7 @@ public class PlacesRepository {
         }));
     }
 
-    public void getName(String placeId, GetNameCompletion completion) {
-        if (placeId == null) completion.onComplete(null);
+    public void getName(@Nonnull String placeId, GetNameCompletion completion) {
         String name = namesCache.get(placeId);
         if (name == null) {
             client.fetchDetails(placeId, details -> {
@@ -210,15 +240,16 @@ public class PlacesRepository {
                 .whereEqualTo("placeID", id)
                 .whereEqualTo("userID", Objects.requireNonNull(auth.getCurrentUser()).getUid())
                 .get()
-                .addOnCompleteListener(task -> {
-                    if (!task.isSuccessful() || task.getResult() == null) {
-                        Log.e(TAG, "getIsLiked: ", task.getException());
-                        completion.onComplete(false, null);
-                        return;
-                    }
+                .addOnCompleteListener(task -> completion.onComplete(getIsLikedFromTask(task)));
+    }
 
-                    completion.onComplete(true, task.getResult().getDocuments().size() > 0);
-                });
+    public Boolean getIsLikedFromTask(Task<QuerySnapshot> task) {
+        if (!task.isSuccessful() || task.getResult() == null) {
+            Log.e(TAG, "getIsLiked: ", task.getException());
+            return null;
+        }
+
+        return task.getResult().getDocuments().size() > 0;
     }
 
     public void likePlace(String id, LikeRestaurantCompletion completion) {
@@ -232,9 +263,9 @@ public class PlacesRepository {
                 .addOnCompleteListener(task -> {
                     if (!task.isSuccessful()) {
                         Log.e(TAG, "likePlace: ", task.getException());
-                        completion.onComplete(false, null);
+                        completion.onComplete(null);
                     } else {
-                        completion.onComplete(true, true);
+                        completion.onComplete(true);
                     }
                 });
     }
@@ -247,7 +278,7 @@ public class PlacesRepository {
                 .addOnCompleteListener(task -> {
                     if (!task.isSuccessful() || task.getResult() == null) {
                         Log.e(TAG, "dislikePlace: ", task.getException());
-                        completion.onComplete(true, null);
+                        completion.onComplete(null);
                         return;
                     }
 
@@ -256,9 +287,9 @@ public class PlacesRepository {
                         document.getReference().delete().addOnCompleteListener(task1 -> {
                             if (!task1.isSuccessful()) {
                                 Log.e(TAG, "dislikePlace: ", task1.getException());
-                                completion.onComplete(false, null);
+                                completion.onComplete(null);
                             } else {
-                                completion.onComplete(true, false);
+                                completion.onComplete(false);
                             }
                         });
                     }
@@ -278,10 +309,14 @@ public class PlacesRepository {
     }
 
     public interface LikeRestaurantCompletion {
-        void onComplete(boolean success, Boolean isLiked);
+        void onComplete(Boolean isLiked);
     }
 
     public interface GetNameCompletion {
         void onComplete(String name);
+    }
+
+    public interface FetchPlacesCompletion {
+        void onComplete(List<Restaurant> restaurants);
     }
 }

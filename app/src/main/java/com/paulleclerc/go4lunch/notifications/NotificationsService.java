@@ -2,7 +2,7 @@
  * NotificationsService.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/17/20 3:34 PM.
+ *   Updated by paulleclerc on 6/19/20 5:36 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -20,19 +20,16 @@ import androidx.core.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.paulleclerc.go4lunch.R;
-import com.paulleclerc.go4lunch.repository.UserRepository;
 
 public class NotificationsService extends FirebaseMessagingService {
     private static final int NOTIFICATION_ID = 801;
     private static final String NOTIFICATION_TAG = "GO4LUNCH";
 
-    private final UserRepository userRepository = new UserRepository();
-
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         if (remoteMessage.getNotification() != null) {
             String message = remoteMessage.getNotification().getBody();
-            // 8 - Show notification after received message
+            // Show notification after received message
             this.sendVisualNotification(message);
         }
     }

@@ -2,7 +2,7 @@
  * SettingsViewModel.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/17/20 4:36 PM.
+ *   Updated by paulleclerc on 6/24/20 4:55 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -24,6 +24,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.paulleclerc.go4lunch.repository.AvatarRepository;
+import com.paulleclerc.go4lunch.repository.FirStorageRepository;
+import com.paulleclerc.go4lunch.repository.FirestoreRepository;
 import com.paulleclerc.go4lunch.repository.UserRepository;
 
 import java.io.ByteArrayOutputStream;
@@ -35,8 +37,10 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class SettingsViewModel extends AndroidViewModel {
-    private UserRepository user = new UserRepository();
-    private AvatarRepository avatarRepository = new AvatarRepository();
+    private final UserRepository user;
+    private final FirStorageRepository storage;
+    private final FirestoreRepository firestore;
+    private final AvatarRepository avatarRepository;
 
     private MutableLiveData<Bitmap> avatar = new MutableLiveData<>();
     private Bitmap avatarFromLibrary = null;
@@ -45,23 +49,39 @@ public class SettingsViewModel extends AndroidViewModel {
 
     public SettingsViewModel(@NonNull Application application) {
         super(application);
+        user = new UserRepository();
+        storage = new FirStorageRepository();
+        firestore = new FirestoreRepository();
+        avatarRepository = new AvatarRepository();
+    }
+
+    public SettingsViewModel(@NonNull Application application, UserRepository userRepository,
+                             FirStorageRepository storage,
+                             FirestoreRepository firestoreRepository,
+                             AvatarRepository avatarRepository) {
+        super(application);
+        this.user = userRepository;
+        this.storage = storage;
+        this.firestore = firestoreRepository;
+        this.avatarRepository = avatarRepository;
     }
 
     public LiveData<Bitmap> getAvatar() {
         user.getUserAvatar(avatarUrl -> {
             if (avatar.getValue() == null)
-                avatarRepository.getAvatarFromUrl(avatarUrl, getApplication(), this.avatar::setValue);
+                avatarRepository.getAvatarFromUrl(avatarUrl, getApplication(),
+                        this.avatar::setValue);
         });
         return avatar;
     }
 
     public LiveData<String> getUsername() {
-        user.getUsername(this.username::setValue);
+        firestore.getUsername(this.username::setValue);
         return username;
     }
 
     public LiveData<Boolean> getAllowNotifications() {
-        user.getAllowNotifications(allowNotifications::setValue);
+        firestore.getAllowNotifications(allowNotifications::setValue);
         return allowNotifications;
     }
 
@@ -74,16 +94,16 @@ public class SettingsViewModel extends AndroidViewModel {
             String path = MediaStore.Images.Media.insertImage(getApplication().getContentResolver(),
                     avatar, UUID.randomUUID().toString(), null);
 
-            user.setUserAvatar(Uri.parse(path));
+            storage.saveUserAvatar(Uri.parse(path), firestore::setNewUserAvatar);
         }
 
         if (username != null && !username.equals(this.username.getValue())) {
-            user.setUsername(username);
+            firestore.setUsername(username);
         }
 
         Boolean areNotificationsAllowed = this.allowNotifications.getValue();
         if (areNotificationsAllowed != null && allowNotifications != areNotificationsAllowed) {
-            user.setAllowNotifications(allowNotifications);
+            firestore.setAllowNotifications(allowNotifications);
         }
     }
 

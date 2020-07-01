@@ -2,7 +2,7 @@
  * PlaceClient.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/15/20 6:10 PM.
+ *   Updated by paulleclerc on 6/29/20 3:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -26,8 +26,7 @@ import retrofit2.internal.EverythingIsNonNull;
 
 public class PlaceClient {
     private static final String TAG = PlaceClient.class.getSimpleName();
-    private static final String BASE_URL = "https://maps.googleapis.com/";
-
+    private static String BASE_URL = "https://maps.googleapis.com/";
     private final Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -36,14 +35,15 @@ public class PlaceClient {
     private final PlaceService service = retrofit.create(PlaceService.class);
 
     public void fetchRestaurants(LatLng location, FetchRestaurantsCompletion completion) {
-        Call<RestaurantSearchResponse> call = service.getNearbyRestaurants(location.latitude + "," + location.longitude);
+        Call<RestaurantSearchResponse> call = service.getNearbyRestaurants(location.latitude + ","
+                + location.longitude);
         call.enqueue(new Callback<RestaurantSearchResponse>() {
             @Override
             @EverythingIsNonNull
-            public void onResponse(Call<RestaurantSearchResponse> call, Response<RestaurantSearchResponse> response) {
-                assert response.body() != null;
-
-                completion.onComplete(response.body().getResults());
+            public void onResponse(Call<RestaurantSearchResponse> call,
+                                   Response<RestaurantSearchResponse> response) {
+                if (response.body() != null) completion.onComplete(response.body().getResults());
+                else completion.onComplete(null);
             }
 
             @Override
@@ -56,14 +56,12 @@ public class PlaceClient {
     }
 
     public void fetchDetails(String placeId, FetchDetailsCompletion completion) {
-        Call<RestaurantDetailResponse> call = service.getPlaceDetail(placeId);
-        call.enqueue(new Callback<RestaurantDetailResponse>() {
+        service.getPlaceDetail(placeId).enqueue(new Callback<RestaurantDetailResponse>() {
             @Override
             @EverythingIsNonNull
             public void onResponse(Call<RestaurantDetailResponse> call, Response<RestaurantDetailResponse> response) {
-                assert response.body() != null;
-
-                completion.onComplete(response.body().getResult());
+                if (response.body() != null) completion.onComplete(response.body().getResult());
+                else completion.onComplete(null);
             }
 
             @Override

@@ -2,7 +2,7 @@
  * RestaurantListAdapter.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/8/20 2:52 PM.
+ *   Updated by paulleclerc on 6/29/20 3:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -122,9 +122,9 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
                 star3.setAlpha(0f);
             }
             if (restaurant.rate == Restaurant.Rate.UNKNOWN || restaurant.rate == Restaurant.Rate.BAD)
-                star2.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), R.drawable.star_gray));
+                star2.setImageResource(R.drawable.star_gray);
             if (restaurant.rate != Restaurant.Rate.GOOD)
-                star3.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), R.drawable.star_gray));
+                star3.setImageResource(R.drawable.star_gray);
 
             Glide.with(itemView.getContext())
                     .load(restaurant.getPhotoUrl())

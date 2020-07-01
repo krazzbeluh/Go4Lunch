@@ -2,7 +2,7 @@
  * RestaurantDetailActivity.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/17/20 3:34 PM.
+ *   Updated by paulleclerc on 6/29/20 3:34 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -86,7 +86,8 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         viewModel.getPlaceDetail(restaurant).observe(this, this::setDetails);
         viewModel.getIsLiked(restaurant).observe(this, isLiked -> {
             likeTextView.setTextColor(getResources().getColor(R.color.colorPrimary));
-            likeImageView.setImageDrawable(isLiked ? getResources().getDrawable(R.drawable.star) : getResources().getDrawable(R.drawable.star_border));
+            likeImageView.setImageResource(isLiked ? R.drawable.star : R.drawable.star_border);
+            //likeImageView.setImageDrawable();
             likeImageView.setColorFilter(getResources().getColor(R.color.colorPrimary));
         });
 
