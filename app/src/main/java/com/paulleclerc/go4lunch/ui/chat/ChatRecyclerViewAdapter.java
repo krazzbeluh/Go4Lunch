@@ -2,7 +2,7 @@
  * ChatRecyclerViewAdapter.java
  *   Go4Lunch
  *
- *   Updated by paulleclerc on 6/18/20 11:33 AM.
+ *   Updated by paulleclerc on 7/1/20 7:18 PM.
  *   Copyright © 2020 Paul Leclerc. All rights reserved.
  */
 
@@ -51,7 +51,8 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View inflatedView = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_recyclerview_row_gray, parent, false);
+        View inflatedView =
+                LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_recyclerview_row_gray, parent, false);
         return new ViewHolder(inflatedView, context);
     }
 
@@ -87,22 +88,26 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
 
             message.setText(chatMessage.message);
 
-            if (chatMessage.senderID.equals(workmate.uid)) username.setText(workmate.username);
-            else {
-                username.setText(itemView.getContext().getString(R.string.me));
-                username.setTextColor(Color.RED);
+            boolean isUserSender = !chatMessage.senderID.equals(workmate.uid);
 
-                Drawable background = chatBubble.getBackground();
-                background.setColorFilter(ContextCompat.getColor(context, R.color.chat_sender), PorterDuff.Mode.SRC_IN);
+            username.setText(isUserSender ? itemView.getContext().getString(R.string.me) :
+                    workmate.username);
+            username.setTextColor(isUserSender ? Color.RED : ContextCompat.getColor(context,
+                    R.color.chat_sender_name));
 
-                chatBubble.setBackground(background);
+            Drawable background = chatBubble.getBackground();
+            background.setColorFilter(ContextCompat.getColor(context, isUserSender ?
+                    R.color.chat_sender : R.color.chat_bubble_gray), PorterDuff.Mode.SRC_IN);
 
-                ConstraintSet constraintSet = new ConstraintSet();
-                constraintSet.clone(chatLayout);
-                constraintSet.setGuidelinePercent(R.id.chat_row_guideline_right, 1f);
-                constraintSet.setGuidelinePercent(R.id.chat_row_guideline_left, 0.25f);
-                constraintSet.applyTo(chatLayout);
-            }
+            chatBubble.setBackground(background);
+
+            ConstraintSet constraintSet = new ConstraintSet();
+            constraintSet.clone(chatLayout);
+            constraintSet.setGuidelinePercent(R.id.chat_row_guideline_right, isUserSender ? 1f :
+                    0.75f);
+            constraintSet.setGuidelinePercent(R.id.chat_row_guideline_left, isUserSender ? 0.25f
+                    : 0f);
+            constraintSet.applyTo(chatLayout);
         }
     }
 }

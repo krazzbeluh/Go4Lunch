@@ -3,12 +3,12 @@
   ~ chat_bubble_gray.xml
   ~   Go4Lunch
   ~
-  ~   Updated by paulleclerc on 6/17/20 10:09 PM.
+  ~   Updated by paulleclerc on 7/1/20 7:18 PM.
   ~   Copyright © 2020 Paul Leclerc. All rights reserved.
   -->
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#D8D8D8" />
+    <solid android:color="@color/chat_bubble_gray" />
     <corners android:radius="10dp" />
     <padding
         android:bottom="0dp"
